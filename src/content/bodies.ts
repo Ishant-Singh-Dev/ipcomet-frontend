@@ -1412,7 +1412,7 @@ console.log(ip);</code></pre>
 <p>These commands return your <em>public</em> address, the one websites see. For the private address on your own network, such as 192.168.1.20, see <a href="/learn/how-to-find-your-ip-address">how to find your IP address</a> and <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
 
 <h2>Limits and privacy</h2>
-<p>No key or sign-up is needed. Please keep requests reasonable: checking every few minutes is fine, but calling it in a tight loop may be rate limited. ipcomet does not store or log the addresses it sees, as the <a href="/privacy">privacy page</a> explains. Try it in the browser first with the <a href="/">what is my IP address</a> page.</p>
+<p>No key or sign-up is needed. Please keep requests reasonable: checking every few minutes is fine, but calling it in a tight loop may be rate limited. ipcomet does not store or log the addresses it sees, as the <a href="/privacy">privacy page</a> explains. The <a href="/developers">free IP API page</a> lists every endpoint with its exact rate limit. Try it in the browser first with the <a href="/">what is my IP address</a> page.</p>
 `,
   "what-is-an-ip-checker": `
 <p>An IP checker is a tool that shows an IP address and what can be learned about it. Some checkers tell you <em>your own</em> public IP address, some look up <em>any</em> address or domain you type in, and some judge whether an address looks like a VPN, a proxy or a source of spam. This guide explains the three kinds, what each result means, and which one to use for the job in front of you.</p>
