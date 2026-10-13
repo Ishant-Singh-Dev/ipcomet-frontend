@@ -48,6 +48,7 @@ export const organizationJsonLd = (origin: string) =>
         url: origin + "/",
         logo: { "@type": "ImageObject", url: origin + LOGO_PATH, width: 512, height: 512 },
         founder: { "@type": "Person", "@id": origin + AUTHOR_ID, name: AUTHOR, url: origin + "/about" },
+        sameAs: ["https://github.com/Ishant-Singh-Dev/ipcomet-frontend"],
       }
     : null;
 
@@ -360,7 +361,7 @@ ${aiNote}
 <div><a class="logo" href="${lp("/")}">${LOGO}</a><p style="margin-top:12px">${esc(lt("Fast, private network tools. Find your IP address, look up DNS and WHOIS records, test your speed and more."))}</p></div>
 <div><h4>${esc(lt("Tools"))}</h4><ul>${footerTools}</ul></div>
 <div><h4>${esc(lt("Learn"))}</h4><ul>${footerLearn}<li><a href="/learn"><b>${esc(lt("All articles →"))}</b></a></li></ul></div>
-<div><h4>${esc(lt("About"))}</h4><ul><li><a href="${lp("/about")}">${esc(lt("About and methodology"))}</a></li><li><a href="${lp("/privacy")}">${esc(lt("Privacy"))}</a></li><li><a href="/sitemap.xml">${esc(lt("Sitemap"))}</a></li></ul><p style="margin-top:14px">${esc(lt("No ads, no cookies, no tracking."))}</p></div>
+<div><h4>${esc(lt("About"))}</h4><ul><li><a href="${lp("/about")}">${esc(lt("About and methodology"))}</a></li><li><a href="${lp("/privacy")}">${esc(lt("Privacy"))}</a></li><li><a href="/sitemap.xml">${esc(lt("Sitemap"))}</a></li><li><a href="https://github.com/Ishant-Singh-Dev/ipcomet-frontend" rel="noopener">GitHub</a></li></ul><p style="margin-top:14px">${esc(lt("No ads, no cookies, no tracking."))}</p></div>
 </div>
 ${footerLangs}
 <p class="copy">${esc(lt("© {year} ipcomet. Served from the Cloudflare network, close to you.", { year: new Date().getUTCFullYear() }))}</p>
