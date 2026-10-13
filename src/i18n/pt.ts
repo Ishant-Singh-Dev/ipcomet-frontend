@@ -12,6 +12,7 @@ export const pt: LocaleData = {
     ASN: "ASN",
     About: "Sobre",
     "About and methodology": "Sobre e metodologia",
+    "Contact": "Contato",
     "About {name}": "Sobre: {name}",
     "Accepted formats: {formats}. Your proxy details are used for this one check and are never stored or logged.":
       "Formatos aceitos: {formats}. Os dados do seu proxy são usados só nesta verificação e nunca são armazenados nem registrados.",
@@ -796,6 +797,8 @@ export const pt: LocaleData = {
 <p>A detecção de VPN, proxy e Tor é heurística. O Tor é verificado pela lista oficial de nós de saída, mas uma VPN ou um proxy só podem ser deduzidos a partir de quem é o dono do endereço, do nome DNS reverso e da presença em listas de bloqueio. Proxies residenciais parecem conexões residenciais comuns e não podem ser detectados assim. Trate a <a href="/pt/reputation">verificação de reputação</a> como um indicador, não como prova.</p>
 <h2>Os guias</h2>
 <p>Os <a href="/learn" hreflang="en" lang="en">guias</a> estão, por enquanto, apenas em inglês. Cada um responde a uma pergunta específica e mostra a data da última atualização. Só publicaremos traduções depois que uma pessoa que fale o idioma as revisar.</p>
+<h2>Como entrar em contato?</h2>
+<p>Escreva para <a href="mailto:hello@ipcomet.com">hello@ipcomet.com</a>. São bem-vindas correções em um guia, uma tradução que soe errada, uma ferramenta com resultado estranho ou dúvidas sobre o funcionamento. Correções nas páginas traduzidas são especialmente úteis, porque foram redigidas com ajuda de IA.</p>
 <h2>Privacidade</h2>
 <p>Não há anúncios, e nosso código não armazena nem registra os endereços IP dos visitantes. Os únicos cookies vêm do Google Analytics, que é opcional e só carrega se você aceitar no aviso. A <a href="/pt/privacy">página de privacidade</a> explica essa escolha e lista todos os serviços de terceiros que cada ferramenta contata.</p>`,
   },

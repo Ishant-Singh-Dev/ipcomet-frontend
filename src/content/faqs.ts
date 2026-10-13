@@ -3,11 +3,11 @@ import type { Faq } from "../layout";
 export const HOME_FAQ: Faq[] = [
   {
     q: "What is my IP address?",
-    a: "Your IP address, which people also search for as \"what's my IP\" or \"my IP\", is the public number shown at the top of this page. It identifies your internet connection to every website and service you visit. If you use a home or mobile network it was assigned by your internet provider, and everyone on that connection shares it.",
+    a: "Your IP address, which people also search for as \"what's my IP\", \"whats my IP\", \"search my IP\" or \"my IP\", is the public number shown at the top of this page. It identifies your internet connection to every website and service you visit. If you use a home or mobile network it was assigned by your internet provider, and everyone on that connection shares it.",
   },
   {
     q: "How do I find or check my IP address?",
-    a: "Open this page and your public IP address is displayed instantly, along with your approximate location and ISP, so there is nothing to search for or install. To find the private IP address your device uses inside your home network, check your network settings, or run ipconfig on Windows or ifconfig on macOS and Linux.",
+    a: "If you search my IP, what is my IP address or check my IP, this page answers it the moment it opens: your public IP address is displayed instantly, along with your approximate location and ISP, so there is nothing to install. To find the private IP address your device uses inside your home network, check your network settings, or run ipconfig on Windows or ifconfig on macOS and Linux.",
   },
   {
     q: "What is an IP checker?",

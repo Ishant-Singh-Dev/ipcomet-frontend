@@ -12,6 +12,7 @@ export const es: LocaleData = {
     ASN: "ASN",
     About: "Acerca de",
     "About and methodology": "Acerca de y metodología",
+    "Contact": "Contacto",
     "About {name}": "Acerca de {name}",
     "Accepted formats: {formats}. Your proxy details are used for this one check and are never stored or logged.":
       "Formatos aceptados: {formats}. Los datos de tu proxy se usan solo para esta comprobación y nunca se almacenan ni se registran.",
@@ -796,6 +797,8 @@ export const es: LocaleData = {
 <p>La detección de VPN, proxy y Tor es heurística. Tor se comprueba con la lista oficial de nodos de salida, pero una VPN o un proxy solo se pueden deducir por quién es el propietario de la dirección, su nombre DNS inverso y su presencia en listas de bloqueo. Los proxies residenciales parecen conexiones domésticas normales y no se pueden detectar así. Trata la <a href="/es/reputation">comprobación de reputación</a> como un indicador, no como una prueba.</p>
 <h2>Las guías</h2>
 <p>Las <a href="/learn" hreflang="en" lang="en">guías</a> están por ahora solo en inglés. Cada una responde a una pregunta concreta y muestra la fecha de su última actualización. Solo publicaremos traducciones después de que las revise una persona que hable el idioma.</p>
+<h2>¿Cómo ponerse en contacto?</h2>
+<p>Escríbenos a <a href="mailto:hello@ipcomet.com">hello@ipcomet.com</a>. Son bienvenidas las correcciones de una guía, una traducción que suene mal, una herramienta que dé un resultado extraño o cualquier duda sobre su funcionamiento. Las correcciones de las páginas traducidas resultan especialmente útiles, porque se redactaron con ayuda de IA.</p>
 <h2>Privacidad</h2>
 <p>No hay anuncios, y nuestro código no almacena ni registra las direcciones IP de los visitantes. Las únicas cookies vienen de Google Analytics, que es opcional y solo se carga si lo aceptas en el aviso. La <a href="/es/privacy">página de privacidad</a> explica esa elección y enumera todos los servicios de terceros con los que contacta cada herramienta.</p>`,
   },

@@ -141,7 +141,7 @@ ${loc === "en" ? `<p style="max-width:720px;margin:22px 0 0">Your IP address is 
 </section>
 <section class="sec"><h2>${esc(lt("Free network tools"))}</h2><p>${esc(lt("Everything you need to inspect, test and troubleshoot a connection, with no sign-up."))}</p>${toolCards(undefined, loc)}</section>
 ${faqSection(faq, undefined, loc)}
-<section class="sec"><h2>${esc(lt("Learn about IP addresses"))}</h2><p>${esc(lt("Short, plain-English guides on how the internet identifies you and what you can do about it."))}</p>${articleCards(loc === "en" ? HOME_GUIDES : ARTICLES.slice(0, 6).map((a) => a.slug), false, loc)}</section>`;
+<section class="sec"><h2>${esc(lt("Learn about IP addresses"))}</h2><p>${esc(lt("Short, plain-English guides on how the internet identifies you and what you can do about it."))}</p>${articleCards(loc === "en" ? HOME_GUIDES : ARTICLES.slice(0, 6).map((a) => a.slug), false, loc)}${loc === "en" ? `<p style="margin:22px 0 0">Working in a terminal or a script? The <a href="/developers">free IP API</a> returns your address as plain text or JSON, with no key: <code class="mono">curl ipcomet.com</code>.</p>` : ""}</section>`;
 }
 
 export function homeJsonLd(origin: string, loc: Locale = "en"): unknown[] {

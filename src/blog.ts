@@ -12,6 +12,7 @@ import {
   personJsonLd,
   renderPage,
   toolCards,
+  CONTACT_EMAIL,
   type PageOptions,
 } from "./layout";
 import { LOCALE_DATA, LOCALE_META, localizedPath, t, type Locale } from "./i18n";
@@ -258,6 +259,8 @@ export function aboutPage(origin: string, loc: Locale = "en"): Rendered {
 <p>VPN, proxy and Tor detection is heuristic. Tor is checked against the official exit list, but a VPN or proxy can only be inferred from who owns the address, its reverse DNS name and blocklist entries. Residential proxies look like ordinary home connections and cannot be detected this way. Treat the <a href="/reputation">reputation check</a> as an indicator, not proof.</p>
 <h2>How the guides are written</h2>
 <p>Each guide answers one question and shows the date it was last updated. Where a guide has steps for Windows, macOS, iOS, Android or Linux, those steps are meant to be followed on the device in front of you, and the matching tool is linked so you can confirm the result.</p>
+<h2>How do I get in touch?</h2>
+<p>Write to <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>. Corrections to a guide, a translation that reads wrong, a tool giving an odd result or a question about how something works are all welcome, and corrections to the translated pages are especially useful. You can also open an issue on <a href="https://github.com/Ishant-Singh-Dev/ipcomet-frontend" rel="noopener">GitHub</a>.</p>
 <h2>Privacy</h2>
 <p>There are no ads, and our code does not store or log visitor IP addresses. The only cookies come from optional Google Analytics, which loads only if you accept it in the banner. The <a href="/privacy">privacy page</a> explains that choice and lists every third-party service a tool contacts.</p>
 </div>`,
@@ -272,6 +275,192 @@ export function aboutPage(origin: string, loc: Locale = "en"): Rendered {
       organizationJsonLd(origin),
       personJsonLd(origin),
       breadcrumbJsonLd(origin, [["Home", "/"], ["About", "/about"]]),
+    ],
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Developers                                                          */
+/* ------------------------------------------------------------------ */
+
+const DEV_TITLE = "Free IP API: Get Your Public IP with curl";
+const DEV_DESCRIPTION =
+  "Free IP API, no key or sign-up. Get your public IP from the command line with curl, wget, PowerShell, Python or Node, and look up any IP as JSON.";
+const DEV_UPDATED = "2026-10-14";
+
+/** A copy-paste code block. The button needs no JavaScript of its own: static/app.js handles every [data-copy]. */
+const snip = (code: string) =>
+  `<div class="snip"><pre><code>${esc(code)}</code></pre><button class="btn sm" type="button" data-copy="${esc(code)}">Copy</button></div>`;
+
+/**
+ * Every public endpoint a script may rely on, with the limit that actually applies.
+ * Keep in step with the routes in src/index.ts and the rate limits in wrangler.jsonc.
+ * The speed-test and proxy endpoints are left out on purpose: they are shaped around the
+ * browser tools on this site, not around scripts.
+ */
+const ENDPOINTS: Array<[string, string, string]> = [
+  [
+    "GET /",
+    "Your public IP address as one line of plain text, for curl, wget, PowerShell and similar clients. Browsers get the web page instead.",
+    "no fixed limit",
+  ],
+  ["GET /api/ip", "The same bare IP address as plain text, whatever asks for it. Use this one in scripts.", "no fixed limit"],
+  [
+    "GET /api/me",
+    "Everything about the connection that made the request, as JSON: address, IP version, approximate location, timezone, ASN, network owner and connection details.",
+    "no fixed limit",
+  ],
+  ["GET /api/lookup?q=", "Location, network owner, ASN and hostname of any IP address or domain.", "60 a minute"],
+  ["GET /api/dns?name=", "DNS records for a domain (A, AAAA, CNAME, MX, NS, TXT, SOA, CAA), or the PTR record of an IP address.", "60 a minute"],
+  ["GET /api/whois?q=", "Registration details for a domain or an IP range, from RDAP.", "60 a minute"],
+  ["GET /api/reputation?q=", "Whether an address is a Tor exit, what kind of network owns it, and whether it is on public spam blocklists.", "60 a minute"],
+  ["GET /api/port?port=", "Whether a TCP port is reachable on the address you are calling from. It cannot be aimed anywhere else.", "10 a minute"],
+  ["GET /api/ping", "An empty 204 response for timing a round trip, with the Cloudflare data center that answered in the x-colo header.", "no fixed limit"],
+];
+
+export function developersPage(origin: string): Rendered {
+  const rows = ENDPOINTS.map(
+    ([ep, what, limit]) => `<tr><th>${esc(ep)}</th><td>${esc(what)} <strong>Limit:</strong> ${esc(limit)}.</td></tr>`,
+  ).join("");
+
+  const body = `<section class="phead"><p class="crumbs"><a href="/">Home</a> / Developers</p><h1>Free IP API: your public IP from the command line</h1>
+<p class="lead">Every tool on this site is backed by a plain HTTP endpoint you can call from a script. No key, no sign-up and no ads, and ipcomet's own code never stores the addresses it sees.</p>
+<p class="meta">Written by <a href="/about">${esc(AUTHOR)}</a> · Updated ${fmt(DEV_UPDATED)}</p></section>
+<div class="prose" style="padding-bottom:30px">
+<h2>The one-line answer</h2>
+<p>Ask for the home page from a terminal and you get your public IP address, and nothing else:</p>
+${snip("curl ipcomet.com")}
+<p>The output is a single line, such as <code>203.0.113.7</code>. The home page returns plain text when it recognises a command-line client (curl, wget, PowerShell, Python, Node and the like) by its User-Agent, and the full web page to everyone else. In a script, prefer <code>/api/ip</code>: it always returns plain text, whatever asks for it.</p>
+
+<h2>Endpoints</h2>
+<p>Every endpoint is a GET request over HTTPS to <code>https://ipcomet.com</code>, needs no key and answers in UTF-8. Errors come back as JSON &mdash; <code>{"error": "…"}</code> &mdash; with a matching HTTP status.</p>
+<div class="tw"><table class="stack"><tbody>${rows}</tbody></table></div>
+<p>Only <code>/api/ip</code> and <code>/api/me</code> send <code>Access-Control-Allow-Origin: *</code>, so those two are the ones you can also call from a web page in the browser. The rest are meant for command-line and server-side use. Answers are sent with <code>Cache-Control: no-store</code>, except the lookup, reputation and WHOIS replies, which allow private caching for one to five minutes.</p>
+
+<h2>Get your public IP address</h2>
+<p>The same request in the tools you are most likely to reach for. Each one prints one line.</p>
+<h3>curl</h3>
+${snip("curl https://ipcomet.com/api/ip")}
+<h3>wget</h3>
+${snip("wget -qO- https://ipcomet.com/api/ip")}
+<p>macOS ships curl but not wget; most Linux distributions ship both.</p>
+<h3>PowerShell</h3>
+${snip("(Invoke-RestMethod https://ipcomet.com/api/ip).Trim()")}
+<p>Windows 10 and 11 also include curl, but write <code>curl.exe</code> in PowerShell, where <code>curl</code> can be an alias for <code>Invoke-WebRequest</code>.</p>
+<h3>Python (requests)</h3>
+${snip(`import requests
+
+r = requests.get("https://ipcomet.com/api/ip", timeout=10)
+print(r.text.strip())`)}
+<p>With the standard library instead, set a User-Agent of your own. Python's default (<code>Python-urllib</code>) is turned away by the bot protection in front of this site, which answers 403.</p>
+<h3>Node.js (fetch)</h3>
+${snip(`const res = await fetch("https://ipcomet.com/api/ip");
+const ip = (await res.text()).trim();
+console.log(ip);`)}
+<p>No dependency needed: <code>fetch</code> is built into Node.js 18 and later, and the endpoint allows cross-origin requests, so the same two lines work in a browser page.</p>
+<h3>A shell one-liner for scripts</h3>
+${snip(`MYIP=$(curl -fsS --max-time 10 https://ipcomet.com/api/ip)
+echo "$MYIP"`)}
+<p><code>-f</code> makes curl exit non-zero on an HTTP error instead of assigning the error body to the variable, <code>-sS</code> hides the progress meter but keeps real errors, and <code>--max-time</code> stops a stalled call from hanging a cron job. To act only when the address has changed, compare it with the last one you stored:</p>
+${snip(`MYIP=$(curl -fsS --max-time 10 https://ipcomet.com/api/ip)
+if [ "$MYIP" != "$(cat ~/.myip 2>/dev/null)" ]; then
+  echo "Address changed to $MYIP"
+  printf '%s' "$MYIP" > ~/.myip
+fi`)}
+
+<h2>Your address, location and network as JSON</h2>
+${snip("curl https://ipcomet.com/api/me")}
+<p>The reply describes the connection that made the request. With made-up values:</p>
+${snip(`{
+  "ip": "203.0.113.7",
+  "version": 4,
+  "city": "Mumbai",
+  "region": "Maharashtra",
+  "country": "India",
+  "countryCode": "IN",
+  "postal": "400001",
+  "timezone": "Asia/Kolkata",
+  "latitude": 19.076,
+  "longitude": 72.8777,
+  "asn": 64500,
+  "org": "Example Broadband Ltd",
+  "edge": "BOM",
+  "protocol": "HTTP/2",
+  "tls": "TLSv1.3 · AEAD-AES128-GCM-SHA256",
+  "rttMs": 24
+}`)}
+<p>A field that cannot be determined for your connection is left out rather than set to <code>null</code>, so check that a key is there before using it. To pull out one value, pipe the reply through <code>jq</code>:</p>
+${snip("curl -s https://ipcomet.com/api/me | jq -r .country")}
+<p>The location is an estimate drawn from network records, not GPS, and it often points at your provider's nearest hub instead of your town. The <a href="/about">About page</a> explains where each field comes from and how far to trust it.</p>
+
+<h2>Look up any address or domain</h2>
+<p>These endpoints take a query string and return JSON. They call out to DNS resolvers, registries and blocklists, so they carry the tighter limits in the table above.</p>
+<h3>IP or domain lookup</h3>
+${snip(`curl "https://ipcomet.com/api/lookup?q=8.8.8.8"
+curl "https://ipcomet.com/api/lookup?q=example.com"`)}
+<p>A domain is resolved to its first A or AAAA record and that address is looked up, and the reply then carries <code>resolvedFrom</code>. It also carries <code>hostname</code> when the address has a reverse DNS record. As with <code>/api/me</code>, a field that cannot be determined is left out rather than set to <code>null</code>.</p>
+<h3>DNS records</h3>
+${snip(`curl "https://ipcomet.com/api/dns?name=example.com&type=MX"
+curl "https://ipcomet.com/api/dns?name=example.com&resolver=google"
+curl "https://ipcomet.com/api/dns?name=8.8.8.8"`)}
+<p><code>type</code> accepts A, AAAA, CNAME, MX, NS, TXT, SOA and CAA; leave it out and all eight are fetched at once, grouped by type in a <code>records</code> object. <code>resolver</code> is <code>cloudflare</code> by default or <code>google</code>. Pass an IP address as <code>name</code> and you get its PTR record instead.</p>
+<h3>WHOIS and registration</h3>
+${snip(`curl "https://ipcomet.com/api/whois?q=example.com"
+curl "https://ipcomet.com/api/whois?q=8.8.8.8"`)}
+<p>Answers come from RDAP, the modern replacement for the WHOIS protocol. A domain reply carries the registrar, status, dates, nameservers and DNSSEC state; an IP reply carries the range, CIDR, owner and parent allocation.</p>
+<h3>Reputation and blocklists</h3>
+${snip(`curl "https://ipcomet.com/api/reputation?q=203.0.113.7"
+curl https://ipcomet.com/api/reputation`)}
+<p>Leave <code>q</code> off and your own address is checked. The reply says whether the address is a published Tor exit node, what kind of network owns it, and how it fares on five public blocklists. The network classification is a heuristic, not proof, and the blocklist checks cover IPv4 only.</p>
+<h3>Open port check</h3>
+${snip(`curl "https://ipcomet.com/api/port?port=443"`)}
+<p>The check connects back to the address you are calling from, so it can only ever test your own connection, never someone else's host. <code>state</code> is <code>open</code>, <code>closed</code> or <code>filtered</code>. Port 25 cannot be tested from Cloudflare Workers and is refused.</p>
+<h3>Round-trip timing</h3>
+${snip(`curl -s -o /dev/null -w "%{time_total}s\\n" https://ipcomet.com/api/ping`)}
+<p>An empty 204 reply, as cheap to answer as it gets. The <code>x-colo</code> response header names the Cloudflare data center that handled it.</p>
+
+<h2>Rate limits and fair use</h2>
+<p>Limits are counted per calling IP address over a rolling minute, and the groups are counted separately from one another:</p>
+<ul>
+<li><strong>60 a minute</strong> for <code>/api/lookup</code>, <code>/api/dns</code>, <code>/api/whois</code> and <code>/api/reputation</code>.</li>
+<li><strong>10 a minute</strong> for <code>/api/port</code>, which opens a real TCP connection on every call.</li>
+<li><strong>No fixed limit</strong> on <code>/</code>, <code>/api/ip</code>, <code>/api/me</code> and <code>/api/ping</code>, which are answered from the request itself without contacting anything else.</li>
+</ul>
+<p>Going over a limit returns HTTP 429 and <code>{"error": "Too many requests. Please wait a minute and try again."}</code>. Wait a minute and carry on; nothing else happens to you.</p>
+<p>&ldquo;No fixed limit&rdquo; is not an invitation to hammer it. Cloudflare's abuse protection sits in front of the whole site and can throttle or block traffic that looks automated at scale, so cache the answer instead of asking on every request &mdash; a home connection's public address rarely changes more than a few times a day. The speed test and proxy checker have endpoints of their own, but they are built around the browser tools here rather than around scripts, so they are undocumented and may change.</p>
+
+<h2>Privacy</h2>
+<p>There is no key, no account and no advertising. Your IP address is read from the incoming request, used to build the answer and then gone: ipcomet's own code does not write it to a database, a log or any other storage, and never sells or shares it. Cloudflare handles every request as the hosting provider under its own privacy policy, and the rate limiter uses your address only to count your recent requests.</p>
+<p>The API endpoints load no analytics at all. On the pages of this site, analytics loads only if you accept it in the banner, and never otherwise. The <a href="/privacy">privacy page</a> sets out that choice and lists every third-party service each tool contacts.</p>
+
+<div class="cta"><h3>Prefer the walkthrough?</h3><p>The guide covers the same commands on macOS, Linux and Windows, how to force IPv4 or IPv6, and the other free services you will see recommended.</p><a class="btn pri" href="/learn/get-public-ip-address-command-line">Get your public IP from the command line</a> <a class="btn" href="/">Check my IP in the browser</a></div>
+</div>`;
+
+  return {
+    id: "developers",
+    title: DEV_TITLE,
+    description: DEV_DESCRIPTION,
+    path: "/developers",
+    body,
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        headline: DEV_TITLE,
+        description: DEV_DESCRIPTION,
+        datePublished: DEV_UPDATED,
+        dateModified: DEV_UPDATED,
+        author: { "@type": "Person", name: AUTHOR, ...(origin ? { "@id": origin + AUTHOR_ID, url: origin + "/about" } : {}) },
+        publisher: {
+          "@type": "Organization",
+          name: BRAND,
+          ...(origin ? { url: origin + "/", logo: { "@type": "ImageObject", url: origin + LOGO_PATH, width: 512, height: 512 } } : {}),
+        },
+        inLanguage: "en",
+        proficiencyLevel: "Beginner",
+        ...(origin ? { image: [origin + OG_IMAGE.path], mainEntityOfPage: origin + "/developers" } : {}),
+      },
+      breadcrumbJsonLd(origin, [["Home", "/"], ["Developers", "/developers"]]),
     ],
   };
 }

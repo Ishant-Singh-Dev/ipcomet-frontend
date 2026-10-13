@@ -3,10 +3,10 @@ export const BODIES: Record<string, string> = {
   "what-is-an-ip-address": `
 <p>An IP address (Internet Protocol address) is a number that identifies a device or network on the internet, so data knows where to go and where it came from. Think of it as the return address on a letter. Without one, a website would have nowhere to send the page you asked for.</p>
 
-<h2>What an IP address looks like</h2>
+<h2>What does an IP address look like?</h2>
 <p>There are two formats in use today. An IPv4 address is four numbers separated by dots, such as <code>203.0.113.42</code>. An IPv6 address is longer and written in hexadecimal, such as <code>2001:db8:85a3::8a2e:370:7334</code>. Both do the same job. If you want the details, read <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
 
-<h2>What an IP address is used for</h2>
+<h2>What is an IP address used for?</h2>
 <ul>
 <li><strong>Routing.</strong> Routers read the destination address on every packet and pass it along until it arrives.</li>
 <li><strong>Identifying a network.</strong> Servers see the address your traffic comes from and send the reply back to it.</li>
@@ -17,10 +17,10 @@ export const BODIES: Record<string, string> = {
 <h2>Public and private addresses</h2>
 <p>Your home has one public IP address that the rest of the internet sees, and every device inside it has a private address that only works on your local network. Your router translates between the two. We explain this in <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
 
-<h2>How you get an IP address</h2>
+<h2>How do you get an IP address?</h2>
 <p>Your internet service provider assigns the public address, usually automatically through a system called DHCP. Most home connections receive a <em>dynamic</em> address that can change over time, while businesses often pay for a <em>static</em> one that never does. See <a href="/learn/why-does-my-ip-address-change">why your IP address keeps changing</a>.</p>
 
-<h2>What your IP address reveals about you</h2>
+<h2>What does your IP address reveal about you?</h2>
 <p>A public IP address typically reveals your internet provider, your country and often your city or region. It does not reveal your name, your street address or what you do online. Anyone who wants to connect an address to a person normally needs your provider's records, which are released only through legal process. For a fuller answer, read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
 
 <h2>How to find your IP address</h2>
@@ -46,7 +46,7 @@ export const BODIES: Record<string, string> = {
 <tr><td>Typical home subnet</td><td>/24</td><td>/64</td></tr>
 </tbody></table></div>
 
-<h2>Why IPv6 exists</h2>
+<h2>Why does IPv6 exist?</h2>
 <p>When IPv4 was designed in the early 1980s, 4.3 billion addresses looked like plenty. Then phones, laptops, TVs and sensors arrived. The central pool of free IPv4 addresses ran out in 2011, and regional registries have since run low too. Providers cope by sharing a single public IPv4 address between many customers using carrier-grade NAT, and by trading existing blocks.</p>
 <p>IPv6 solves the shortage outright. It also simplifies routing, removes the need for most address translation and was designed with modern networking in mind.</p>
 
@@ -79,13 +79,13 @@ export const BODIES: Record<string, string> = {
 </tbody></table></div>
 <p>Other special ranges you may meet include <code>127.0.0.1</code> (your own device, called loopback), <code>169.254.x.x</code> (self-assigned when DHCP fails) and <code>100.64.0.0/10</code> (used by providers for carrier-grade NAT).</p>
 
-<h2>How the two work together</h2>
+<h2>How do public and private IP addresses work together?</h2>
 <p>Your router performs <strong>network address translation</strong> (NAT). When your laptop requests a web page, the router replaces the laptop's private address with the public one, remembers who asked, and forwards the reply back to the right device. Unsolicited traffic from the internet has no matching entry, so the router drops it. That is a useful side effect: NAT acts as a basic shield.</p>
 
 <h2>What about IPv6?</h2>
 <p>With IPv6 most devices receive a globally routable address, and the router's firewall is what blocks unwanted inbound traffic instead of NAT. IPv6 also has private-style ranges: unique local addresses (<code>fc00::/7</code>) and link-local addresses (<code>fe80::/10</code>). See <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
 
-<h2>Why it matters</h2>
+<h2>Why does the difference matter?</h2>
 <ul>
 <li><strong>Hosting from home.</strong> To reach a game server or camera from outside, you have to forward a port from the public address to a private one. Read <a href="/learn/what-is-port-forwarding">what port forwarding is</a>.</li>
 <li><strong>Privacy.</strong> Websites see only your public address, never the private ones behind it.</li>
@@ -124,7 +124,7 @@ export const BODIES: Record<string, string> = {
   "can-someone-track-you-by-ip-address": `
 <p>Short answer: someone can learn roughly where you are and who your internet provider is, but they cannot find your name or home address from your IP address alone. Here is what is and is not possible.</p>
 
-<h2>What an IP address reveals</h2>
+<h2>What does your IP address reveal?</h2>
 <ul>
 <li><strong>Your internet provider</strong> and the network it belongs to.</li>
 <li><strong>Your approximate location</strong>, usually the country, and often the city or region. Accuracy varies, and it frequently points to your provider's regional hub instead of your house.</li>
@@ -132,7 +132,7 @@ export const BODIES: Record<string, string> = {
 </ul>
 <p>You can see exactly what others see by using our <a href="/lookup">IP lookup</a> on your own address.</p>
 
-<h2>What it does not reveal</h2>
+<h2>What does your IP address not reveal?</h2>
 <ul>
 <li>Your name, email or phone number.</li>
 <li>Your street address.</li>
@@ -140,10 +140,10 @@ export const BODIES: Record<string, string> = {
 </ul>
 <p>Only your internet provider knows which customer had a given address at a given time, and it releases that information to authorities with proper legal process, not to the public.</p>
 
-<h2>How people get your IP address</h2>
+<h2>How do people get your IP address?</h2>
 <p>Any website, server or peer you connect to sees your address. Common ways it is collected include visiting a site, joining a game lobby or voice chat, using peer-to-peer file sharing, and clicking a link to a page controlled by someone else. Email normally does not expose your address to the recipient if you use a large webmail provider, but some mail systems include it in message headers.</p>
 
-<h2>What an attacker can do with it</h2>
+<h2>What can someone do with your IP address?</h2>
 <ul>
 <li><strong>Flood your connection</strong> with traffic (a denial-of-service attack), most often seen in online gaming disputes.</li>
 <li><strong>Probe for open ports</strong> and exposed services such as remote desktop or cameras.</li>
@@ -167,7 +167,7 @@ export const BODIES: Record<string, string> = {
 <h2>Dynamic vs static IP addresses</h2>
 <p>A <strong>dynamic</strong> address is borrowed from a pool and can change. A <strong>static</strong> address is permanently assigned to you. Home plans are almost always dynamic. Static addresses are mostly sold to businesses, usually for an extra fee, because they are useful for hosting and remote access.</p>
 
-<h2>Common reasons your IP changes</h2>
+<h2>Why does my IP address keep changing?</h2>
 <ul>
 <li><strong>DHCP lease expires.</strong> Your router receives its address on a lease. When the lease ends, or the router restarts after the lease has lapsed, the provider can hand out a different one.</li>
 <li><strong>Router or modem restart.</strong> A power cut or reboot can trigger a new assignment, particularly if you were offline for a while.</li>
@@ -220,7 +220,7 @@ export const BODIES: Record<string, string> = {
 <li><strong>DMARC</strong> (a TXT record at <code>_dmarc.yourdomain</code>) tells receivers what to do with mail that fails checks.</li>
 </ul>
 
-<h2>Why your changes do not show up</h2>
+<h2>Why do my DNS changes not show up?</h2>
 <p>Caching. Resolvers hold old answers until the TTL expires, so a new record can take minutes or hours to be visible everywhere. Query two different resolvers to compare. Our <a href="/dns">DNS lookup</a> lets you switch between Cloudflare and Google.</p>
 
 <h2>Check any domain</h2>
@@ -230,10 +230,10 @@ export const BODIES: Record<string, string> = {
   "webrtc-leak-explained": `
 <p>You connect to a VPN, check that your address changed, and assume you are hidden. But your browser may still be showing your real address to websites through a feature called WebRTC. This is a <strong>WebRTC leak</strong>.</p>
 
-<h2>What WebRTC is</h2>
+<h2>What is WebRTC?</h2>
 <p>WebRTC is a browser technology for real-time communication such as video calls, voice chat and peer-to-peer file transfer, without plugins. To connect two people directly, each browser needs to know its own public address, so it asks a STUN server. The server replies with the address it sees.</p>
 
-<h2>How the leak happens</h2>
+<h2>How does a WebRTC leak happen?</h2>
 <p>That request is made by the browser itself, and it can travel outside the VPN tunnel. Any web page can start a WebRTC connection with a few lines of JavaScript, read the addresses the browser gathers, and send them to its own server. You do not see a prompt. If the address returned differs from the one the website sees through your VPN, the page has learned your real one.</p>
 <p>Modern browsers hide your <em>local</em> network address behind a random name ending in <code>.local</code>, which helps. The <em>public</em> address is the part that can still leak.</p>
 
@@ -263,7 +263,7 @@ export const BODIES: Record<string, string> = {
   "what-is-port-forwarding": `
 <p>Port forwarding tells your router to send incoming internet traffic on a specific port to a specific device inside your home network. It is what makes game servers, security cameras, Plex and remote desktop reachable from outside.</p>
 
-<h2>Why it is needed</h2>
+<h2>Why is port forwarding needed?</h2>
 <p>Your home has one public address shared by every device, and your router uses NAT to keep the devices private. A request arriving from the internet has no idea which device it is for, so the router drops it. A port forwarding rule adds an exception: &ldquo;traffic arriving on port 25565 goes to the gaming PC at 192.168.1.50&rdquo;. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for the background.</p>
 
 <h2>How to set it up</h2>
@@ -286,7 +286,7 @@ export const BODIES: Record<string, string> = {
 <li><code>51820</code> WireGuard (UDP)</li>
 </ul>
 
-<h2>Why a port still shows as closed</h2>
+<h2>Why does a port still show as closed?</h2>
 <ul>
 <li><strong>The service is not listening</strong> on that port or is bound only to localhost.</li>
 <li><strong>A firewall blocks it</strong> on the device or the router.</li>
@@ -419,7 +419,7 @@ export const BODIES: Record<string, string> = {
 <h2>Method 4: Scan with Nmap</h2>
 <p><code>nmap -p 22,80,443 192.168.1.50</code> reports each port as open, closed or filtered. Only scan machines you own or have permission to test, because scanning other people's systems can be against the law or a provider's terms.</p>
 
-<h2>If a port should be open but is not</h2>
+<h2>Why is a port closed when it should be open?</h2>
 <ol>
 <li>Make sure the program is running and listening on the right port, and on the right address. A service bound to <code>127.0.0.1</code> is not reachable from other machines.</li>
 <li>Allow the port in the computer's firewall.</li>
@@ -501,7 +501,7 @@ export const BODIES: Record<string, string> = {
 <h2>How to check</h2>
 <p>Run our <a href="/reputation">IP reputation check</a>. Leave the box empty to test your own address, or enter any IPv4 address. It queries five public blocklists, tells you whether the address is a Tor exit node, and shows what kind of network owns it. You can also look at the details of any address with the <a href="/lookup">IP lookup</a>.</p>
 
-<h2>Why an address gets listed</h2>
+<h2>Why does an IP address get blacklisted?</h2>
 <ul>
 <li><strong>Someone else's behavior.</strong> Many home and mobile connections share or reuse addresses. The previous user of your address may have sent spam or had an infected device.</li>
 <li><strong>Your own device.</strong> Malware, a hacked router or an open mail server can send spam without you knowing.</li>
@@ -509,7 +509,7 @@ export const BODIES: Record<string, string> = {
 <li><strong>Data center addresses.</strong> Hosting networks are watched more closely than home connections. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for how addresses are allocated.</li>
 </ul>
 
-<h2>What listing does to you</h2>
+<h2>What does being blacklisted do to you?</h2>
 <p>Most blocklists target email. A listing can cause mail servers to reject or junk your messages. Other services use blocklists, or their own data, to decide when to show a captcha, slow you down or block a login. Being listed does not mean your computer is hacked, but it is worth checking.</p>
 
 <h2>How to get removed</h2>
@@ -564,7 +564,7 @@ export const BODIES: Record<string, string> = {
 <h2>5. Switch to another network</h2>
 <p>Connecting through a mobile hotspot or a public Wi-Fi network gives you a different public address for as long as you stay on it. It is free and instant, but it protects nothing else. The network owner can see your activity, and open public Wi-Fi is risky without a VPN.</p>
 
-<h2>What does not hide your IP address</h2>
+<h2>What does not hide your IP address?</h2>
 <ul>
 <li><strong>Private or incognito mode.</strong> It only stops your browser saving history. Websites still see your address.</li>
 <li><strong>Clearing cookies or switching browsers.</strong> Neither changes your IP.</li>
@@ -581,7 +581,7 @@ export const BODIES: Record<string, string> = {
 <li>Use the <a href="/reputation">IP reputation check</a> to see how your new address looks. A VPN address normally shows as a hosting network, and that is expected.</li>
 </ol>
 
-<h2>What hiding your IP does not do</h2>
+<h2>What does hiding your IP not do?</h2>
 <p>It does not make you anonymous. Sites can still recognize you through logins, cookies and your browser fingerprint, which our <a href="/browser">browser info page</a> lets you inspect. It also does not protect you from malware or phishing. Finally, using a VPN or similar tool is legal in most countries but restricted in some, and it never makes illegal activity legal, so check the rules where you live.</p>
 
 <h2>How to hide your IP address on iPhone</h2>
@@ -709,7 +709,7 @@ export const BODIES: Record<string, string> = {
 <h2>The fastest way</h2>
 <p>Open our <a href="/">IP checker</a>. The <strong>ISP</strong> line in the Network box shows who owns the network your connection comes from, and the <strong>ASN</strong> beside it is that network's identification number. For a lookup of any other address, use the <a href="/lookup">IP lookup</a>.</p>
 
-<h2>Why the name may not match your provider's brand</h2>
+<h2>Why does the ISP name not match my provider's brand?</h2>
 <ul>
 <li><strong>The legal name is shown.</strong> A brand such as Airtel may appear under its registered company name, for example &ldquo;Bharti British Telecom Internet Limited&rdquo;.</li>
 <li><strong>Wholesale and resold lines.</strong> Smaller providers often rent capacity from a larger network, so the larger company's name appears.</li>
@@ -724,10 +724,10 @@ export const BODIES: Record<string, string> = {
 <li>Log in to your router and look at the WAN or internet status page. See <a href="/learn/find-router-ip-address">how to find your router's IP address</a>.</li>
 </ul>
 
-<h2>What an ISP can see</h2>
+<h2>What can my ISP see?</h2>
 <p>Your ISP sees which sites and servers you connect to by name, how much data you use and when, but not the content of pages loaded over HTTPS. A VPN hides your browsing destinations from the ISP, though it then trusts the VPN company instead.</p>
 
-<h2>What an ISP can do with your IP address</h2>
+<h2>What can an ISP do with your IP address?</h2>
 <p>Providers assign your public address, usually dynamically, and they are the only ones who can link it to your account. Read <a href="/learn/why-does-my-ip-address-change">why your IP address changes</a> and <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
 
 <h2>Check how well your ISP performs</h2>
@@ -770,7 +770,7 @@ export const BODIES: Record<string, string> = {
   "what-is-ping": `
 <p>Ping is the time, in milliseconds (ms), that it takes for a small message to travel from your device to another computer and back. You will see the word in games, video calls and in the results of every speed test. A lower number means a faster, more responsive connection.</p>
 
-<h2>What ping means in a speed test</h2>
+<h2>What does ping mean in a speed test?</h2>
 <p>In a speed test, ping, also called latency, is separate from download and upload speed. Speed is how much data you can move per second. Ping is how quickly the first byte gets there and back. A connection can be very fast and still feel laggy if its ping is high.</p>
 
 <h2>What is a good ping?</h2>
@@ -791,7 +791,7 @@ export const BODIES: Record<string, string> = {
 <li><strong>Full picture:</strong> the <a href="/speed">speed test</a> also reports latency and jitter alongside download and upload.</li>
 </ul>
 
-<h2>What affects your ping</h2>
+<h2>What affects your ping?</h2>
 <ul>
 <li><strong>Distance.</strong> The farther the server, the higher the ping, because signals take time to travel.</li>
 <li><strong>Wi-Fi.</strong> Weak signal, interference and busy channels add delay and jitter.</li>
@@ -807,7 +807,7 @@ export const BODIES: Record<string, string> = {
   "how-to-flush-dns-cache": `
 <p>Your device keeps a short-term memory of recent DNS answers so pages load faster. When a website moves to a new server, or a lookup goes wrong, that memory can hold a stale answer and send you to the wrong place. Flushing the DNS cache clears it and forces a fresh lookup. Here is the exact command or step for every device.</p>
 
-<h2>When flushing actually helps</h2>
+<h2>When does flushing the DNS cache actually help?</h2>
 <ul>
 <li>A site you just moved or updated still points to the old server.</li>
 <li>You see &ldquo;server not found&rdquo; or &ldquo;this site can't be reached&rdquo; for a site that works elsewhere.</li>
@@ -863,7 +863,7 @@ export const BODIES: Record<string, string> = {
   "what-is-a-dns-server": `
 <p>A DNS server translates names people can remember, such as example.com, into the IP addresses computers actually connect to. Every time you open a website, send an email or load an app, a DNS server answers that question first. If it is slow or unreachable, nothing else works.</p>
 
-<h2>What happens when you open a website</h2>
+<h2>What happens when you open a website?</h2>
 <ol>
 <li>Your device asks its configured DNS server, called a <strong>resolver</strong>, for the address of the site.</li>
 <li>If the resolver has a recent answer cached, it replies immediately.</li>
@@ -917,11 +917,11 @@ export const BODIES: Record<string, string> = {
   "what-is-a-mac-address": `
 <p>A MAC address is a hardware identifier burned into every network adapter: your laptop's Wi-Fi chip, your phone, your TV, your console. It identifies a device on a local network, while an IP address identifies it on the wider internet. The two are easy to confuse, so here is the difference and how to find yours.</p>
 
-<h2>What a MAC address looks like</h2>
+<h2>What does a MAC address look like?</h2>
 <p>It is 48 bits, written as six pairs of hexadecimal digits, for example <code>00:1A:2B:3C:4D:5E</code>. Some systems use dashes or dots instead of colons. The first three pairs are the <strong>OUI</strong>, which identifies the manufacturer, so a MAC address can reveal whether a device is an Apple, Samsung or Intel product. The last three pairs identify the individual adapter.</p>
 <p>Every network interface has its own, so a laptop with both Wi-Fi and Ethernet has two.</p>
 
-<h2>MAC address vs IP address</h2>
+<h2>What is the difference between a MAC address and an IP address?</h2>
 <div class="tw"><table><tbody>
 <tr><th></th><th>MAC address</th><th>IP address</th></tr>
 <tr><td>Assigned by</td><td>The hardware manufacturer</td><td>Your router or internet provider</td></tr>
@@ -949,7 +949,7 @@ export const BODIES: Record<string, string> = {
 <h2>MAC address randomization</h2>
 <p>Modern phones and laptops invent a different MAC address for each Wi-Fi network they join. Apple calls this Private Wi-Fi Address, Android calls it randomized MAC. It stops shops, airports and other networks from tracking a device as it moves between them. It also means the address you see may not match what the hardware label says, and it can break setups that allow only known MAC addresses, so you may need to turn it off per network.</p>
 
-<h2>What a MAC address is used for</h2>
+<h2>What is a MAC address used for?</h2>
 <ul>
 <li><strong>Delivering data on your own network.</strong> Your router uses it to know which device a packet belongs to.</li>
 <li><strong>DHCP reservations.</strong> Giving a device the same local IP every time, which is useful for printers and servers. See <a href="/learn/what-is-port-forwarding">what port forwarding is</a>.</li>
@@ -968,7 +968,7 @@ export const BODIES: Record<string, string> = {
   "what-is-my-default-gateway": `
 <p>Your default gateway is the device that forwards traffic from your network to everywhere else. On a home network it is almost always your router. When your computer wants to reach a server it cannot see locally, it hands the packet to the gateway, and the gateway sends it on.</p>
 
-<h2>Why it is called that</h2>
+<h2>Why is it called a default gateway?</h2>
 <p>Your device keeps a small routing table. Addresses on your own network it delivers directly. For anything else there is one catch-all entry, the <em>default</em> route, pointing at the gateway. Without it, your device can reach your printer but not the internet.</p>
 
 <h2>Typical gateway addresses</h2>
@@ -1034,7 +1034,7 @@ export const BODIES: Record<string, string> = {
 </ul>
 <p>If you want a printer or server to keep the same address at home, you want the first one, and the best way is a DHCP reservation in your router rather than configuring the device by hand. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
 
-<h2>Why dynamic addressing exists</h2>
+<h2>Why does dynamic addressing exist?</h2>
 <p>There are not enough IPv4 addresses for every connection to hold one permanently, so providers recycle them from a pool. Your router asks for an address, gets a lease, and renews it. When the lease lapses, you may be handed a different one. That is why your address changes for no apparent reason, as explained in <a href="/learn/why-does-my-ip-address-change">why your IP address keeps changing</a>.</p>
 
 <h2>Advantages and drawbacks</h2>
@@ -1171,13 +1171,18 @@ export const BODIES: Record<string, string> = {
 <h2>SOCKS5 proxies</h2>
 <p>SOCKS5 works at a lower level and does not care what you are sending. It opens a connection to the destination you name and passes bytes in both directions, so it works with web traffic, email clients, torrent clients, games and any other TCP application, and it can carry UDP traffic as well when the proxy supports it. It supports sign-in with a username and password. It does not read or alter your requests, so it adds no headers.</p>
 
-<h2>Side by side</h2>
-<ul>
-<li><strong>What they carry.</strong> HTTP proxies carry web traffic. SOCKS5 carries any TCP application, and UDP where supported.</li>
-<li><strong>What the proxy can see.</strong> With HTTP, everything for plain HTTP and only the destination host for HTTPS. With SOCKS5, only the destination and the amount of data.</li>
-<li><strong>Speed.</strong> Similar in practice. SOCKS5 has slightly less overhead because it does no HTTP processing, but the network path and the provider matter far more than the protocol.</li>
-<li><strong>Setup.</strong> HTTP is supported everywhere, including every browser and scraping library. SOCKS5 support is common but not universal, and some tools accept only one of the two.</li>
-</ul>
+<h2>What is the difference between an HTTP proxy and a SOCKS5 proxy?</h2>
+<p>An HTTP proxy understands web traffic and can read or change plain HTTP requests, while a SOCKS5 proxy simply forwards bytes for any TCP application and adds no headers. Use HTTP for browsing and scraping; use SOCKS5 for torrents, games, email clients and anything that is not a web page.</p>
+<div class="tw"><table><tbody>
+<tr><th>Feature</th><th>HTTP / HTTPS proxy</th><th>SOCKS5 proxy</th></tr>
+<tr><td>Traffic it carries</td><td>Web traffic only</td><td>Any TCP application, plus UDP where supported</td></tr>
+<tr><td>What the proxy can see</td><td>Everything on plain HTTP; only the destination host on HTTPS</td><td>Only the destination and the amount of data</td></tr>
+<tr><td>Reads or changes requests</td><td>Yes, on plain HTTP</td><td>No, it adds no headers</td></tr>
+<tr><td>Speed</td><td>Similar in practice</td><td>Slightly less overhead, rarely noticeable</td></tr>
+<tr><td>Client support</td><td>Universal: every browser and scraping library</td><td>Common but not universal</td></tr>
+<tr><td>Who resolves the name</td><td>The proxy</td><td>Your machine, unless you use <code>socks5h://</code></td></tr>
+<tr><td>Best for</td><td>Browsing, scraping, anything web-only</td><td>Torrents, games, email clients, mixed traffic</td></tr>
+</tbody></table></div>
 
 <h2>DNS: who looks up the website name?</h2>
 <p>With a plain <em>socks5://</em> setting, many clients look up the website name on your own machine and send only the IP address to the proxy, which tells your DNS resolver which sites you visit. With <em>socks5h://</em> the proxy looks up the name instead. HTTP proxies look up the name themselves. If you use a proxy for privacy, or to see a site as someone in another country would, make sure the proxy resolves the name. Our <a href="/webrtc">WebRTC leak test</a> covers a related leak in browsers.</p>
@@ -1205,14 +1210,18 @@ export const BODIES: Record<string, string> = {
 <h2>ISP and mobile proxies</h2>
 <p>Two variants sit between these. ISP proxies, also called static residential, are hosted in a data center but use addresses registered to a residential internet provider, so they are fast like datacenter proxies with a more trusted label. Mobile proxies exit through mobile carriers. Carrier networks share one address among many users, so sites are reluctant to block them, but mobile proxies are the most expensive and often the slowest.</p>
 
-<h2>Side by side</h2>
-<ul>
-<li><strong>Price.</strong> Datacenter is cheapest. Residential and mobile cost the most.</li>
-<li><strong>Speed.</strong> Datacenter and ISP proxies are fastest. Residential and mobile vary.</li>
-<li><strong>Block rate.</strong> Datacenter is highest. Residential and mobile are lowest.</li>
-<li><strong>Location choice.</strong> Residential and mobile offer the widest range of countries and cities.</li>
-<li><strong>Best for.</strong> Datacenter suits high-volume work on lenient sites. Residential suits strict sites and location-sensitive tests.</li>
-</ul>
+<h2>Which proxy type should you buy?</h2>
+<p>Buy datacenter proxies when you need speed and volume on sites that do not block hard, and residential proxies when the target checks who owns the address. Mobile proxies are the hardest to block and the most expensive, so keep them for the sites that defeat everything else.</p>
+<div class="tw"><table><tbody>
+<tr><th>Feature</th><th>Datacenter</th><th>Residential</th><th>Mobile</th></tr>
+<tr><td>Price</td><td>Cheapest, usually per IP</td><td>Higher, usually per GB</td><td>Highest</td></tr>
+<tr><td>Speed</td><td>Fastest and most stable</td><td>Varies with the home connection</td><td>Varies, often slowest</td></tr>
+<tr><td>Block rate</td><td>Highest</td><td>Low</td><td>Lowest</td></tr>
+<tr><td>Address owner</td><td>Hosting or cloud company</td><td>Consumer internet provider</td><td>Mobile carrier</td></tr>
+<tr><td>Location choice</td><td>Limited to data centers</td><td>Widest range of countries and cities</td><td>Wide, carrier-dependent</td></tr>
+<tr><td>Best for</td><td>High-volume work on lenient sites</td><td>Strict sites, localised testing</td><td>The hardest targets</td></tr>
+</tbody></table></div>
+<p>ISP proxies, also called static residential, sit between the first two: datacenter speed with an address registered to a consumer provider.</p>
 
 <h2>How to tell which kind you actually have</h2>
 <p>Run the proxy through the <a href="/proxy-checker">proxy checker</a> and read the network owner and type. A hosting company or a known VPN or proxy network points to datacenter. A consumer internet provider points to residential or mobile. For any exit IP, the <a href="/reputation">IP reputation check</a> gives the same classification, and the <a href="/lookup">IP lookup</a> shows the owner and ASN. These are indicators, not proof: residential proxies are designed to look like ordinary home connections, so a clean result is what you should see. If you paid for residential and the owner is a hosting company, ask your provider why.</p>
@@ -1232,6 +1241,17 @@ export const BODIES: Record<string, string> = {
 
 <h2>Static proxies</h2>
 <p>A static proxy never changes. Datacenter and ISP proxies are normally static: you rent an address and keep it. That gives you a stable identity and, for some services, an address you can ask a partner to allow-list.</p>
+
+<h2>Should you use a rotating or a sticky proxy?</h2>
+<p>Use a rotating proxy when every request stands alone, such as a large crawl or a price check, because spreading requests across many addresses keeps each one under the rate limit. Use a sticky proxy when several steps must come from one identity, such as signing in, paging through results or completing a basket.</p>
+<div class="tw"><table><tbody>
+<tr><th>Behaviour</th><th>Rotating</th><th>Sticky</th><th>Static</th></tr>
+<tr><td>Exit IP changes</td><td>Every request or connection</td><td>After a set time, or when the connection drops</td><td>Never</td></tr>
+<tr><td>You control it by</td><td>Connecting to one gateway</td><td>A session ID or a dedicated port</td><td>Buying a fixed IP</td></tr>
+<tr><td>Keeps a login alive</td><td>No</td><td>Yes, for the session length</td><td>Yes</td></tr>
+<tr><td>Spreads rate limits</td><td>Yes, across the whole pool</td><td>Partly</td><td>No</td></tr>
+<tr><td>Typical use</td><td>Crawling, price monitoring</td><td>Logins, baskets, multi-step flows</td><td>Allowlisted access, long sessions</td></tr>
+</tbody></table></div>
 
 <h2>How to test which one you have</h2>
 <p>Run the proxy through the <a href="/proxy-checker">proxy checker</a>. It makes three requests on separate connections and lists the exit IP of each.</p>
@@ -1263,6 +1283,15 @@ export const BODIES: Record<string, string> = {
 <h2>Elite proxies</h2>
 <p>An elite proxy, also called high-anonymity, sends neither your IP address nor any sign that a proxy is involved. The request looks as if it came directly from the proxy's address. This is the level to want for anything that depends on not being identified as a proxy user, although "elite" describes headers only, not the reputation of the IP itself.</p>
 
+<h2>What are the three proxy anonymity levels?</h2>
+<p>The three levels describe what a proxy tells a website about you. A transparent proxy passes your real IP address, an anonymous proxy hides it but still identifies itself as a proxy, and an elite proxy sends neither your address nor any sign that a proxy is involved.</p>
+<div class="tw"><table><tbody>
+<tr><th>Level</th><th>Sends your real IP</th><th>Reveals it is a proxy</th><th>Typical use</th></tr>
+<tr><td>Transparent</td><td>Yes, usually in <code>X-Forwarded-For</code></td><td>Yes, often a <code>Via</code> header</td><td>Company, school and public Wi-Fi caching and filtering</td></tr>
+<tr><td>Anonymous</td><td>No</td><td>Yes, via headers such as <code>Via</code></td><td>Basic IP hiding where being seen as a proxy is acceptable</td></tr>
+<tr><td>Elite (high-anonymity)</td><td>No</td><td>No</td><td>Anything that must not look like proxy traffic</td></tr>
+</tbody></table></div>
+
 <h2>How the levels are tested</h2>
 <p>A test server receives a request through the proxy and inspects the headers. If it sees your real IP, the proxy is transparent. If your IP is hidden but proxy headers are present, it is anonymous. If neither shows, it is elite. You can see which headers your own browser sends with our <a href="/headers">HTTP headers viewer</a>.</p>
 
@@ -1282,7 +1311,7 @@ export const BODIES: Record<string, string> = {
   "how-to-test-proxy-speed": `
 <p>"Fast" can mean three different things for a proxy, and a provider's headline number rarely tells you which. Measure latency, time to first byte, download speed and success rate, and measure them the same way for every proxy you compare.</p>
 
-<h2>The four numbers that matter</h2>
+<h2>Which four numbers matter when testing proxy speed?</h2>
 <ul>
 <li><strong>Connect time.</strong> How long it takes to open a connection to the proxy itself. It reflects the distance and path between you and the proxy.</li>
 <li><strong>Time to first byte (TTFB).</strong> How long until the first part of the answer arrives through the proxy, including the proxy's own work and the website's. This is the number that makes pages feel fast or slow.</li>
@@ -1301,7 +1330,7 @@ export const BODIES: Record<string, string> = {
 <h2>What to compare</h2>
 <p>As a rough guide, datacenter proxies usually answer with a TTFB in the tens to low hundreds of milliseconds, while residential and mobile proxies are typically several times slower and less consistent, because the exit is a consumer connection. These ranges vary by provider and distance, so the useful comparison is between your own candidates, measured identically. For background on the difference, read <a href="/learn/residential-vs-datacenter-proxies">residential vs datacenter proxies</a>.</p>
 
-<h2>Common reasons a proxy is slow</h2>
+<h2>Why is my proxy slow?</h2>
 <ul>
 <li><strong>Distance.</strong> A proxy far from you adds latency to every request. Pick a location near you or near your target, depending on which matters more.</li>
 <li><strong>Your own connection.</strong> Check your baseline with the <a href="/speed">speed test</a> and the <a href="/ping">ping test</a>, so you do not blame the proxy for a slow link.</li>
@@ -1378,7 +1407,7 @@ console.log(ip);</code></pre>
 </ul>
 <p>They all report the address the internet sees, so they should agree.</p>
 
-<h2>Why two services can show different addresses</h2>
+<h2>Why do two services show different IP addresses?</h2>
 <p>If they differ, your router may be sharing traffic across two internet connections, or a VPN may be carrying only some of your traffic. The <a href="/reputation">reputation tool</a> shows what kind of network each address belongs to, and the <a href="/webrtc">WebRTC leak test</a> helps when a VPN is involved.</p>
 <p>These commands return your <em>public</em> address, the one websites see. For the private address on your own network, such as 192.168.1.20, see <a href="/learn/how-to-find-your-ip-address">how to find your IP address</a> and <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
 
@@ -1388,14 +1417,14 @@ console.log(ip);</code></pre>
   "what-is-an-ip-checker": `
 <p>An IP checker is a tool that shows an IP address and what can be learned about it. Some checkers tell you <em>your own</em> public IP address, some look up <em>any</em> address or domain you type in, and some judge whether an address looks like a VPN, a proxy or a source of spam. This guide explains the three kinds, what each result means, and which one to use for the job in front of you.</p>
 
-<h2>The three kinds of IP checker</h2>
+<h2>What are the three kinds of IP checker?</h2>
 <ul>
 <li><strong>&ldquo;What is my IP&rdquo; checkers</strong> show the address your connection uses on the internet. Open the <a href="/">what is my IP address</a> page and it appears at once, with your approximate location and provider.</li>
 <li><strong>IP lookup checkers</strong> take an address or domain you type in and report where it is and who runs the network behind it. Use the <a href="/lookup">IP lookup tool</a>.</li>
 <li><strong>IP reputation checkers</strong> look for signs that an address is a VPN, a proxy, a Tor exit or a data center, and check it against public spam and abuse blocklists. Use the <a href="/reputation">IP reputation checker</a>.</li>
 </ul>
 
-<h2>What the results mean</h2>
+<h2>What do the results mean?</h2>
 <ul>
 <li><strong>IP version.</strong> IPv4 looks like <code>203.0.113.7</code> and IPv6 like <code>2001:db8::1</code>. Many connections have both.</li>
 <li><strong>Location.</strong> Country, region and city. It is an estimate made from network records, not GPS, so it can be wrong. See <a href="/learn/why-is-my-ip-location-wrong">why an IP address can show the wrong location</a>.</li>
@@ -1406,7 +1435,7 @@ console.log(ip);</code></pre>
 <li><strong>Blocklist status.</strong> Whether the address appears on public lists of spam or abuse sources. This can affect whether your email is delivered.</li>
 </ul>
 
-<h2>Which checker to use</h2>
+<h2>Which IP checker should you use?</h2>
 <ul>
 <li><strong>To see what websites see when you visit them,</strong> use &ldquo;what is my IP&rdquo;. Check it with a VPN off and then on to confirm the VPN is working; see <a href="/learn/is-my-vpn-working">is my VPN working</a>.</li>
 <li><strong>To investigate an address in a log or a message,</strong> use the lookup.</li>
@@ -1422,10 +1451,10 @@ console.log(ip);</code></pre>
   "why-is-my-ip-location-wrong": `
 <p>An IP address does not contain your location. A location lookup is an estimate that a database makes by matching the address to records and measurements. That is why a lookup can show the right country but the wrong city, or a place far from where you actually are. Here is why it happens and what you can do about it.</p>
 
-<h2>How an IP location is worked out</h2>
+<h2>How is an IP location worked out?</h2>
 <p>Providers of IP location data combine several sources: registration records that show which company holds a block of addresses and where it says it operates, network measurements such as how long traffic takes to reach an address, routing information, and location hints gathered from other data. None of it comes from your device, and none of it uses GPS.</p>
 
-<h2>Common reasons it is wrong</h2>
+<h2>Why is my IP location wrong?</h2>
 <ul>
 <li><strong>Your provider's hub is somewhere else.</strong> Many providers send a whole region's customers out through one location, so the address appears there, possibly in another city.</li>
 <li><strong>You are on a mobile network.</strong> Mobile traffic often leaves the carrier's network far from the phone, and addresses are shared between many users.</li>
@@ -1435,7 +1464,7 @@ console.log(ip);</code></pre>
 <li><strong>The address is registered to a head office.</strong> A business may hold its addresses under its headquarters while the connection is somewhere else.</li>
 </ul>
 
-<h2>What accuracy to expect</h2>
+<h2>How accurate is IP geolocation?</h2>
 <p>The country is usually right, the region is often right and the city is only sometimes right. The street or house is never something an IP address can tell. To see how much tools disagree, open the <a href="/">what is my IP address</a> page and the <a href="/lookup">IP lookup</a> and compare what they say.</p>
 
 <h2>Can you fix it?</h2>

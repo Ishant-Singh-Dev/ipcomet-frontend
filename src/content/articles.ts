@@ -18,7 +18,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 6,
     tools: ["ip", "lookup"],
-    related: ["find-router-ip-address", "public-vs-private-ip-address", "find-printer-ip-address"],
+    related: ["what-is-an-ip-address", "get-public-ip-address-command-line", "what-is-an-ip-checker"],
   },
   {
     slug: "what-is-an-ip-address",
@@ -27,7 +27,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 5,
     tools: ["ip", "lookup"],
-    related: ["public-vs-private-ip-address", "ipv4-vs-ipv6", "can-someone-track-you-by-ip-address"],
+    related: ["public-vs-private-ip-address", "ipv4-vs-ipv6", "what-is-a-mac-address"],
   },
   {
     slug: "how-to-hide-your-ip-address",
@@ -36,7 +36,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 7,
     tools: ["ip", "webrtc", "reputation"],
-    related: ["how-to-change-your-ip-address", "webrtc-leak-explained", "can-someone-track-you-by-ip-address"],
+    related: ["can-someone-track-you-by-ip-address", "is-my-vpn-working", "webrtc-leak-explained"],
   },
   {
     slug: "ipv4-vs-ipv6",
@@ -45,7 +45,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 5,
     tools: ["ip", "subnet"],
-    related: ["what-is-an-ip-address", "cidr-subnet-mask-explained", "public-vs-private-ip-address"],
+    related: ["what-is-an-ip-address", "public-vs-private-ip-address", "cidr-subnet-mask-explained"],
   },
   {
     slug: "public-vs-private-ip-address",
@@ -54,7 +54,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 5,
     tools: ["ip", "port"],
-    related: ["what-is-an-ip-address", "what-is-port-forwarding", "why-does-my-ip-address-change"],
+    related: ["what-is-my-default-gateway", "what-is-a-mac-address", "find-router-ip-address"],
   },
   {
     slug: "how-to-change-your-ip-address",
@@ -63,7 +63,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 6,
     tools: ["ip", "webrtc"],
-    related: ["why-does-my-ip-address-change", "can-someone-track-you-by-ip-address", "webrtc-leak-explained"],
+    related: ["change-ip-address-windows-11", "static-vs-dynamic-ip-address", "why-does-my-ip-address-change", "is-my-ip-address-blacklisted"],
   },
   {
     slug: "can-someone-track-you-by-ip-address",
@@ -72,7 +72,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 5,
     tools: ["ip", "lookup"],
-    related: ["how-to-change-your-ip-address", "webrtc-leak-explained", "what-is-an-ip-address"],
+    related: ["how-to-hide-your-ip-address", "why-is-my-ip-location-wrong", "webrtc-leak-explained"],
   },
   {
     slug: "why-does-my-ip-address-change",
@@ -81,7 +81,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 5,
     tools: ["ip", "lookup"],
-    related: ["public-vs-private-ip-address", "how-to-change-your-ip-address", "what-is-port-forwarding"],
+    related: ["static-vs-dynamic-ip-address", "how-to-change-your-ip-address", "what-is-my-isp", "change-ip-address-windows-11"],
   },
   {
     slug: "dns-records-explained",
@@ -90,7 +90,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 7,
     tools: ["dns", "whois"],
-    related: ["what-is-an-ip-address", "ipv4-vs-ipv6", "cidr-subnet-mask-explained"],
+    related: ["what-is-a-dns-server", "fix-slow-dns-lookup", "how-to-flush-dns-cache"],
   },
   {
     slug: "webrtc-leak-explained",
@@ -99,7 +99,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 6,
     tools: ["webrtc", "ip"],
-    related: ["how-to-change-your-ip-address", "can-someone-track-you-by-ip-address", "public-vs-private-ip-address"],
+    related: ["is-my-vpn-working", "how-to-hide-your-ip-address", "can-someone-track-you-by-ip-address"],
   },
   {
     slug: "what-is-port-forwarding",
@@ -108,7 +108,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 6,
     tools: ["port", "ip"],
-    related: ["public-vs-private-ip-address", "why-does-my-ip-address-change", "cidr-subnet-mask-explained"],
+    related: ["how-to-check-if-a-port-is-open", "find-router-ip-address", "what-is-my-default-gateway"],
   },
   {
     slug: "cidr-subnet-mask-explained",
@@ -117,7 +117,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 6,
     tools: ["subnet", "ip"],
-    related: ["ipv4-vs-ipv6", "public-vs-private-ip-address", "dns-records-explained"],
+    related: ["public-vs-private-ip-address", "what-is-my-default-gateway", "ipv4-vs-ipv6"],
   },
   {
     slug: "fix-slow-dns-lookup",
@@ -126,7 +126,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 7,
     tools: ["dns", "speed"],
-    related: ["dns-records-explained", "ipv4-vs-ipv6", "why-does-my-ip-address-change"],
+    related: ["what-is-a-dns-server", "how-to-flush-dns-cache", "how-to-lower-ping"],
   },
   {
     slug: "how-to-check-if-a-port-is-open",
@@ -135,7 +135,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 6,
     tools: ["port", "ip"],
-    related: ["what-is-port-forwarding", "public-vs-private-ip-address", "can-someone-track-you-by-ip-address"],
+    related: ["what-is-port-forwarding", "find-router-ip-address", "what-is-my-default-gateway"],
   },
   {
     slug: "change-ip-address-windows-11",
@@ -144,7 +144,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 5,
     tools: ["ip", "subnet"],
-    related: ["how-to-change-your-ip-address", "public-vs-private-ip-address", "cidr-subnet-mask-explained"],
+    related: ["how-to-change-your-ip-address", "static-vs-dynamic-ip-address", "what-is-my-default-gateway"],
   },
   {
     slug: "find-printer-ip-address",
@@ -153,7 +153,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 4,
     tools: ["lookup", "ip"],
-    related: ["public-vs-private-ip-address", "what-is-an-ip-address", "cidr-subnet-mask-explained"],
+    related: ["find-router-ip-address", "public-vs-private-ip-address", "what-is-a-mac-address"],
   },
   {
     slug: "is-my-ip-address-blacklisted",
@@ -162,7 +162,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 6,
     tools: ["reputation", "ip"],
-    related: ["why-does-my-ip-address-change", "how-to-change-your-ip-address", "can-someone-track-you-by-ip-address"],
+    related: ["why-does-my-ip-address-change", "how-to-change-your-ip-address", "what-is-an-ip-checker"],
   },
   {
     slug: "find-router-ip-address",
@@ -171,7 +171,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 5,
     tools: ["ip", "port"],
-    related: ["how-to-find-your-ip-address", "what-is-port-forwarding", "find-printer-ip-address"],
+    related: ["what-is-my-default-gateway", "how-to-check-if-a-port-is-open", "find-printer-ip-address", "what-is-port-forwarding"],
   },
   {
     slug: "what-is-my-isp",
@@ -180,7 +180,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 4,
     tools: ["ip", "lookup"],
-    related: ["how-to-find-your-ip-address", "why-does-my-ip-address-change", "can-someone-track-you-by-ip-address"],
+    related: ["why-is-my-ip-location-wrong", "static-vs-dynamic-ip-address", "what-is-an-ip-address"],
   },
   {
     slug: "is-my-vpn-working",
@@ -189,7 +189,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 6,
     tools: ["reputation", "webrtc", "ip"],
-    related: ["how-to-hide-your-ip-address", "webrtc-leak-explained", "is-my-ip-address-blacklisted"],
+    related: ["webrtc-leak-explained", "how-to-hide-your-ip-address", "why-is-my-ip-location-wrong"],
   },
   {
     slug: "what-is-ping",
@@ -198,7 +198,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 5,
     tools: ["ping", "speed"],
-    related: ["how-to-find-your-ip-address", "why-does-my-ip-address-change", "what-is-an-ip-address"],
+    related: ["how-to-lower-ping", "how-to-test-proxy-speed", "fix-slow-dns-lookup"],
   },
   {
     slug: "what-is-a-dns-server",
@@ -225,7 +225,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 6,
     tools: ["ip", "lookup"],
-    related: ["public-vs-private-ip-address", "what-is-an-ip-address", "how-to-find-your-ip-address"],
+    related: ["what-is-an-ip-address", "public-vs-private-ip-address", "what-is-my-default-gateway", "find-printer-ip-address"],
   },
   {
     slug: "what-is-my-default-gateway",
@@ -243,7 +243,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 6,
     tools: ["ip", "port"],
-    related: ["why-does-my-ip-address-change", "public-vs-private-ip-address", "what-is-port-forwarding"],
+    related: ["why-does-my-ip-address-change", "how-to-change-your-ip-address", "what-is-my-isp"],
   },
   {
     slug: "how-to-lower-ping",
@@ -252,7 +252,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 6,
     tools: ["ping", "speed"],
-    related: ["what-is-ping", "is-my-vpn-working", "fix-slow-dns-lookup"],
+    related: ["what-is-ping", "fix-slow-dns-lookup", "how-to-test-proxy-speed"],
   },
   {
     slug: "how-to-check-if-a-proxy-is-working",
@@ -261,7 +261,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-10",
     readMin: 6,
     tools: ["proxy-checker", "lookup", "reputation"],
-    related: ["proxy-error-407-403-502", "how-to-test-proxy-speed", "http-vs-socks5-proxy"],
+    related: ["proxy-error-407-403-502", "how-to-test-proxy-speed", "proxy-anonymity-levels"],
   },
   {
     slug: "proxy-error-407-403-502",
@@ -270,7 +270,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-10",
     readMin: 6,
     tools: ["proxy-checker", "port"],
-    related: ["how-to-check-if-a-proxy-is-working", "http-vs-socks5-proxy", "rotating-vs-sticky-proxies"],
+    related: ["how-to-check-if-a-proxy-is-working", "http-vs-socks5-proxy", "how-to-test-proxy-speed"],
   },
   {
     slug: "http-vs-socks5-proxy",
@@ -279,7 +279,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-10",
     readMin: 6,
     tools: ["proxy-checker", "webrtc"],
-    related: ["proxy-anonymity-levels", "residential-vs-datacenter-proxies", "how-to-check-if-a-proxy-is-working"],
+    related: ["residential-vs-datacenter-proxies", "proxy-anonymity-levels", "how-to-check-if-a-proxy-is-working", "proxy-error-407-403-502"],
   },
   {
     slug: "residential-vs-datacenter-proxies",
@@ -288,7 +288,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-10",
     readMin: 6,
     tools: ["proxy-checker", "reputation", "lookup"],
-    related: ["rotating-vs-sticky-proxies", "how-to-test-proxy-speed", "http-vs-socks5-proxy"],
+    related: ["rotating-vs-sticky-proxies", "http-vs-socks5-proxy", "how-to-test-proxy-speed"],
   },
   {
     slug: "rotating-vs-sticky-proxies",
@@ -306,7 +306,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-10",
     readMin: 5,
     tools: ["proxy-checker", "headers", "webrtc"],
-    related: ["http-vs-socks5-proxy", "can-someone-track-you-by-ip-address", "webrtc-leak-explained"],
+    related: ["http-vs-socks5-proxy", "how-to-check-if-a-proxy-is-working", "residential-vs-datacenter-proxies", "rotating-vs-sticky-proxies"],
   },
   {
     slug: "how-to-test-proxy-speed",
@@ -315,7 +315,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-10",
     readMin: 6,
     tools: ["proxy-checker", "speed", "ping"],
-    related: ["how-to-check-if-a-proxy-is-working", "residential-vs-datacenter-proxies", "what-is-ping"],
+    related: ["how-to-check-if-a-proxy-is-working", "what-is-ping", "how-to-lower-ping"],
   },
   {
     slug: "get-public-ip-address-command-line",
@@ -324,7 +324,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-13",
     readMin: 5,
     tools: ["ip", "lookup"],
-    related: ["how-to-find-your-ip-address", "public-vs-private-ip-address", "what-is-an-ip-address"],
+    related: ["how-to-find-your-ip-address", "what-is-an-ip-checker", "what-is-an-ip-address"],
   },
   {
     slug: "what-is-an-ip-checker",
@@ -333,7 +333,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-13",
     readMin: 6,
     tools: ["ip", "lookup", "reputation"],
-    related: ["what-is-an-ip-address", "is-my-ip-address-blacklisted", "is-my-vpn-working"],
+    related: ["how-to-find-your-ip-address", "why-is-my-ip-location-wrong", "get-public-ip-address-command-line", "is-my-ip-address-blacklisted"],
   },
   {
     slug: "why-is-my-ip-location-wrong",
@@ -342,7 +342,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-13",
     readMin: 5,
     tools: ["ip", "lookup"],
-    related: ["can-someone-track-you-by-ip-address", "what-is-my-isp", "how-to-find-your-ip-address"],
+    related: ["what-is-my-isp", "what-is-an-ip-checker", "can-someone-track-you-by-ip-address"],
   },
 ];
 

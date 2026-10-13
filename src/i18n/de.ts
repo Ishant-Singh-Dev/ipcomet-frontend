@@ -12,6 +12,7 @@ export const de: LocaleData = {
     ASN: "ASN",
     About: "Über uns",
     "About and methodology": "Über uns und Methodik",
+    "Contact": "Kontakt",
     "About {name}": "Über: {name}",
     "Accepted formats: {formats}. Your proxy details are used for this one check and are never stored or logged.":
       "Akzeptierte Formate: {formats}. Ihre Proxy-Daten werden nur für diese eine Prüfung verwendet und niemals gespeichert oder protokolliert.",
@@ -796,6 +797,8 @@ export const de: LocaleData = {
 <p>Die Erkennung von VPN, Proxy und Tor beruht auf Indizien. Tor wird anhand der offiziellen Ausgangsliste geprüft, ein VPN oder Proxy lässt sich dagegen nur daraus ableiten, wem die Adresse gehört, wie ihr Reverse-DNS-Name lautet und ob sie auf Blocklisten steht. Private Proxys sehen aus wie gewöhnliche Heimanschlüsse und lassen sich so nicht erkennen. Betrachten Sie die <a href="/de/reputation">Reputationsprüfung</a> als Indikator, nicht als Beweis.</p>
 <h2>Die Ratgeber</h2>
 <p>Die <a href="/learn" hreflang="en" lang="en">Ratgeber</a> gibt es vorerst nur auf Englisch. Jeder beantwortet eine konkrete Frage und zeigt das Datum der letzten Aktualisierung. Übersetzungen veröffentlichen wir erst, nachdem eine Person, die die Sprache spricht, sie geprüft hat.</p>
+<h2>Wie können Sie uns erreichen?</h2>
+<p>Schreiben Sie an <a href="mailto:hello@ipcomet.com">hello@ipcomet.com</a>. Korrekturen an einem Ratgeber, eine Übersetzung, die falsch klingt, ein Werkzeug mit einem seltsamen Ergebnis oder Fragen zur Funktionsweise sind willkommen. Korrekturen an den übersetzten Seiten helfen besonders, da sie mit Hilfe von KI entstanden sind.</p>
 <h2>Datenschutz</h2>
 <p>Es gibt keine Werbung, und unser Code speichert oder protokolliert keine IP-Adressen von Besuchern. Die einzigen Cookies stammen von dem optionalen Google Analytics, das nur geladen wird, wenn Sie es im Banner akzeptieren. Die <a href="/de/privacy">Datenschutzseite</a> erklärt diese Wahl und listet jeden Drittdienst auf, den ein Tool kontaktiert.</p>`,
   },

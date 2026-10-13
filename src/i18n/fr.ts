@@ -12,6 +12,7 @@ export const fr: LocaleData = {
     ASN: "ASN",
     About: "À propos",
     "About and methodology": "À propos et méthodologie",
+    "Contact": "Contact",
     "About {name}": "À propos de {name}",
     "Accepted formats: {formats}. Your proxy details are used for this one check and are never stored or logged.":
       "Formats acceptés : {formats}. Les informations de votre proxy servent uniquement à ce test et ne sont jamais stockées ni journalisées.",
@@ -796,6 +797,8 @@ export const fr: LocaleData = {
 <p>La détection des VPN, des proxys et de Tor repose sur des indices. Tor est vérifié d’après la liste officielle des nœuds de sortie, mais un VPN ou un proxy ne peut qu’être déduit du propriétaire de l’adresse, de son nom DNS inverse et de sa présence sur des listes de blocage. Les proxys résidentiels ressemblent à des connexions domestiques ordinaires et ne peuvent pas être détectés ainsi. Considérez la <a href="/fr/reputation">vérification de réputation</a> comme un indicateur, pas comme une preuve.</p>
 <h2>Les guides</h2>
 <p>Les <a href="/learn" hreflang="en" lang="en">guides</a> sont pour l’instant rédigés en anglais seulement. Chacun répond à une question précise et indique la date de sa dernière mise à jour. Nous ne publierons de traductions qu’après relecture par une personne qui parle la langue.</p>
+<h2>Comment nous contacter&nbsp;?</h2>
+<p>Écrivez à <a href="mailto:hello@ipcomet.com">hello@ipcomet.com</a>. Les corrections d’un guide, une traduction qui sonne faux, un outil qui donne un résultat étrange ou une question sur son fonctionnement sont les bienvenues. Les corrections des pages traduites sont particulièrement utiles, car elles ont été rédigées avec l’aide de l’IA.</p>
 <h2>Confidentialité</h2>
 <p>Il n’y a aucune publicité, et notre code n’enregistre ni ne journalise l’adresse IP des visiteurs. Les seuls cookies viennent de Google Analytics, facultatif, qui ne se charge que si vous l’acceptez dans la bannière. La <a href="/fr/privacy">page de confidentialité</a> explique ce choix et liste tous les services tiers que contacte un outil.</p>`,
   },
