@@ -30,6 +30,11 @@ export const es: LocaleData = {
     Broadcast: "Dirección de difusión",
     Browser: "Navegador",
     "Built and maintained by {name}.": "Creado y mantenido por {name}.",
+    "Count visits with Google Analytics? It uses cookies. Declining changes nothing else on the site.": "¿Contar las visitas con Google Analytics? Usa cookies. Rechazar no cambia nada más en el sitio.",
+    Accept: "Aceptar",
+    Decline: "Rechazar",
+    "Analytics choices": "Opciones de analítica",
+    "Analytics consent": "Consentimiento de analítica",
     CIDR: "CIDR",
     "CIDR block": "Bloque CIDR",
     "CPU threads": "Hilos de la CPU",
@@ -187,7 +192,7 @@ export const es: LocaleData = {
       "No se encontró ningún registro PTR para {q}. El propietario no ha definido un nombre inverso, algo habitual en las conexiones domésticas.",
     "No VPN or hosting signs found. Residential proxies and some VPNs cannot be detected from public data.":
       "No se detectan señales de VPN ni de alojamiento. Los proxies residenciales y algunas VPN no se pueden detectar con datos públicos.",
-    "No ads, no cookies, no tracking.": "Sin anuncios, sin cookies, sin rastreo.",
+    "No ads. Analytics only if you accept.": "Sin anuncios. Analítica solo si lo aceptas.",
     "No answer": "Sin respuesta",
     "No credentials needed": "No hacen falta credenciales",
     "No registration record found for that IP.": "No se encontró ningún registro para esa IP.",
@@ -406,7 +411,7 @@ export const es: LocaleData = {
       name: "Mi IP",
       desc: "Tu dirección IP pública, ubicación e ISP",
       title: "¿Cuál es mi IP? Consulta tu dirección IP pública",
-      description: "Consulta al instante tu dirección IP pública, tu ubicación, tu ISP y los detalles de tu conexión. Gratis, rápido y privado, sin anuncios ni rastreo.",
+      description: "Consulta al instante tu dirección IP pública, tu ubicación, tu ISP y los detalles de tu conexión. Gratis y rápido, sin anuncios ni registro.",
       h1: "¿Cuál es mi dirección IP?",
       lead: "Tu dirección IP pública, tu ubicación aproximada y tu ISP, al instante.",
       about: "",
@@ -758,16 +763,16 @@ export const es: LocaleData = {
       },
       {
         q: "¿ipcomet almacena mi dirección IP?",
-        a: "No. Nuestro código no guarda, registra ni vende tu dirección IP, y no usamos cookies, anuncios ni analítica. La página lee tu IP de la solicitud, te la muestra y la olvida. Consulta la página de privacidad para ver todos los detalles.",
+        a: "No. Nuestro código no guarda, registra ni vende tu dirección IP, y no hay anuncios. La página lee tu IP de la solicitud, te la muestra y la olvida. Si aceptas el aviso de analítica opcional, Google Analytics cuenta las visitas con cookies y registra las páginas que ves, pero no las direcciones que consultas; si lo rechazas, no se establece nada. Consulta la página de privacidad para ver todos los detalles.",
       },
     ],
   },
 
   about: {
     title: "Acerca de ipcomet: cómo funcionan nuestras herramientas",
-    description: "Cómo funciona cada herramienta de red de ipcomet, de dónde salen sus datos y qué precisión tiene. Gratis, sin anuncios, cookies ni rastreo.",
+    description: "Cómo funciona cada herramienta de red de ipcomet, de dónde salen sus datos y qué precisión tiene. Gratis, sin anuncios; analítica solo si aceptas.",
     h1: "Acerca de ipcomet",
-    lead: "ipcomet es un conjunto gratuito de herramientas de red y guías en lenguaje sencillo. Funciona en Cloudflare Workers y no guarda ningún registro de quién lo usa.",
+    lead: "ipcomet es un conjunto gratuito de herramientas de red y guías en lenguaje sencillo. Funciona en Cloudflare Workers, y el propio código del sitio no guarda ningún registro de quién lo usa.",
     sources: [
       ["Tu IP y tu conexión", "Se leen de la propia solicitud por la red de Cloudflare: tu dirección IP, una ubicación aproximada y el propietario de la red según los datos de geolocalización de Cloudflare, el centro de datos de Cloudflare más cercano, las versiones de HTTP y TLS y el tiempo de ida y vuelta. Tus direcciones IPv4 e IPv6 también las confirma ipify."],
       ["Consulta de IP", "Datos de ubicación y de red de ipwho.is, con ipapi.is y geojs.io como respaldo, más una consulta DNS inversa en vivo para el nombre de host. Los resultados se guardan en caché hasta un día."],
@@ -792,18 +797,19 @@ export const es: LocaleData = {
 <h2>Las guías</h2>
 <p>Las <a href="/learn" hreflang="en" lang="en">guías</a> están por ahora solo en inglés. Cada una responde a una pregunta concreta y muestra la fecha de su última actualización. Solo publicaremos traducciones después de que las revise una persona que hable el idioma.</p>
 <h2>Privacidad</h2>
-<p>No hay anuncios, ni cookies, ni scripts de analítica, y nuestro código no almacena ni registra las direcciones IP de los visitantes. La <a href="/es/privacy">página de privacidad</a> enumera todos los servicios de terceros con los que contacta cada herramienta.</p>`,
+<p>No hay anuncios, y nuestro código no almacena ni registra las direcciones IP de los visitantes. Las únicas cookies vienen de Google Analytics, que es opcional y solo se carga si lo aceptas en el aviso. La <a href="/es/privacy">página de privacidad</a> explica esa elección y enumera todos los servicios de terceros con los que contacta cada herramienta.</p>`,
   },
 
   privacy: {
     title: "Política de privacidad",
-    description: "ipcomet no almacena tu dirección IP y no usa cookies, anuncios ni analítica. Esto es exactamente lo que ocurre con tus datos.",
+    description: "ipcomet no almacena tu IP, no muestra anuncios y solo usa Google Analytics si lo aceptas. Esto es lo que ocurre con tus datos.",
     h1: "Privacidad",
     lead: "En resumen: te mostramos tu propia información y la olvidamos.",
     body: `<h2>Qué hacemos con tu dirección IP</h2>
 <p>Tu dirección IP se lee de la solicitud entrante para poder mostrártela. Nuestro código no la escribe en una base de datos, en un registro ni en ningún almacenamiento, y nunca se vende ni se comparte con fines publicitarios.</p>
-<h2>Cookies y rastreo</h2>
-<p>No establecemos cookies, no usamos scripts de analítica ni de publicidad y no guardamos nada en tu navegador.</p>
+<h2>Cookies y analítica</h2>
+<p>De forma predeterminada no establecemos cookies y no guardamos nada en tu navegador, salvo, cuando respondes al aviso, una nota con tu elección. Si pulsas <strong>Aceptar</strong>, cargamos Google Analytics (de Google LLC) para contar las visitas. Establece cookies, llamadas <code>_ga</code> y <code>_ga_</code> seguidas de un identificador, para distinguir unas visitas de otras, y envía a Google la página que viste, el tipo de navegador y de dispositivo, tu ubicación aproximada y cómo llegaste. Antes quitamos de la dirección de la página todo lo que sigue al signo de interrogación, así que las direcciones que consultas no se envían, y desactivamos las señales de Google y la personalización de anuncios. Google Analytics 4 no almacena direcciones IP y los datos se conservan 14 meses.</p>
+<p>Si pulsas <strong>Rechazar</strong>, o tu navegador envía una señal Global Privacy Control, Google Analytics nunca se carga y no se envía nada a Google. Puedes cambiar tu elección en cualquier momento con el enlace «Opciones de analítica» al final de cada página. Nunca usamos scripts de publicidad.</p>
 <h2>Alojamiento</h2>
 <p>Este sitio funciona en Cloudflare Workers. Cloudflare procesa cada solicitud como nuestro proveedor de alojamiento y la gestiona según su propia política de privacidad. También usamos la limitación de velocidad de Cloudflare para frenar el abuso de las herramientas más pesadas, que utiliza la dirección de tu conexión solo para contar las solicitudes recientes.</p>
 <h2>Servicios de terceros</h2>
@@ -815,6 +821,7 @@ export const es: LocaleData = {
 <li><strong>Listas de bloqueo y lista de nodos de salida de Tor.</strong> La herramienta de reputación de IP comprueba la dirección que le das (o la tuya, si lo dejas vacío) en cinco listas de bloqueo DNS públicas: SpamCop, DroneBL, Passive Spam Block List, s5h.net y UCEPROTECT. También descarga la lista pública de nodos de salida del proyecto Tor.</li>
 <li><strong>STUN.</strong> La prueba de WebRTC pide a stun.cloudflare.com tu dirección pública desde tu navegador, igual que lo haría un sitio de videollamadas.</li>
 <li><strong>Servidores de velocidad de Cloudflare.</strong> Las pruebas de velocidad y de ping envían y reciben sus datos directamente entre tu navegador y speed.cloudflare.com, los servidores de pruebas de velocidad de Cloudflare. Ven tu dirección IP, como cualquier sitio web que visitas, y las peticiones no llevan cookies. Si no se puede acceder a ellos, las pruebas recurren a nuestro propio servidor.</li>
+<li><strong>Google Analytics (solo si aceptas).</strong> Después de pulsar Aceptar en el aviso, tu navegador carga Google Analytics desde googletagmanager.com y envía los datos de visita a google-analytics.com, como se describe arriba en Cookies y analítica. Google puede procesarlos en servidores fuera de tu país. Si lo rechazas, nada de esto ocurre.</li>
 </ul>
 <h2>Comprobador de proxy</h2>
 <p>Cuando pruebas un proxy, la dirección que introduces y el usuario y la contraseña, si los hay, se envían por HTTPS a nuestro servidor, se usan para esa única comprobación y luego se descartan. No se almacenan ni se escriben en registros. Nuestro servidor se conecta a tu proxy desde la red de Cloudflare y hace solicitudes a través de él a los puntos de prueba de Cloudflare (www.cloudflare.com y speed.cloudflare.com) y, si introduces uno, al sitio web que elijas. Por eso tu proveedor de proxy ve esas solicitudes llegar desde Cloudflare, no desde ti. La dirección IP de salida que revela el proxy se consulta después con los mismos servicios descritos arriba.</p>

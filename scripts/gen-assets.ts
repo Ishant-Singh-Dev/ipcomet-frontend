@@ -47,7 +47,7 @@ ${place(wordSvg, 72, 62, 300)}
 <text x="72" y="430" ${FONT} font-size="96" font-weight="700" fill="#1f1f1f" letter-spacing="-4">IP address?</text>
 <rect x="72" y="464" width="150" height="9" rx="4.5" fill="${ORANGE}"/>
 <text x="72" y="540" ${FONT} font-size="34" font-weight="500" fill="#6f6860">IP lookup · DNS · WHOIS · Speed test · Port checker</text>
-<text x="72" y="580" ${FONT} font-size="26" font-weight="500" fill="#6f6860">Free, fast and private. No ads, no cookies, no tracking.</text>
+<text x="72" y="580" ${FONT} font-size="26" font-weight="500" fill="#6f6860">Free and fast. No ads, and analytics only if you accept.</text>
 ${place(iconSvg, 780, 140, 350)}
 </svg>`;
 

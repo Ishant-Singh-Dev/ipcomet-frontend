@@ -187,14 +187,15 @@ export function privacyPage(origin: string, loc: Locale = "en"): Rendered {
   return {
     id: "privacy",
     title: "Privacy Policy",
-    description: "ipcomet does not store your IP address, use cookies, show ads or run analytics. Here is exactly what happens to your data.",
+    description: "ipcomet does not store your IP address or show ads, and uses Google Analytics cookies only if you accept. Here is exactly what happens to your data.",
     path: "/privacy",
     body: `<section class="phead"><p class="crumbs"><a href="/">Home</a> / Privacy</p><h1>Privacy</h1><p class="lead">The short version: we show you your own information and forget it.</p></section>
 <div class="prose" style="padding-bottom:30px">
 <h2>What we do with your IP address</h2>
 <p>Your IP address is read from the incoming request so it can be shown back to you. Our code does not write it to a database, a log or any storage, and it is never sold or shared for advertising.</p>
-<h2>Cookies and tracking</h2>
-<p>We set no cookies, use no analytics or advertising scripts, and store nothing in your browser.</p>
+<h2>Cookies and analytics</h2>
+<p>By default we set no cookies and store nothing in your browser except, once you answer the banner, a note of your choice. If you click <strong>Accept</strong>, we load Google Analytics (from Google LLC) to count visits. It sets cookies, called <code>_ga</code> and <code>_ga_</code> followed by an identifier, to tell one visit from another, and it sends Google the page you viewed, your browser and device type, your approximate location and how you arrived. We cut everything after the question mark off the page address first, so addresses you look up are not sent, and we turn off Google signals and ad personalization. Google Analytics 4 does not store IP addresses, and the data is kept for 14 months.</p>
+<p>If you click <strong>Decline</strong>, or your browser sends a Global Privacy Control signal, Google Analytics is never loaded and nothing is sent to Google. You can change your choice at any time with the &ldquo;Analytics choices&rdquo; link at the bottom of every page. We never use advertising scripts.</p>
 <h2>Hosting</h2>
 <p>This site runs on Cloudflare Workers. Cloudflare processes every request as our hosting provider and handles it under its own privacy policy. We also use Cloudflare's rate limiting to stop abuse of the heavier tools, which uses your connection's address only to count recent requests.</p>
 <h2>Third-party services</h2>
@@ -206,6 +207,7 @@ export function privacyPage(origin: string, loc: Locale = "en"): Rendered {
 <li><strong>Blocklists and the Tor exit list.</strong> The IP reputation tool checks the address you give it (or your own, if you leave it empty) against five public DNS blocklists: SpamCop, DroneBL, Passive Spam Block List, s5h.net and UCEPROTECT. It also downloads the Tor Project's public list of exit nodes.</li>
 <li><strong>STUN.</strong> The WebRTC test asks stun.cloudflare.com for your public address from your browser, the same way a video-call site would.</li>
 <li><strong>Cloudflare speed servers.</strong> The speed and ping tests send and receive their test data directly between your browser and speed.cloudflare.com, Cloudflare's own speed-test servers. They see your IP address, like any website you visit, and the requests carry no cookies. If they cannot be reached, the tests fall back to our own server.</li>
+<li><strong>Google Analytics (only if you accept).</strong> After you click Accept in the banner, your browser loads Google Analytics from googletagmanager.com and sends visit data to google-analytics.com, as described under Cookies and analytics above. Google may process it on servers outside your country. If you decline, none of this happens.</li>
 </ul>
 <h2>Proxy checker</h2>
 <p>When you test a proxy, the address you enter and any username and password are sent over HTTPS to our server, used for that one check and then discarded. They are not stored or written to logs. Our server connects to your proxy from Cloudflare's network and makes requests through it to Cloudflare's test endpoints (www.cloudflare.com and speed.cloudflare.com) and, if you enter one, to the website you chose. Your proxy provider therefore sees those requests coming from Cloudflare, not from you. The exit IP address the proxy reveals is then looked up with the same services described above.</p>
@@ -240,9 +242,9 @@ export function aboutPage(origin: string, loc: Locale = "en"): Rendered {
   return {
     id: "about",
     title: "About ipcomet: How Our Tools Work",
-    description: "How each ipcomet network tool works, where its data comes from and how accurate it is. Free, with no ads, cookies or tracking.",
+    description: "How each ipcomet network tool works, where its data comes from and how accurate it is. Free, with no ads and analytics only if you accept.",
     path: "/about",
-    body: `<section class="phead"><p class="crumbs"><a href="/">Home</a> / About</p><h1>About ipcomet</h1><p class="lead">ipcomet is a free set of network tools and plain-English guides. It runs on Cloudflare Workers and keeps no record of who uses it.</p><p class="meta">Built and maintained by ${esc(AUTHOR)}.</p></section>
+    body: `<section class="phead"><p class="crumbs"><a href="/">Home</a> / About</p><h1>About ipcomet</h1><p class="lead">ipcomet is a free set of network tools and plain-English guides. It runs on Cloudflare Workers, and the site's own code keeps no record of who uses it.</p><p class="meta">Built and maintained by ${esc(AUTHOR)}.</p></section>
 <div class="prose" style="padding-bottom:30px">
 <h2>Who runs it</h2>
 <p>ipcomet is built and maintained by ${esc(AUTHOR)}, and every guide is published under that name. The guides and the translated pages are drafted with the help of AI tools; the translated pages say so on the page, and each guide shows the date it was last updated.</p>
@@ -257,7 +259,7 @@ export function aboutPage(origin: string, loc: Locale = "en"): Rendered {
 <h2>How the guides are written</h2>
 <p>Each guide answers one question and shows the date it was last updated. Where a guide has steps for Windows, macOS, iOS, Android or Linux, those steps are meant to be followed on the device in front of you, and the matching tool is linked so you can confirm the result.</p>
 <h2>Privacy</h2>
-<p>There are no ads, no cookies and no analytics scripts, and our code does not store or log visitor IP addresses. The <a href="/privacy">privacy page</a> lists every third-party service a tool contacts.</p>
+<p>There are no ads, and our code does not store or log visitor IP addresses. The only cookies come from optional Google Analytics, which loads only if you accept it in the banner. The <a href="/privacy">privacy page</a> explains that choice and lists every third-party service a tool contacts.</p>
 </div>`,
     jsonLd: [
       {

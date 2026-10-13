@@ -27,7 +27,7 @@ export const HOME_FAQ: Faq[] = [
   },
   {
     q: "Does ipcomet store my IP address?",
-    a: "No. Our code does not save, log or sell your IP address, and we use no cookies, ads or analytics. The page reads your IP from the request, shows it back to you and forgets it. See the privacy page for the full detail.",
+    a: "No. Our code does not save, log or sell your IP address, and there are no ads. The page reads your IP from the request, shows it back to you and forgets it. If you accept the optional analytics banner, Google Analytics counts visits using cookies and records the pages you view, but not the addresses you look up; if you decline, nothing is set. See the privacy page for the full detail.",
   },
 ];
 

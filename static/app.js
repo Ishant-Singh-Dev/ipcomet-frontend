@@ -982,9 +982,80 @@
     });
   }
 
+  /* ---------- Analytics: Google Analytics 4, loaded only after the visitor accepts ---------- */
+
+  const GA_ID = "G-3YE43L08F0";
+  const CHOICE_KEY = "ipcomet-analytics";
+  const readChoice = () => { try { return localStorage.getItem(CHOICE_KEY); } catch { return null; } };
+  const saveChoice = (v) => { try { localStorage.setItem(CHOICE_KEY, v); } catch { /* the choice just will not be remembered */ } };
+
+  function loadAnalytics() {
+    // Only the real site is measured, so local tests and previews never add to the numbers.
+    if (window.__ga || location.hostname !== "ipcomet.com") return;
+    window.__ga = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    const tag = document.createElement("script");
+    tag.async = true;
+    tag.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+    document.head.appendChild(tag);
+    gtag("consent", "default", { analytics_storage: "granted", ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied" });
+    gtag("js", new Date());
+    let referrer = "";
+    try { referrer = document.referrer ? new URL(document.referrer).origin + "/" : ""; } catch { /* no usable referrer */ }
+    gtag("config", GA_ID, {
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      cookie_flags: "SameSite=Lax;Secure",
+      // The address without its query string, because lookups put the IP being looked up after the "?".
+      page_location: location.origin + location.pathname,
+      page_referrer: referrer,
+    });
+  }
+
+  /** Stops measurement and removes the analytics cookies, for a visitor who declines or changes their mind. */
+  function withdraw() {
+    window["ga-disable-" + GA_ID] = true;
+    const names = document.cookie.split(";").map((c) => c.split("=")[0].trim()).filter((n) => n === "_ga" || n.startsWith("_ga_"));
+    for (const n of names) for (const d of [location.hostname, "." + location.hostname]) document.cookie = `${n}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${d}`;
+  }
+
+  function showConsent() {
+    const old = document.getElementById("consent");
+    if (old) old.remove();
+    const privacy = (LANG === "en" ? "" : "/" + LANG) + "/privacy";
+    const box = document.createElement("div");
+    box.id = "consent";
+    box.className = "consent";
+    box.setAttribute("role", "region");
+    box.setAttribute("aria-label", tr("Analytics consent"));
+    // Both buttons look the same on purpose: declining must be as easy and as visible as accepting.
+    box.innerHTML =
+      `<p>${esc(tr("Count visits with Google Analytics? It uses cookies. Declining changes nothing else on the site."))} <a href="${privacy}">${esc(tr("Privacy"))}</a></p>` +
+      `<div class="cbtns"><button type="button" class="btn" data-choice="denied">${esc(tr("Decline"))}</button><button type="button" class="btn" data-choice="granted">${esc(tr("Accept"))}</button></div>`;
+    box.addEventListener("click", (e) => {
+      const button = e.target.closest("button[data-choice]");
+      if (!button) return;
+      saveChoice(button.dataset.choice);
+      box.remove();
+      if (button.dataset.choice === "granted") { window["ga-disable-" + GA_ID] = false; loadAnalytics(); } else withdraw();
+    });
+    document.body.appendChild(box);
+  }
+
+  function initConsent() {
+    document.querySelectorAll("[data-consent]").forEach((b) => b.addEventListener("click", showConsent));
+    if (location.hostname !== "ipcomet.com") return;
+    // A Global Privacy Control signal counts as a "no" until the visitor says otherwise.
+    const choice = readChoice() || (navigator.globalPrivacyControl === true ? "denied" : null);
+    if (choice === "granted") loadAnalytics();
+    else if (choice === "denied") withdraw();
+    else showConsent();
+  }
+
   /* ---------- boot ---------- */
   const pages = { ip: home, lookup, dns, "reverse-dns": reverseDns, reputation, "proxy-checker": proxyChecker, ping, whois, browser: browserInfo, port, speed, webrtc, subnet };
-  const start = () => { if (pages[page]) pages[page](); };
+  const start = () => { initConsent(); if (pages[page]) pages[page](); };
   if (LANG === "en") start();
   else {
     // The dictionary is a small cached file; if it cannot be loaded the tools simply run in English.

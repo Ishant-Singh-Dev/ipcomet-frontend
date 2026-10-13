@@ -21,7 +21,7 @@ This repository is the **public front-end only**. The Cloudflare Worker behind i
 
 ## How it works
 
-Pages are rendered to plain HTML at build time (no framework, no web fonts, inline CSS, one cached script), so a first load is about 7 KB. Nothing sets cookies or loads analytics.
+Pages are rendered to plain HTML at build time (no framework, no web fonts, inline CSS, one cached script), so a first load is about 7 KB. Nothing sets cookies or loads analytics unless the visitor accepts the analytics banner; Google Analytics then loads, and only on the live site.
 
 The speed test sends its data straight to Cloudflare's speed servers over six parallel connections and averages steady-state samples; latency is measured against the nearest Cloudflare data center.
 
