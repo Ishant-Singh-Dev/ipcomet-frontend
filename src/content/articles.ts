@@ -36,7 +36,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 7,
     tools: ["ip", "webrtc", "reputation"],
-    related: ["can-someone-track-you-by-ip-address", "is-my-vpn-working", "webrtc-leak-explained"],
+    related: ["can-someone-track-you-by-ip-address", "is-my-vpn-working", "webrtc-leak-explained", "what-your-browser-reveals"],
   },
   {
     slug: "ipv4-vs-ipv6",
@@ -72,7 +72,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 5,
     tools: ["ip", "lookup"],
-    related: ["how-to-hide-your-ip-address", "why-is-my-ip-location-wrong", "webrtc-leak-explained"],
+    related: ["how-to-hide-your-ip-address", "why-is-my-ip-location-wrong", "webrtc-leak-explained", "what-your-browser-reveals"],
   },
   {
     slug: "why-does-my-ip-address-change",
@@ -90,7 +90,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 7,
     tools: ["dns", "whois"],
-    related: ["what-is-a-dns-server", "fix-slow-dns-lookup", "how-to-flush-dns-cache"],
+    related: ["what-is-a-dns-server", "fix-slow-dns-lookup", "how-to-flush-dns-cache", "what-is-whois", "what-is-reverse-dns"],
   },
   {
     slug: "webrtc-leak-explained",
@@ -99,7 +99,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-07",
     readMin: 6,
     tools: ["webrtc", "ip"],
-    related: ["is-my-vpn-working", "how-to-hide-your-ip-address", "can-someone-track-you-by-ip-address"],
+    related: ["is-my-vpn-working", "how-to-hide-your-ip-address", "can-someone-track-you-by-ip-address", "what-your-browser-reveals"],
   },
   {
     slug: "what-is-port-forwarding",
@@ -162,7 +162,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 6,
     tools: ["reputation", "ip"],
-    related: ["why-does-my-ip-address-change", "how-to-change-your-ip-address", "what-is-an-ip-checker"],
+    related: ["why-does-my-ip-address-change", "how-to-change-your-ip-address", "what-is-an-ip-checker", "what-is-reverse-dns"],
   },
   {
     slug: "find-router-ip-address",
@@ -207,7 +207,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-08",
     readMin: 7,
     tools: ["dns", "reverse-dns"],
-    related: ["dns-records-explained", "how-to-flush-dns-cache", "fix-slow-dns-lookup"],
+    related: ["dns-records-explained", "how-to-flush-dns-cache", "fix-slow-dns-lookup", "what-is-whois", "what-is-reverse-dns"],
   },
   {
     slug: "how-to-flush-dns-cache",
@@ -336,6 +336,33 @@ export const ARTICLES: ArticleMeta[] = [
     related: ["what-is-an-ip-checker", "why-is-my-ip-location-wrong", "get-public-ip-address-command-line"],
   },
   {
+    slug: "what-is-whois",
+    title: "What Is WHOIS? How to Find Who Owns a Domain",
+    description: "WHOIS still shows a domain's age, registrar, name servers and status, but the owner's details are usually redacted. What you can learn, and what you cannot.",
+    published: "2026-10-16",
+    readMin: 6,
+    tools: ["whois", "lookup"],
+    related: ["dns-records-explained", "what-is-a-dns-server", "what-is-reverse-dns"],
+  },
+  {
+    slug: "what-is-reverse-dns",
+    title: "What Is Reverse DNS (PTR) and Why Does Email Depend on It?",
+    description: "Reverse DNS maps an IP address back to a hostname. Why mail servers check it, who controls the record, and why an empty result is usually normal.",
+    published: "2026-10-16",
+    readMin: 6,
+    tools: ["reverse-dns", "lookup"],
+    related: ["dns-records-explained", "what-is-a-dns-server", "what-is-whois"],
+  },
+  {
+    slug: "what-your-browser-reveals",
+    title: "What Does Your Browser Reveal About You?",
+    description: "Your IP is the least of it. Headers, screen, fonts, time zone and GPU combine into a fingerprint that survives clearing cookies. What leaks and what helps.",
+    published: "2026-10-16",
+    readMin: 7,
+    tools: ["browser", "headers"],
+    related: ["webrtc-leak-explained", "can-someone-track-you-by-ip-address", "how-to-hide-your-ip-address"],
+  },
+  {
     slug: "what-is-an-ip-checker",
     title: "What Is an IP Checker? What It Shows and How to Use One",
     description: "An IP checker shows your public IP address or details about any IP: location, ISP, VPN or proxy use and blocklists. Learn what each result means.",
@@ -351,7 +378,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-13",
     readMin: 5,
     tools: ["ip", "lookup"],
-    related: ["what-is-my-isp", "what-is-an-ip-checker", "can-someone-track-you-by-ip-address", "how-to-choose-an-ip-checker"],
+    related: ["what-is-my-isp", "what-is-an-ip-checker", "can-someone-track-you-by-ip-address", "how-to-choose-an-ip-checker", "what-is-whois"],
   },
 ];
 

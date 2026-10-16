@@ -1455,6 +1455,121 @@ console.log(ip);</code></pre>
 <h2>The short answer</h2>
 <p>Any competent IP checker gives you the right address. Pick on the things that vary: whether it keeps your address, how much it loads to tell you one number, and whether it is honest about the parts it is guessing at. Those are all checkable in a couple of minutes, and they matter more than which site ranks first.</p>
 `,
+  "what-is-whois": `
+<p>WHOIS is the public record of who registered a domain name. It has existed since the early 1980s, and for most of that time it did what the name suggests: you typed a domain, you got back a name, a postal address, a phone number and an email. That era is over. Look up almost any domain today and the registrant line reads something like "REDACTED FOR PRIVACY" or points at a proxy service in Arizona.</p>
+<p>The record is still worth reading. You just have to know what survived.</p>
+
+<h2>What can you still learn from a WHOIS record?</h2>
+<p>Plenty, as it happens, none of it personal.</p>
+<div class="tw"><table><tbody>
+<tr><th>Field</th><th>Still visible?</th><th>What it tells you</th></tr>
+<tr><td>Creation date</td><td>Yes</td><td>How old the domain is. A site claiming twenty years of experience on a domain registered in March is worth a second look.</td></tr>
+<tr><td>Expiry date</td><td>Yes</td><td>Whether it is about to lapse, and roughly how far ahead the owner commits.</td></tr>
+<tr><td>Registrar</td><td>Yes</td><td>Which company sold the domain. Useful if you need to file an abuse report.</td></tr>
+<tr><td>Name servers</td><td>Yes</td><td>Who runs the DNS, which usually reveals the host or CDN.</td></tr>
+<tr><td>Status codes</td><td>Yes</td><td>Whether the domain is locked, pending deletion or in a transfer.</td></tr>
+<tr><td>Registrant name and address</td><td>Rarely</td><td>Hidden behind privacy services or redaction for most domains since 2018.</td></tr>
+<tr><td>Registrant email</td><td>Rarely</td><td>Usually replaced by a forwarding address at the privacy provider.</td></tr>
+</tbody></table></div>
+
+<h2>Why did the personal details disappear?</h2>
+<p>Two things happened at once. GDPR came into force in May 2018 and made publishing a European registrant's home address and phone number to the entire internet legally difficult, so registrars redacted those fields across the board rather than sort registrants by jurisdiction. Separately, privacy proxy services had already become a cheap or free add-on at most registrars, substituting the proxy's details for yours in the public record.</p>
+<p>The data still exists. Registrars hold it, and law enforcement and trademark holders can request it through defined channels. It simply is not in the public lookup any more.</p>
+
+<h2>WHOIS or RDAP?</h2>
+<p>WHOIS returns a blob of text with no agreed format, which is why parsing it reliably was always miserable. RDAP, the Registration Data Access Protocol, returns the same information as structured JSON with proper authentication and internationalisation. ICANN required registries to support it from 2019 onward, and it is what most modern tools query under the hood, including the <a href="/whois">WHOIS lookup</a> on this site.</p>
+<p>You will still see the service called WHOIS everywhere, because that is the name people search for. The plumbing underneath changed.</p>
+
+<h2>How do you read a record without being misled?</h2>
+<p>A few traps catch people out.</p>
+<ul>
+<li><strong>The registrar is not the owner.</strong> Seeing "GoDaddy" or "Namecheap" tells you where the domain was bought, nothing about who bought it.</li>
+<li><strong>A privacy service is not suspicious on its own.</strong> It is the default at several registrars. Most people using it are avoiding spam, not hiding wrongdoing.</li>
+<li><strong>Dates can be misleading after a transfer.</strong> Some registrars reset the updated date on transfer, and a few report a creation date from when the current registrar took over rather than the original registration.</li>
+<li><strong>Country codes vary wildly.</strong> Each country registry sets its own disclosure rules. A .de domain shows almost nothing; some smaller registries still show everything.</li>
+</ul>
+
+<h2>What should you use it for?</h2>
+<p>Checking how old a site is before trusting it. Finding the right abuse contact when something needs reporting. Confirming who hosts a domain when you are debugging DNS. Seeing whether a domain you want is about to expire.</p>
+<p>What it will not do is tell you who is behind a scam site. That takes a request to the registrar with a legal basis, and it is not something a lookup page can shortcut. Anyone promising otherwise is selling you stale data.</p>
+
+<h2>Checking a domain yourself</h2>
+<p>Paste any domain into the <a href="/whois">WHOIS lookup</a> and you will get the registrar, the dates, the name servers and the status codes, drawn from RDAP where the registry supports it. If you want to know where the site is actually served from rather than who bought the name, the <a href="/lookup">IP lookup</a> and <a href="/dns">DNS lookup</a> answer that better, and <a href="/learn/dns-records-explained">the guide to DNS records</a> explains which record does what.</p>
+`,
+  "what-is-reverse-dns": `
+<p>Forward DNS turns a name into an address. Reverse DNS does the opposite: give it 8.8.8.8 and it answers dns.google. The record that makes this work is called a PTR record, and it lives in a strange corner of DNS that most people never touch, right up until an email stops being delivered.</p>
+
+<h2>What is a PTR record?</h2>
+<p>A PTR record maps an IP address back to a hostname. It lives under a special zone, in-addr.arpa for IPv4 and ip6.arpa for IPv6, with the address written backwards. The reverse record for 8.8.8.8 is stored at 8.8.8.8.in-addr.arpa, which looks peculiar until you realise DNS reads right to left and the reversal makes delegation work the same way it does for ordinary names.</p>
+<p>One important asymmetry: forward and reverse records are independent. Your A record can point example.com at an address while that address answers with a completely unrelated hostname, or with nothing at all. Nothing forces them to agree, which is exactly why mail servers check whether they do.</p>
+
+<h2>Why does email depend on this?</h2>
+<p>Receiving mail servers treat a missing or mismatched PTR record as a spam signal, and some reject on it outright. The logic is crude but effective: anyone who controls a block of addresses legitimately can set reverse DNS on it, and most spam comes from hijacked machines whose operators cannot.</p>
+<p>The usual check is a forward-confirmed lookup. The server takes your sending IP, finds the PTR hostname, then looks that hostname back up and checks it resolves to the same address. Both directions have to agree. A PTR that points at mail.yourdomain.com is worthless if mail.yourdomain.com resolves somewhere else.</p>
+
+<h2>Who controls your reverse DNS?</h2>
+<p>Not you, usually, and this catches people out. PTR records are delegated by whoever owns the address block, which means your ISP, your hosting provider or your cloud platform. You can publish any forward record you like for a domain you own, but you cannot publish a PTR for an address you merely rent.</p>
+<p>What you do instead depends on the provider. Most hosting and cloud panels have a field for it, sometimes labelled rDNS. Residential connections almost never let you change it, which is one of several reasons running a mail server from home goes badly.</p>
+
+<h2>What does a residential reverse record look like?</h2>
+<p>Something like this, varying by provider:</p>
+<p><code>broadband-203-0-113-45.example-isp.net</code></p>
+<p>Generic, auto-generated, with the address embedded in the name. Mail servers read that pattern as a consumer connection and weight it accordingly. A business connection or a hosted server usually gets either a blank record or one you can set yourself.</p>
+
+<h2>When is reverse DNS useful beyond mail?</h2>
+<ul>
+<li><strong>Reading logs.</strong> A column of raw addresses tells you nothing; resolved hostnames tell you which are crawlers, which are cloud providers and which are home connections.</li>
+<li><strong>Verifying a crawler.</strong> Google, Bing and others document a reverse-then-forward check as the correct way to confirm a bot is genuine rather than someone spoofing the user agent. The claimed name has to resolve back to the same address.</li>
+<li><strong>Identifying infrastructure.</strong> Reverse names frequently leak the provider, the data centre and sometimes the service, which is fast reconnaissance when you are tracing a route or an abuse report.</li>
+</ul>
+
+<h2>Why does a lookup return nothing?</h2>
+<p>An empty result is normal and is not an error. Most addresses on the internet have no PTR record, because nobody bothered to set one. You will also see a genuine absence where the provider delegated the block but never populated it, and occasionally a stale record left behind by a previous tenant of the address, which is its own small embarrassment when the old company name shows up in your logs.</p>
+<p>If you are chasing a mail delivery problem and the lookup comes back empty, that is your answer, and the fix is a support ticket to whoever owns the address.</p>
+
+<h2>Checking an address</h2>
+<p>Put any IPv4 or IPv6 address into the <a href="/reverse-dns">reverse DNS lookup</a> to see its PTR record and hostname. If you want the other direction, the <a href="/dns">DNS lookup</a> resolves names to addresses, and the <a href="/lookup">IP lookup</a> adds the network owner and ASN, which is often the detail you actually wanted. For the wider picture of which record does what, <a href="/learn/dns-records-explained">DNS records explained</a> covers the set.</p>
+`,
+  "what-your-browser-reveals": `
+<p>Your IP address is the identifier people worry about. It is also the one that is easiest to change, and far from the most revealing thing your browser hands over. Every request carries a small dossier about your device, and a few lines of JavaScript can extend that into something close to a unique signature.</p>
+<p>None of this requires a cookie. Clearing your history does not touch it.</p>
+
+<h2>What goes out before any JavaScript runs?</h2>
+<p>HTTP headers, sent with every single request. The interesting ones are few.</p>
+<div class="tw"><table><tbody>
+<tr><th>Header</th><th>What it carries</th></tr>
+<tr><td>User-Agent</td><td>Browser, version, operating system and often the rendering engine. Increasingly frozen or reduced by browsers, but still the first thing most sites read.</td></tr>
+<tr><td>Accept-Language</td><td>The languages you configured, in order of preference. Frequently a strong hint about where you are and where you are from, which are not always the same place.</td></tr>
+<tr><td>Accept-Encoding</td><td>Which compression formats you support. Dull on its own, mildly distinguishing in combination.</td></tr>
+<tr><td>Referer</td><td>The page you came from, if the site that linked you allows it to be sent.</td></tr>
+<tr><td>Sec-CH-UA family</td><td>Client hints: a newer, more granular replacement for the user agent that sites must explicitly request.</td></tr>
+</tbody></table></div>
+<p>You can read your own with the <a href="/headers">HTTP headers viewer</a>, which shows them exactly as our server received them.</p>
+
+<h2>What does JavaScript add?</h2>
+<p>A great deal more. Screen dimensions and colour depth. Time zone, which often contradicts a VPN exit and gives the game away. Installed fonts, inferred by measuring text. The number of CPU cores and a rough memory figure. Touch support. How your graphics hardware renders a test image, which varies enough between GPU and driver combinations to be useful on its own.</p>
+<p>No single one identifies you. Together they frequently do, and that is the point of fingerprinting: not to learn your name, but to recognise the same visitor across sessions without storing anything on your machine.</p>
+
+<h2>How unique is a fingerprint, really?</h2>
+<p>It depends heavily on how ordinary your setup is. A current iPhone running Safari with default settings looks like an enormous number of other current iPhones, which is a genuine privacy advantage. A Linux desktop with an unusual screen size, a niche font set and three extensions installed may well be unique among everyone who visits a given site.</p>
+<p>There is an uncomfortable twist here. Many anti-fingerprinting extensions make you more identifiable rather than less, because a browser reporting implausible or contradictory values stands out sharply against the crowd. Blending in beats hiding.</p>
+
+<h2>What does a VPN actually hide?</h2>
+<p>Your IP address, and the contents of your traffic from anyone on the local network. That is the list.</p>
+<p>It does not change your user agent, your language preferences, your screen size, your fonts or your time zone. A connection claiming to originate in Frankfurt while the browser reports Asia/Kolkata and prefers Hindi is a contradiction that any site bothering to look will notice. Worse, your browser may leak the real address directly through WebRTC regardless of the tunnel, which is a specific enough problem to deserve <a href="/learn/webrtc-leak-explained">its own explanation</a> and <a href="/webrtc">its own test</a>.</p>
+
+<h2>What can you reasonably do?</h2>
+<ul>
+<li><strong>Use a mainstream browser with defaults.</strong> Safari and Firefox both ship meaningful fingerprinting resistance now, and looking like everyone else is the strongest position available.</li>
+<li><strong>Keep extensions few.</strong> Each one is a potential signal, and the combination is more distinguishing than any single addition.</li>
+<li><strong>Match your time zone to your VPN exit</strong> if you are using one seriously. The mismatch is one of the easiest tells to spot.</li>
+<li><strong>Use the browser's private window for genuinely separate sessions,</strong> remembering it isolates storage, not your fingerprint.</li>
+<li><strong>Accept the tradeoff.</strong> Total resistance breaks a lot of the web. Most people want to be unremarkable rather than invisible.</li>
+</ul>
+
+<h2>Seeing your own</h2>
+<p>The <a href="/browser">browser info</a> page shows what your browser exposes to any site you visit: user agent, screen, language, time zone and the rest, with nothing stored. Pair it with the <a href="/headers">HTTP headers viewer</a> for the pre-JavaScript layer, and the <a href="/webrtc">WebRTC leak test</a> if you are behind a VPN and want to know whether it is holding.</p>
+`,
   "what-is-an-ip-checker": `
 <p>An IP checker is a tool that shows an IP address and what can be learned about it. Some checkers tell you <em>your own</em> public IP address, some look up <em>any</em> address or domain you type in, and some judge whether an address looks like a VPN, a proxy or a source of spam. This guide explains the three kinds, what each result means, and which one to use for the job in front of you.</p>
 
