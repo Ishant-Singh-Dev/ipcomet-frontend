@@ -214,6 +214,8 @@ export function privacyPage(origin: string, loc: Locale = "en"): Rendered {
 <p>When you test a proxy, the address you enter and any username and password are sent over HTTPS to our server, used for that one check and then discarded. They are not stored or written to logs. Our server connects to your proxy from Cloudflare's network and makes requests through it to Cloudflare's test endpoints (www.cloudflare.com and speed.cloudflare.com) and, if you enter one, to the website you chose. Your proxy provider therefore sees those requests coming from Cloudflare, not from you. The exit IP address the proxy reveals is then looked up with the same services described above.</p>
 <h2>Port checker</h2>
 <p>The port checker only connects to the IP address you are visiting from. It cannot be pointed at anyone else's address.</p>
+<h2>Questions about this policy</h2>
+<p>For any question about this policy, or about the data this site handles, write to <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.</p>
 <h2>Changes</h2>
 <p>If this policy changes, the new version will appear here.</p>
 </div>`,

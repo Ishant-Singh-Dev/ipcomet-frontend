@@ -830,6 +830,8 @@ export const es: LocaleData = {
 <p>Cuando pruebas un proxy, la dirección que introduces y el usuario y la contraseña, si los hay, se envían por HTTPS a nuestro servidor, se usan para esa única comprobación y luego se descartan. No se almacenan ni se escriben en registros. Nuestro servidor se conecta a tu proxy desde la red de Cloudflare y hace solicitudes a través de él a los puntos de prueba de Cloudflare (www.cloudflare.com y speed.cloudflare.com) y, si introduces uno, al sitio web que elijas. Por eso tu proveedor de proxy ve esas solicitudes llegar desde Cloudflare, no desde ti. La dirección IP de salida que revela el proxy se consulta después con los mismos servicios descritos arriba.</p>
 <h2>Comprobador de puertos</h2>
 <p>El comprobador de puertos solo se conecta a la dirección IP desde la que visitas el sitio. No se puede dirigir a la dirección de otra persona.</p>
+<h2>Preguntas sobre esta política</h2>
+<p>Si tienes alguna duda sobre esta política o sobre los datos que este sitio trata, escríbenos a <a href="mailto:hello@ipcomet.com">hello@ipcomet.com</a>.</p>
 <h2>Cambios</h2>
 <p>Si esta política cambia, la nueva versión aparecerá aquí. La versión en inglés es la de referencia.</p>`,
   },

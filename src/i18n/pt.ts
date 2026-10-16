@@ -830,6 +830,8 @@ export const pt: LocaleData = {
 <p>Quando você testa um proxy, o endereço que informa e o eventual usuário e senha são enviados por HTTPS ao nosso servidor, usados nessa única verificação e depois descartados. Não são armazenados nem gravados em logs. Nosso servidor se conecta ao seu proxy a partir da rede da Cloudflare e faz requisições por ele aos pontos de teste da Cloudflare (www.cloudflare.com e speed.cloudflare.com) e, se você informar um, ao site que escolheu. Por isso seu provedor de proxy vê essas requisições vindas da Cloudflare, não de você. O endereço IP de saída revelado pelo proxy é então consultado com os mesmos serviços descritos acima.</p>
 <h2>Verificador de portas</h2>
 <p>O verificador de portas só se conecta ao endereço IP a partir do qual você visita o site. Ele não pode ser apontado para o endereço de outra pessoa.</p>
+<h2>Dúvidas sobre esta política</h2>
+<p>Para qualquer dúvida sobre esta política ou sobre os dados que este site trata, escreva para <a href="mailto:hello@ipcomet.com">hello@ipcomet.com</a>.</p>
 <h2>Alterações</h2>
 <p>Se esta política mudar, a nova versão aparecerá aqui. A versão em inglês é a de referência.</p>`,
   },

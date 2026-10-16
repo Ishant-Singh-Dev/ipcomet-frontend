@@ -1414,6 +1414,47 @@ console.log(ip);</code></pre>
 <h2>Limits and privacy</h2>
 <p>No key or sign-up is needed. Please keep requests reasonable: checking every few minutes is fine, but calling it in a tight loop may be rate limited. ipcomet does not store or log the addresses it sees, as the <a href="/privacy">privacy page</a> explains. The <a href="/developers">free IP API page</a> lists every endpoint with its exact rate limit. Try it in the browser first with the <a href="/">what is my IP address</a> page.</p>
 `,
+  "how-to-choose-an-ip-checker": `
+<p>Every "what is my IP" site shows you the same number. The address your connection presents to the internet is a fact, not an opinion, and no tool can show you a different one. So if the headline answer is identical everywhere, what actually separates these sites, and how should you pick one?</p>
+
+<h2>What does an IP checker actually tell you?</h2>
+<p>An IP checker reports your public IP address and what can be inferred from it: an approximate location, the network that owns the address, and sometimes whether that address looks like a VPN or proxy. Everything past the address itself is inference, drawn from registration records and routing data, and the quality of those inferences is one of the few places tools genuinely differ.</p>
+
+<h2>The things worth comparing</h2>
+<p>Five questions separate one IP checker from another. The address it reports is not one of them.</p>
+<div class="tw"><table><tbody>
+<tr><th>Question</th><th>Why it matters</th></tr>
+<tr><td>Does it log your address?</td><td>You are handing a site the one identifier that ties your traffic together. Whether it keeps that is the single most consequential difference, and most sites do not say either way.</td></tr>
+<tr><td>How much does it load?</td><td>A page whose only job is to print one number should not need dozens of requests. Weight is the difference between an instant answer and a three-second wait on mobile data.</td></tr>
+<tr><td>Does it need an account?</td><td>Checking your own IP address is not a task that warrants a sign-up. Some API-first services gate useful results behind one.</td></tr>
+<tr><td>Does it explain its guesses?</td><td>A city that is wrong by 200 km is normal. A tool that says so is more useful than one that presents the guess as fact.</td></tr>
+<tr><td>What else is on hand?</td><td>The IP is usually the first question, not the last. Lookup, DNS, WHOIS, reputation and a speed test save you a second site.</td></tr>
+</tbody></table></div>
+
+<h2>How heavy are these pages, really?</h2>
+<p>This is the one you can measure yourself, and the spread is wide. Loading <strong>whatismyipaddress.com</strong> in a browser on 14 October 2026 produced <strong>67 network requests</strong>: an interactive vector map pulling tiles and font ranges, Google Fonts, press logos and an embedded podcast player. It is a substantial site and the map is genuinely nice to look at, but it is a lot of fetching for one number.</p>
+<p>For contrast, this page's own home page answers in about 40 KB of HTML with five requests and no third-party assets at all: no web fonts, no external stylesheets, no tracker loaded unless you accept the analytics banner.</p>
+<p>Neither figure is a verdict. A map is worth requests if you want a map. The point is that "it shows my IP" tells you nothing about what a page costs you, and you can check it in your browser's network tab in about ten seconds.</p>
+
+<h2>What about ads?</h2>
+<p>This category has a reputation for being ad-choked that is now partly out of date. Checking the request list of the most popular site in the category, there was no advertising network present at all: no Google ad tags, no Taboola, no Outbrain. Larger IP sites tend to monetise through VPN affiliate recommendations rather than display advertising, which is less visually intrusive but worth knowing about when a site recommends a product to you.</p>
+<p>Smaller and older tools are a mixed bag, and some free proxy and IP lists remain genuinely unpleasant. Judge the page in front of you rather than the category.</p>
+
+<h2>Where does ipcomet sit?</h2>
+<p>This is our own site, so treat what follows as disclosure rather than a recommendation. ipcomet shows no advertising, asks for no account, and our code does not store or log visitor IP addresses; analytics load only if you accept the banner, and the <a href="/privacy">privacy page</a> lists every third-party service each tool contacts. Pages are pre-rendered and served from the edge, which is where the low request count comes from.</p>
+<p>What we do not have is the authority those larger sites have earned over a decade, or an interactive map. If you want to see your approximate position plotted, they do that better. If you want a fast answer and a set of <a href="/learn">tools</a> that explain their own limits, that is what this site is built for.</p>
+
+<h2>How to check any of this for yourself</h2>
+<ul>
+<li><strong>Weight.</strong> Open the browser's developer tools, go to the Network tab, and reload. The request count and transferred size are at the bottom.</li>
+<li><strong>Logging.</strong> Read the privacy policy and look for a specific statement about IP addresses. Vagueness is the answer.</li>
+<li><strong>Accuracy.</strong> Compare the reported city against where you actually are, then read <a href="/learn/why-is-my-ip-location-wrong">why IP location is often wrong</a> before concluding a tool is broken.</li>
+<li><strong>Consistency.</strong> Run two or three checkers. If they disagree on the address itself, something on your connection is changing it, which the <a href="/learn/get-public-ip-address-command-line">command-line method</a> will confirm.</li>
+</ul>
+
+<h2>The short answer</h2>
+<p>Any competent IP checker gives you the right address. Pick on the things that vary: whether it keeps your address, how much it loads to tell you one number, and whether it is honest about the parts it is guessing at. Those are all checkable in a couple of minutes, and they matter more than which site ranks first.</p>
+`,
   "what-is-an-ip-checker": `
 <p>An IP checker is a tool that shows an IP address and what can be learned about it. Some checkers tell you <em>your own</em> public IP address, some look up <em>any</em> address or domain you type in, and some judge whether an address looks like a VPN, a proxy or a source of spam. This guide explains the three kinds, what each result means, and which one to use for the job in front of you.</p>
 

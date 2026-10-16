@@ -830,6 +830,8 @@ export const de: LocaleData = {
 <p>Wenn Sie einen Proxy testen, werden die eingegebene Adresse und gegebenenfalls Benutzername und Passwort per HTTPS an unseren Server gesendet, für diese eine Prüfung verwendet und anschließend verworfen. Sie werden weder gespeichert noch in Logs geschrieben. Unser Server verbindet sich aus dem Cloudflare-Netzwerk mit Ihrem Proxy und stellt darüber Anfragen an Cloudflares Testendpunkte (www.cloudflare.com und speed.cloudflare.com) und, falls Sie eine angeben, an die von Ihnen gewählte Website. Ihr Proxy-Anbieter sieht diese Anfragen daher von Cloudflare kommen, nicht von Ihnen. Die vom Proxy offenbarte Ausgangs-IP-Adresse wird anschließend mit denselben oben beschriebenen Diensten nachgeschlagen.</p>
 <h2>Port-Checker</h2>
 <p>Der Port-Checker verbindet sich nur mit der IP-Adresse, von der aus Sie die Seite besuchen. Er lässt sich nicht auf die Adresse einer anderen Person richten.</p>
+<h2>Fragen zu dieser Erklärung</h2>
+<p>Bei Fragen zu dieser Erklärung oder zu den Daten, die diese Website verarbeitet, schreiben Sie an <a href="mailto:hello@ipcomet.com">hello@ipcomet.com</a>.</p>
 <h2>Änderungen</h2>
 <p>Wenn sich diese Erklärung ändert, erscheint die neue Fassung hier. Maßgeblich ist die englische Version.</p>`,
   },
