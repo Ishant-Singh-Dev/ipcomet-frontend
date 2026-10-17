@@ -1034,6 +1034,16 @@ export const BODIES: Record<string, string> = {
 </ul>
 <p>If you want a printer or server to keep the same address at home, you want the first one, and the best way is a DHCP reservation in your router rather than configuring the device by hand. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
 
+<h2>Is my IP address static or dynamic?</h2>
+<p>If you are on a home broadband or mobile connection and never asked for a static address, yours is almost certainly dynamic. Providers charge for static addresses, so you would remember paying for one. If you want to confirm it rather than assume, there are four checks, roughly in order of how conclusive they are.</p>
+<ul>
+<li><strong>Look at your router's WAN settings.</strong> Sign in to the router and open the internet or WAN page. A connection type of DHCP, Dynamic IP or PPPoE means dynamic. Only a page where someone typed in a fixed address, subnet mask and gateway means static.</li>
+<li><strong>Watch whether it changes.</strong> Note your address on the <a href="/">what is my IP</a> page, restart the router, and check again. A new address proves it is dynamic. The same address proves nothing on its own, because many providers hand back the same lease for weeks.</li>
+<li><strong>Read the reverse DNS name.</strong> Run your address through the <a href="/reverse-dns">reverse DNS lookup</a>. Names containing words like <code>dynamic</code>, <code>dyn</code>, <code>pool</code> or <code>dhcp</code> are your provider labelling the address as dynamic. A blank result tells you nothing either way.</li>
+<li><strong>Check your contract or ask.</strong> A static IP appears as a line item on the bill or in the plan name. Your provider's support line can answer in one sentence.</li>
+</ul>
+<p>One complication: some providers put many customers behind a single shared address, called carrier-grade NAT. In that case the public address you see is not yours at all, static or otherwise, and opening ports from outside will not work. The <a href="/learn/why-does-my-ip-address-change">guide to why your IP changes</a> covers how to spot it.</p>
+
 <h2>Why does dynamic addressing exist?</h2>
 <p>There are not enough IPv4 addresses for every connection to hold one permanently, so providers recycle them from a pool. Your router asks for an address, gets a lease, and renews it. When the lease lapses, you may be handed a different one. That is why your address changes for no apparent reason, as explained in <a href="/learn/why-does-my-ip-address-change">why your IP address keeps changing</a>.</p>
 

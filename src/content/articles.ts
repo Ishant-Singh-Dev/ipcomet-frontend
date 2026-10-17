@@ -238,8 +238,8 @@ export const ARTICLES: ArticleMeta[] = [
   },
   {
     slug: "static-vs-dynamic-ip-address",
-    title: "Static vs Dynamic IP Address: Which Do You Need?",
-    description: "Compare static and dynamic IP addresses: cost, setup, hosting and gaming. Find out which you need, and the free alternative most people should use.",
+    title: "Static vs Dynamic IP Address: How to Tell Which You Have",
+    description: "Is your IP static or dynamic? Four ways to check, plus how the two differ in cost, setup and hosting, and the free alternative most people should use.",
     published: "2026-10-08",
     readMin: 6,
     tools: ["ip", "port"],

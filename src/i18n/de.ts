@@ -411,8 +411,8 @@ export const de: LocaleData = {
     ip: {
       name: "Meine IP",
       desc: "Ihre öffentliche IP-Adresse, Standort und Provider",
-      title: "Wie lautet meine IP-Adresse? Öffentliche IP anzeigen",
-      description: "Sehen Sie sofort Ihre öffentliche IP-Adresse, Ihren Standort, Ihren Provider und Verbindungsdetails. Kostenlos und schnell, ohne Werbung und Anmeldung.",
+      title: "Was ist meine IP? Öffentliche IP-Adresse herausfinden",
+      description: "Was ist meine IP? Finden Sie Ihre öffentliche IP-Adresse sofort heraus und prüfen Sie Standort, Provider und Verbindung. Kostenlos, ohne Werbung.",
       h1: "Wie lautet meine IP-Adresse?",
       lead: "Ihre öffentliche IP-Adresse, Ihr ungefährer Standort und Ihr Provider, sofort angezeigt.",
       about: "",
@@ -669,8 +669,8 @@ export const de: LocaleData = {
     ping: {
       name: "Ping-Test",
       desc: "Latenz und Jitter prüfen",
-      title: "Ping-Test: Latenz und Jitter online prüfen",
-      description: "Kostenloser Online-Ping-Test. Messen Sie Latenz, Jitter und Paketverlust zum nächsten Cloudflare-Server in etwa 10 Sekunden.",
+      title: "Ping-Test und Latenztest: Latenz und Jitter prüfen",
+      description: "Kostenloser Ping-Test und Latenztest. Messen Sie Latenz, Jitter und Paketverlust zum nächsten Cloudflare-Server in etwa 10 Sekunden.",
       h1: "Ping-Test",
       lead: "Messen Sie Latenz, Jitter und Paketverlust zum nächsten Cloudflare-Server in etwa zehn Sekunden.",
       about:
@@ -743,8 +743,8 @@ export const de: LocaleData = {
   home: {
     faq: [
       {
-        q: "Wie lautet meine IP-Adresse?",
-        a: "Ihre IP-Adresse ist die öffentliche Nummer oben auf dieser Seite. Sie identifiziert Ihren Internetanschluss gegenüber jeder Website und jedem Dienst, den Sie besuchen. Bei einem Heim- oder Mobilfunkanschluss wurde sie von Ihrem Internetanbieter vergeben, und alle, die über diesen Anschluss surfen, teilen sie.",
+        q: "Was ist meine IP-Adresse?",
+        a: "Ihre IP-Adresse, wonach viele auch als „meine IP herausfinden“ oder „IP-Adresse prüfen“ suchen, ist die öffentliche Nummer oben auf dieser Seite. Sie identifiziert Ihren Internetanschluss gegenüber jeder Website und jedem Dienst, den Sie besuchen. Bei einem Heim- oder Mobilfunkanschluss wurde sie von Ihrem Internetanbieter vergeben, und alle, die über diesen Anschluss surfen, teilen sie.",
       },
       {
         q: "Wie finde ich meine IP-Adresse?",

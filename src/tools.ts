@@ -103,8 +103,8 @@ export const TOOLS: Tool[] = [
     path: "/ping",
     name: "Ping Test",
     desc: "Check your latency and jitter",
-    title: "Ping Test: Check Your Latency and Jitter Online",
-    description: "Free online ping test. Measure your latency, jitter and packet loss to the nearest Cloudflare server in about 10 seconds.",
+    title: "Ping Test: Test Your Ping, Latency and Jitter Online",
+    description: "Free internet ping test. Test your ping, latency, jitter and packet loss to the nearest Cloudflare server in about 10 seconds. No install needed.",
   },
   {
     id: "webrtc",
