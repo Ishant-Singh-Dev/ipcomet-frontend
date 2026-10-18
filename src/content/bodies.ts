@@ -31,6 +31,9 @@ export const BODIES: Record<string, string> = {
 <li><strong>Linux:</strong> run <code>ip addr</code> in a terminal.</li>
 <li><strong>iPhone or Android:</strong> open the Wi-Fi settings and tap your network.</li>
 </ul>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml" rel="noopener">IANA IPv4 Address Space Registry</a></li></ul>
 `,
 
   "ipv4-vs-ipv6": `
@@ -61,6 +64,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Do I need to do anything?</h2>
 <p>Usually not. If your provider supports IPv6, your router will probably use it automatically. If you run servers, make sure your DNS has both an A record and an AAAA record, and that your firewall rules cover both. See <a href="/learn/dns-records-explained">DNS records explained</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.google.com/intl/en/ipv6/statistics.html" rel="noopener">Google: IPv6 adoption statistics</a></li></ul>
 `,
 
   "public-vs-private-ip-address": `
@@ -91,6 +97,9 @@ export const BODIES: Record<string, string> = {
 <li><strong>Privacy.</strong> Websites see only your public address, never the private ones behind it.</li>
 <li><strong>Troubleshooting.</strong> If the router's WAN address differs from the public address you see online, your provider is probably using carrier-grade NAT.</li>
 </ul>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li></ul>
 `,
 
   "how-to-change-your-ip-address": `
@@ -119,6 +128,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Is changing your IP a privacy fix?</h2>
 <p>Only partly. A new address stops sites from linking you to the old one, but cookies, logins and browser fingerprints still identify you. If you want websites to see a different address from your provider's, read <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a>. For the full picture, see <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc2131" rel="noopener">RFC 2131: Dynamic Host Configuration Protocol (IETF)</a></li><li><a href="https://www.torproject.org/" rel="noopener">The Tor Project</a></li></ul>
 `,
 
   "can-someone-track-you-by-ip-address": `
@@ -159,6 +171,9 @@ export const BODIES: Record<string, string> = {
 <li>If your address is being attacked, ask your provider to <a href="/learn/how-to-change-your-ip-address">change it</a>.</li>
 <li>Test for <a href="/learn/webrtc-leak-explained">WebRTC leaks</a>, which can expose your real address behind a VPN.</li>
 </ol>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF)</a></li><li><a href="https://coveryourtracks.eff.org/" rel="noopener">EFF: Cover Your Tracks (fingerprinting test)</a></li></ul>
 `,
 
   "why-does-my-ip-address-change": `
@@ -187,6 +202,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>How to track your address</h2>
 <p>Check our <a href="/">IP checker</a> any time, or use the <a href="/lookup">lookup tool</a> to see which provider and region currently own it. If you want a new one on purpose, see <a href="/learn/how-to-change-your-ip-address">how to change your IP address</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc2131" rel="noopener">RFC 2131: Dynamic Host Configuration Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li></ul>
 `,
 
   "dns-records-explained": `
@@ -225,6 +243,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Check any domain</h2>
 <p>Try the <a href="/dns">DNS lookup</a> on your own domain to see all of these records at once, and use <a href="/whois">WHOIS</a> to see the registrar and nameservers that control them.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1035" rel="noopener">RFC 1035: Domain Names: Implementation and Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3596" rel="noopener">RFC 3596: DNS Extensions to Support IP Version 6 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208: Sender Policy Framework (SPF) (IETF)</a></li></ul>
 `,
 
   "webrtc-leak-explained": `
@@ -258,6 +279,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Is WebRTC bad?</h2>
 <p>No. It makes video calls and voice chat in the browser possible. The risk only matters if you rely on a VPN or proxy to hide your address. See <a href="/learn/how-to-change-your-ip-address">how to change your IP address</a> for your options.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8445" rel="noopener">RFC 8445: Interactive Connectivity Establishment (ICE) (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8489" rel="noopener">RFC 8489: Session Traversal Utilities for NAT (STUN) (IETF)</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API" rel="noopener">MDN: WebRTC API</a></li></ul>
 `,
 
   "what-is-port-forwarding": `
@@ -297,6 +321,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Staying safe</h2>
 <p>Every open port is an entrance. Forward only what you need, keep the software behind it updated, use strong passwords or keys, and close ports you no longer use. For private services such as a home server or camera, a VPN or a tunnel service is safer than exposing a port at all.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc3022" rel="noopener">RFC 3022: Traditional IP Network Address Translator (IETF)</a></li><li><a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" rel="noopener">IANA Service Name and Transport Protocol Port Number Registry</a></li></ul>
 `,
 
   "cidr-subnet-mask-explained": `
@@ -345,6 +372,9 @@ export const BODIES: Record<string, string> = {
 <li>The private ranges in <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</li>
 <li>Network ownership records. Our <a href="/whois">WHOIS tool</a> shows the CIDR block an address belongs to.</li>
 </ul>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc4632" rel="noopener">RFC 4632: Classless Inter-domain Routing (CIDR) (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li></ul>
 `,
 
   "fix-slow-dns-lookup": `
@@ -390,6 +420,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Still slow?</h2>
 <p>Run our <a href="/speed">speed test</a> to check latency and jitter. A high round-trip time points to a connection problem, not DNS.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8484" rel="noopener">RFC 8484: DNS Queries over HTTPS (DoH) (IETF)</a></li><li><a href="https://developers.cloudflare.com/1.1.1.1/" rel="noopener">Cloudflare: 1.1.1.1 DNS resolver documentation</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li></ul>
 `,
 
   "how-to-check-if-a-port-is-open": `
@@ -427,6 +460,9 @@ export const BODIES: Record<string, string> = {
 <li>Check whether your provider uses carrier-grade NAT. If your router's WAN address differs from the address on our <a href="/">IP checker</a>, inbound connections cannot reach you.</li>
 <li>Remember that UDP services cannot be confirmed the same way, because UDP has no connection handshake.</li>
 </ol>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" rel="noopener">IANA Service Name and Transport Protocol Port Number Registry</a></li><li><a href="https://nmap.org/book/man.html" rel="noopener">Nmap reference guide</a></li></ul>
 `,
 
   "change-ip-address-windows-11": `
@@ -468,6 +504,9 @@ export const BODIES: Record<string, string> = {
 <li><strong>&ldquo;IP address conflict&rdquo; message.</strong> Another device already uses that address. Choose a different one.</li>
 <li><strong>Not sure what a private address is?</strong> Read <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</li>
 </ul>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://support.microsoft.com/en-us/windows/essential-network-settings-and-tasks-in-windows-f21a9bbc-c582-55cd-35e0-73431160a1b9" rel="noopener">Microsoft: Essential network settings and tasks in Windows</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netsh-interface" rel="noopener">Microsoft: netsh interface command reference</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li></ul>
 `,
 
   "find-printer-ip-address": `
@@ -493,6 +532,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Make the address stay put</h2>
 <p>If the address changes and your printer keeps disconnecting, give it a fixed one. Either reserve it in the router's DHCP settings, which is the best approach, or set a static address on the printer. Choose an address inside your network and outside the DHCP pool. Our <a href="/subnet">subnet calculator</a> shows the usable range.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/arp" rel="noopener">Microsoft: arp command reference</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li></ul>
 `,
 
   "is-my-ip-address-blacklisted": `
@@ -525,6 +567,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>What our check does not cover</h2>
 <p>We only query lists that answer public DNS resolvers. Spamhaus, a widely used list, refuses these queries, so it is not included. If your email problem continues, also check Spamhaus directly on its own website.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc5782" rel="noopener">RFC 5782: DNS Blacklists and Whitelists (IETF)</a></li><li><a href="https://www.spamhaus.org/ip-reputation/" rel="noopener">Spamhaus: IP reputation</a></li></ul>
 `,
 
   "how-to-hide-your-ip-address": `
@@ -610,6 +655,9 @@ export const BODIES: Record<string, string> = {
 <li><strong>Apple users who mainly use Safari:</strong> iCloud Private Relay.</li>
 </ul>
 <p>For the bigger picture of what an address reveals about you, read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.torproject.org/" rel="noopener">The Tor Project</a></li><li><a href="https://support.apple.com/en-us/102602" rel="noopener">Apple: About iCloud Private Relay</a></li></ul>
 `,
 
   "how-to-find-your-ip-address": `
@@ -650,6 +698,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Is it safe to share my IP address?</h2>
 <p>Generally yes. An address shows roughly where you are and who your provider is, not your name or home address. See <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li></ul>
 `,
 
   "find-router-ip-address": `
@@ -701,6 +752,9 @@ export const BODIES: Record<string, string> = {
 <li>To find other devices on your network, such as a printer, see <a href="/learn/find-printer-ip-address">how to find a printer's IP address</a>.</li>
 <li>To check how your connection performs, run the <a href="/speed">speed test</a> or the <a href="/ping">ping test</a>.</li>
 </ul>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li></ul>
 `,
 
   "what-is-my-isp": `
@@ -732,6 +786,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Check how well your ISP performs</h2>
 <p>Test your connection with the <a href="/speed">speed test</a> and the <a href="/ping">ping test</a>. If your results are far below what you pay for, repeat them on a wired connection before calling support.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc9083" rel="noopener">RFC 9083: JSON Responses for the Registration Data Access Protocol (RDAP) (IETF)</a></li><li><a href="https://search.arin.net/" rel="noopener">ARIN: Search Whois and RDAP</a></li></ul>
 `,
 
   "is-my-vpn-working": `
@@ -765,6 +822,9 @@ export const BODIES: Record<string, string> = {
 <li>Restart the browser and test again.</li>
 <li>If the leak continues, try another provider. Our guide <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a> compares the alternatives.</li>
 </ul>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8445" rel="noopener">RFC 8445: Interactive Connectivity Establishment (ICE) (IETF)</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API" rel="noopener">MDN: WebRTC API</a></li></ul>
 `,
 
   "what-is-ping": `
@@ -802,6 +862,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>How to lower your ping</h2>
 <p>The biggest wins are using a cable instead of Wi-Fi, pausing large downloads while you play, and choosing a game server close to you. Our full guide walks through each fix and the popular advice that does nothing: <a href="/learn/how-to-lower-ping">how to lower your ping</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc792" rel="noopener">RFC 792: Internet Control Message Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4443" rel="noopener">RFC 4443: ICMPv6 for the Internet Protocol Version 6 Specification (IETF)</a></li></ul>
 `,
 
   "how-to-flush-dns-cache": `
@@ -858,6 +921,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Check whether it worked</h2>
 <p>Look up the domain with our <a href="/dns">DNS lookup</a>, which queries live resolvers rather than anything cached on your machine. Compare the answer with what your browser is doing. If the live answer is correct but your browser still goes elsewhere, something on your device is still caching. If the live answer itself is the old one, the change simply has not propagated yet, and the record's TTL tells you how long that takes. See <a href="/learn/dns-records-explained">DNS records explained</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1034" rel="noopener">RFC 1034: Domain Names: Concepts and Facilities (IETF)</a></li></ul>
 `,
 
   "what-is-a-dns-server": `
@@ -912,6 +978,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>Resolver or authoritative?</h2>
 <p>A <strong>resolver</strong> answers questions for you and caches the results. An <strong>authoritative</strong> nameserver holds the real records for a domain and is the source of truth. When you buy a domain, you point it at authoritative nameservers, and those are the NS records you can inspect in <a href="/learn/dns-records-explained">DNS records explained</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1034" rel="noopener">RFC 1034: Domain Names: Concepts and Facilities (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8484" rel="noopener">RFC 8484: DNS Queries over HTTPS (DoH) (IETF)</a></li><li><a href="https://developers.cloudflare.com/1.1.1.1/" rel="noopener">Cloudflare: 1.1.1.1 DNS resolver documentation</a></li></ul>
 `,
 
   "what-is-a-mac-address": `
@@ -963,6 +1032,9 @@ export const BODIES: Record<string, string> = {
 <li><strong>&ldquo;MAC filtering secures my Wi-Fi.&rdquo;</strong> It helps a little, but addresses are visible in the air and can be imitated. A strong WPA2 or WPA3 password matters far more.</li>
 <li><strong>&ldquo;A MAC address is permanent.&rdquo;</strong> It is set in hardware, but operating systems can and do present a different one.</li>
 </ul>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://standards.ieee.org/products-programs/regauth/" rel="noopener">IEEE Registration Authority (MAC address OUIs)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc7042" rel="noopener">RFC 7042: IANA Considerations and IETF Protocol and Documentation Usage for IEEE 802 Parameters (IETF)</a></li></ul>
 `,
 
   "what-is-my-default-gateway": `
@@ -1011,6 +1083,9 @@ export const BODIES: Record<string, string> = {
 <li><strong>Gateway responds but nothing loads.</strong> Local networking is fine and the fault is upstream, either DNS or your provider. Try our <a href="/ping">ping test</a> and <a href="/learn/what-is-a-dns-server">what is a DNS server</a>.</li>
 <li><strong>Two gateways.</strong> A second router behind the first creates double NAT, which breaks port forwarding until one is put into bridge mode.</li>
 </ul>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1122" rel="noopener">RFC 1122: Requirements for Internet Hosts: Communication Layers (IETF)</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li></ul>
 `,
 
   "static-vs-dynamic-ip-address": `
@@ -1065,6 +1140,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>How to set a static local IP</h2>
 <p>The cleanest method is a DHCP reservation. Log in to your router, find the DHCP or LAN settings, locate the device in the client list and reserve its current address against its MAC address. The device keeps using automatic settings and always receives the same address. You will need its MAC address, which is covered in <a href="/learn/what-is-a-mac-address">what is a MAC address</a>. To set it on the device instead, follow <a href="/learn/change-ip-address-windows-11">how to change your IP address on Windows 11</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc2131" rel="noopener">RFC 2131: Dynamic Host Configuration Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li></ul>
 `,
 
   "how-to-lower-ping": `
@@ -1109,6 +1187,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>When it is your provider</h2>
 <p>If your ping is high on a wired connection with nothing else running, and the nearest servers are still slow, the problem is upstream. Run a traceroute (<code>tracert example.com</code> on Windows, <code>traceroute example.com</code> on macOS and Linux) to see where the delay appears. Record results from our <a href="/ping">ping test</a> and <a href="/speed">speed test</a> at different times of day, then contact support with that evidence. Congestion in the evening is a common and fixable complaint.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc792" rel="noopener">RFC 792: Internet Control Message Protocol (IETF)</a></li></ul>
 `,
 
   "how-to-check-if-a-proxy-is-working": `
@@ -1134,6 +1215,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>What a quick test cannot prove</h2>
 <p>A free online test runs from one place for a few seconds. It cannot tell you how a proxy behaves over a day, how many of its IPs are already burned on your target, or how it handles heavy traffic. Treat it as a screening step, then run a small trial on your real workload before you buy more. To measure speed properly, follow <a href="/learn/how-to-test-proxy-speed">how to test proxy speed</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110: HTTP Semantics (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1928" rel="noopener">RFC 1928: SOCKS Protocol Version 5 (IETF)</a></li><li><a href="https://curl.se/docs/manpage.html" rel="noopener">curl manual</a></li></ul>
 `,
 
   "proxy-error-407-403-502": `
@@ -1170,6 +1254,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>A quick way to narrow it down</h2>
 <p>Run the same proxy in the checker and in cURL, then change one thing at a time: the protocol, the port, the credentials, the destination. The first change that turns a failure into a success is your answer. If nothing helps, send your provider the exact code and the time you saw it.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110: HTTP Semantics (IETF)</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/407" rel="noopener">MDN: 407 Proxy Authentication Required</a></li></ul>
 `,
 
   "http-vs-socks5-proxy": `
@@ -1206,6 +1293,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>How to tell what you have</h2>
 <p>Your provider's dashboard usually says, but a proxy list may not. The <a href="/proxy-checker">proxy checker</a> auto-detects the protocol: it tries HTTP first, falls back to SOCKS5, and reports which one answered. Pointing the wrong protocol at a port is a common cause of the errors in our <a href="/learn/proxy-error-407-403-502">proxy error guide</a>. For what each kind reveals about you, read <a href="/learn/proxy-anonymity-levels">transparent, anonymous and elite proxies</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1928" rel="noopener">RFC 1928: SOCKS Protocol Version 5 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1929" rel="noopener">RFC 1929: Username/Password Authentication for SOCKS V5 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110: HTTP Semantics (IETF)</a></li></ul>
 `,
 
   "residential-vs-datacenter-proxies": `
@@ -1238,6 +1328,9 @@ export const BODIES: Record<string, string> = {
 
 <h2>How to choose</h2>
 <p>Start from the target. If it does not block datacenter addresses, you do not need to pay for residential. If it does, test a small residential or ISP plan on that exact site before you commit, using the website test in the checker. Compare providers on success rate and speed measured the same way, as described in <a href="/learn/how-to-test-proxy-speed">how to test proxy speed</a>, and choose between <a href="/learn/rotating-vs-sticky-proxies">rotating and sticky sessions</a> once you know whether your job needs a stable IP.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://search.arin.net/" rel="noopener">ARIN: Search Whois and RDAP</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9083" rel="noopener">RFC 9083: JSON Responses for the Registration Data Access Protocol (RDAP) (IETF)</a></li></ul>
 `,
 
   "rotating-vs-sticky-proxies": `
@@ -1279,6 +1372,9 @@ export const BODIES: Record<string, string> = {
 <li><strong>Accounts that should look consistent over time, or allow-listing.</strong> Static.</li>
 </ul>
 <p>Whatever you pick, the type of address matters as much as how it rotates. Read <a href="/learn/residential-vs-datacenter-proxies">residential vs datacenter proxies</a> before you buy.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1928" rel="noopener">RFC 1928: SOCKS Protocol Version 5 (IETF)</a></li></ul>
 `,
 
   "proxy-anonymity-levels": `
@@ -1316,6 +1412,9 @@ export const BODIES: Record<string, string> = {
 <li><strong>Browser fingerprint and cookies.</strong> Sites can recognise you from your browser details and from cookies, whatever proxy you use. Our <a href="/browser">browser info page</a> shows what you expose.</li>
 </ul>
 <p>For the wider picture, read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc7239" rel="noopener">RFC 7239: Forwarded HTTP Extension (IETF)</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Forwarded-For" rel="noopener">MDN: X-Forwarded-For header</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110: HTTP Semantics (IETF)</a></li></ul>
 `,
 
   "how-to-test-proxy-speed": `
@@ -1358,6 +1457,9 @@ export const BODIES: Record<string, string> = {
 <li>Buy the one that wins on your numbers, not the one with the best headline figure.</li>
 </ol>
 <p>If a test fails outright, see <a href="/learn/proxy-error-407-403-502">proxy errors and fixes</a>. For the overall method, read <a href="/learn/how-to-check-if-a-proxy-is-working">how to check if a proxy is working</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://everything.curl.dev/usingcurl/verbose/writeout.html" rel="noopener">Everything curl: write-out timing variables</a></li><li><a href="https://curl.se/docs/manpage.html" rel="noopener">curl manual</a></li></ul>
 `,
   "get-public-ip-address-command-line": `
 <p>The quickest way to get your public IP address from a terminal is <code>curl https://ipcomet.com</code>. It prints your address and nothing else, so the output can go straight into a script. This guide shows the same one-liner on macOS, Linux and Windows, how to do it from Python and Node.js, how to get your location and ISP as JSON, and how to choose between IPv4 and IPv6.</p>
@@ -1423,6 +1525,9 @@ console.log(ip);</code></pre>
 
 <h2>Limits and privacy</h2>
 <p>No key or sign-up is needed. Please keep requests reasonable: checking every few minutes is fine, but calling it in a tight loop may be rate limited. ipcomet does not store or log the addresses it sees, as the <a href="/privacy">privacy page</a> explains. The <a href="/developers">free IP API page</a> lists every endpoint with its exact rate limit. Try it in the browser first with the <a href="/">what is my IP address</a> page.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://curl.se/docs/manpage.html" rel="noopener">curl manual</a></li><li><a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/invoke-restmethod" rel="noopener">Microsoft: Invoke-RestMethod</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API" rel="noopener">MDN: Fetch API</a></li></ul>
 `,
   "how-to-choose-an-ip-checker": `
 <p>Every "what is my IP" site shows you the same number. The address your connection presents to the internet is a fact, not an opinion, and no tool can show you a different one. So if the headline answer is identical everywhere, what actually separates these sites, and how should you pick one?</p>
@@ -1464,6 +1569,9 @@ console.log(ip);</code></pre>
 
 <h2>The short answer</h2>
 <p>Any competent IP checker gives you the right address. Pick on the things that vary: whether it keeps your address, how much it loads to tell you one number, and whether it is honest about the parts it is guessing at. Those are all checkable in a couple of minutes, and they matter more than which site ranks first.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://developer.chrome.com/docs/devtools/network" rel="noopener">Chrome DevTools: Network panel</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF)</a></li></ul>
 `,
   "what-is-whois": `
 <p>WHOIS is the public record of who registered a domain name. It has existed since the early 1980s, and for most of that time it did what the name suggests: you typed a domain, you got back a name, a postal address, a phone number and an email. That era is over. Look up almost any domain today and the registrant line reads something like "REDACTED FOR PRIVACY" or points at a proxy service in Arizona.</p>
@@ -1505,6 +1613,9 @@ console.log(ip);</code></pre>
 
 <h2>Checking a domain yourself</h2>
 <p>Paste any domain into the <a href="/whois">WHOIS lookup</a> and you will get the registrar, the dates, the name servers and the status codes, drawn from RDAP where the registry supports it. If you want to know where the site is actually served from rather than who bought the name, the <a href="/lookup">IP lookup</a> and <a href="/dns">DNS lookup</a> answer that better, and <a href="/learn/dns-records-explained">the guide to DNS records</a> explains which record does what.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc3912" rel="noopener">RFC 3912: WHOIS Protocol Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9083" rel="noopener">RFC 9083: JSON Responses for the Registration Data Access Protocol (RDAP) (IETF)</a></li><li><a href="https://www.icann.org/rdap" rel="noopener">ICANN: Registration Data Access Protocol (RDAP)</a></li></ul>
 `,
   "what-is-reverse-dns": `
 <p>Forward DNS turns a name into an address. Reverse DNS does the opposite: give it 8.8.8.8 and it answers dns.google. The record that makes this work is called a PTR record, and it lives in a strange corner of DNS that most people never touch, right up until an email stops being delivered.</p>
@@ -1539,6 +1650,9 @@ console.log(ip);</code></pre>
 
 <h2>Checking an address</h2>
 <p>Put any IPv4 or IPv6 address into the <a href="/reverse-dns">reverse DNS lookup</a> to see its PTR record and hostname. If you want the other direction, the <a href="/dns">DNS lookup</a> resolves names to addresses, and the <a href="/lookup">IP lookup</a> adds the network owner and ASN, which is often the detail you actually wanted. For the wider picture of which record does what, <a href="/learn/dns-records-explained">DNS records explained</a> covers the set.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1035" rel="noopener">RFC 1035: Domain Names: Implementation and Specification (IETF)</a></li><li><a href="https://developers.google.com/crawling/docs/crawlers-fetchers/verify-google-requests" rel="noopener">Google: Verifying Googlebot and other Google crawlers</a></li></ul>
 `,
   "what-your-browser-reveals": `
 <p>Your IP address is the identifier people worry about. It is also the one that is easiest to change, and far from the most revealing thing your browser hands over. Every request carries a small dossier about your device, and a few lines of JavaScript can extend that into something close to a unique signature.</p>
@@ -1579,6 +1693,9 @@ console.log(ip);</code></pre>
 
 <h2>Seeing your own</h2>
 <p>The <a href="/browser">browser info</a> page shows what your browser exposes to any site you visit: user agent, screen, language, time zone and the rest, with nothing stored. Pair it with the <a href="/headers">HTTP headers viewer</a> for the pre-JavaScript layer, and the <a href="/webrtc">WebRTC leak test</a> if you are behind a VPN and want to know whether it is holding.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://coveryourtracks.eff.org/" rel="noopener">EFF: Cover Your Tracks (fingerprinting test)</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/User-Agent" rel="noopener">MDN: User-Agent header</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Client_hints" rel="noopener">MDN: HTTP Client Hints</a></li></ul>
 `,
   "what-is-an-ip-checker": `
 <p>An IP checker is a tool that shows an IP address and what can be learned about it. Some checkers tell you <em>your own</em> public IP address, some look up <em>any</em> address or domain you type in, and some judge whether an address looks like a VPN, a proxy or a source of spam. This guide explains the three kinds, what each result means, and which one to use for the job in front of you.</p>
@@ -1613,6 +1730,9 @@ console.log(ip);</code></pre>
 <h2>Limits to keep in mind</h2>
 <p>An IP address is not an identity. It points at a connection, usually shared by many people, and the location is approximate. VPN and proxy detection is based on clues, so residential proxies and some private VPNs cannot be detected. Treat the results as indicators, not proof. The <a href="/about">About page</a> lists how each result is produced.</p>
 <p>From a terminal you can get your own address with one command; see <a href="/learn/get-public-ip-address-command-line">how to get your public IP address from the command line</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF)</a></li><li><a href="https://check.torproject.org/torbulkexitlist" rel="noopener">Tor Project: bulk exit node list</a></li></ul>
 `,
   "why-is-my-ip-location-wrong": `
 <p>An IP address does not contain your location. A location lookup is an estimate that a database makes by matching the address to records and measurements. That is why a lookup can show the right country but the wrong city, or a place far from where you actually are. Here is why it happens and what you can do about it.</p>
@@ -1638,5 +1758,8 @@ console.log(ip);</code></pre>
 
 <h2>Why it matters, and why it is also reassuring</h2>
 <p>A wrong location can show you the wrong language or prices, block a service limited to a region, or trigger a security warning. It also means websites cannot find your home from your IP address. Read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by IP address</a> for what an IP address does reveal.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li></ul>
 `,
 };
