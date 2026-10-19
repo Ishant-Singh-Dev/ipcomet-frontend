@@ -16,7 +16,7 @@ export const TOOLS: Tool[] = [
     name: "My IP",
     desc: "Your public IP address, location and ISP",
     title: "What Is My IP Address? Free IP Checker",
-    description: "What's my IP? See your public IP address, location, ISP and connection details instantly with this free IP checker. No ads, no sign-up.",
+    description: "What's my IP? Check your public IP address instantly: approximate location, ISP, ASN, IPv4 and IPv6. Free IP checker, no ads, no sign-up.",
   },
   {
     id: "lookup",

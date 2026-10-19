@@ -288,7 +288,7 @@ export function renderPage(o: PageOptions): string {
   const pagePath = lp(o.path);
   const url = o.origin ? o.origin + pagePath : "";
   const full = `${o.title} | ${BRAND}`;
-  const title = o.id === "ip" || full.length > 60 ? o.title : full;
+  const title = full.length > 60 ? o.title : full;
   const active = (id: string) => (id === o.id ? ' aria-current="page"' : "");
 
   const tools = TOOLS.map((x) => localTool(x, loc));
