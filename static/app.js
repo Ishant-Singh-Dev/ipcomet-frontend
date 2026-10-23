@@ -321,7 +321,36 @@
   const CF = "https://speed.cloudflare.com";
   // /cdn-cgi/trace is answered by the edge itself (no handler), so its time is the network round trip, and its body names the data center.
   const CFLAT = { url: () => `${CF}/cdn-cgi/trace?r=${Math.random()}`, init: { credentials: "omit" }, colo: async (res) => (/colo=([A-Z]{3})/.exec(await res.text()) || [])[1] || "" };
+  /*
+    Second choice when a blocker swallows /cdn-cgi/trace: an empty download from the same speed server. Its reply
+    includes the time Cloudflare spent producing it (Server-Timing cfSpeedWorker and cfSpeedEdge), which is subtracted.
+    Checked on 23 Oct 2026 from Delhi: trace 15.9 ms, raw 46.8 ms, corrected 17.2 ms (medians of 12).
+  */
+  const CFDOWN = {
+    url: () => `${CF}/__down?bytes=0&r=${Math.random()}`,
+    init: { credentials: "omit" },
+    colo: async (res) => { await res.arrayBuffer(); return ""; },
+    server: (url) => {
+      const e = performance.getEntriesByName(url).pop();
+      const st = Object.fromEntries(((e && e.serverTiming) || []).map((x) => [x.name, x.duration]));
+      return (st.cfSpeedWorker || 0) + (st.cfSpeedEdge || 0);
+    },
+  };
   const OWNLAT = { url: (i) => `/api/ping?i=${i}&r=${Math.random()}`, init: {}, colo: async (res) => res.headers.get("x-colo") || "" };
+
+  // One timed round trip. The time is taken when the reply's headers arrive, before the body is read.
+  async function timed(target, i, signal) {
+    const url = target.url(i);
+    const t = performance.now();
+    const res = await fetch(url, { cache: "no-store", signal, ...target.init });
+    let ms = performance.now() - t;
+    if (!res.ok) throw new Error("bad reply");
+    const colo = await target.colo(res);
+    if (target.server) ms = Math.max(0.1, ms - target.server(url));
+    performance.clearResourceTimings(); // the browser keeps only 250 entries, and later ones would lose their correction
+    return { ms, colo };
+  }
+
   let latTarget = null;
   async function latencyTarget() {
     if (latTarget) return latTarget;
@@ -329,9 +358,19 @@
     const timer = setTimeout(() => ctl.abort(), 3000);
     try {
       const res = await fetch(CFLAT.url(), { cache: "no-store", signal: ctl.signal, ...CFLAT.init });
-      if (!res.ok) throw new Error("unavailable");
+      // Some blockers (Brave Shields, uBlock filter lists) answer /cdn-cgi/trace locally with an empty body in under
+      // a millisecond, which would read as 0 ms. A real answer always names the data center.
+      if (!res.ok || !/colo=[A-Z]{3}/.test(await res.text())) throw new Error("unavailable");
       latTarget = CFLAT;
-    } catch { latTarget = OWNLAT; }
+    } catch {
+      try {
+        const url = CFDOWN.url();
+        const res = await fetch(url, { cache: "no-store", signal: ctl.signal, ...CFDOWN.init });
+        await res.arrayBuffer();
+        if (!res.ok || !CFDOWN.server(url)) throw new Error("unavailable");
+        latTarget = CFDOWN;
+      } catch { latTarget = OWNLAT; }
+    }
     clearTimeout(timer);
     return latTarget;
   }
@@ -355,11 +394,10 @@
         $("#prog").style.width = ((i + 1) / COUNT) * 100 + "%";
         const ctl = new AbortController();
         const timer = setTimeout(() => ctl.abort(), 3000);
-        const t = performance.now();
         try {
-          const res = await fetch(target.url(i), { cache: "no-store", signal: ctl.signal, ...target.init });
-          const ms = performance.now() - t;
-          colo = (await target.colo(res)) || colo;
+          const r = await timed(target, i, ctl.signal);
+          const ms = r.ms;
+          colo = r.colo || colo;
           if (i >= 2) times.push(ms); // the first checks include connection set-up, so they are not counted
           $("#live").innerHTML = `${ms.toFixed(0)}<small>ms</small>`;
         } catch { if (i >= 2) lost++; } finally { clearTimeout(timer); }
@@ -522,38 +560,70 @@
     const go = $("#go");
     const mbps = (bytes, ms) => (bytes * 8) / 1e6 / (ms / 1000);
     const fmt = (n) => (n >= 100 ? n.toFixed(0) : n.toFixed(1));
-    const setLive = (n, unit = "Mbps") => { $("#live").innerHTML = `${fmt(n)}<small>${unit}</small>`; };
+    const setLive = (n, unit = "Mbps") => { $("#live").innerHTML = `${unit === "ms" ? n.toFixed(0) : fmt(n)}<small>${unit}</small>`; };
     const phase = (text, p) => { $("#phase").textContent = tr(text); if (p !== undefined) $("#prog").style.width = p + "%"; };
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const median = (a) => { const s = a.slice().sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : NaN; };
+    const step = (id, state) => { const el = $("#st-" + id); el.classList.remove("on", "done"); if (state) el.classList.add(state); };
 
-    async function latency() {
-      const sample = async (target) => {
-        const times = [];
-        let colo = "";
-        for (let i = 0; i < 12; i++) {
-          const t = performance.now();
-          const res = await fetch(target.url(i), { cache: "no-store", ...target.init });
-          times.push(performance.now() - t);
-          colo = (await target.colo(res)) || colo;
-          phase("Measuring latency…", (i / 12) * 15);
-        }
-        return { times, colo };
-      };
-      let r;
-      try { r = await sample(await latencyTarget()); } catch { latTarget = OWNLAT; r = await sample(OWNLAT); }
-      const chrono = r.times.slice(2); // drop connection warm-up
-      const sorted = chrono.slice().sort((a, b) => a - b);
-      const median = sorted[Math.floor(sorted.length / 2)];
+    /* ---- Live trace: one timeline, download drawn in the accent colour, upload in ink. ---- */
+    const trace = { d: [], u: [], t0: 0 };
+    function draw() {
+      const all = trace.d.concat(trace.u);
+      const top = Math.max(1, ...all.map((p) => p[1])) * 1.15;
+      const end = Math.max(1, ...all.map((p) => p[0]));
+      const pts = (arr) => arr.map(([t, v]) => `${((t / end) * 600).toFixed(1)} ${(150 - (v / top) * 146).toFixed(1)}`);
+      for (const k of ["d", "u"]) {
+        const p = pts(trace[k]);
+        $("#tr-" + k).setAttribute("d", p.length ? "M" + p.join("L") : "");
+        $("#tr-" + k + "a").setAttribute("d", p.length ? `M${p[0].split(" ")[0]} 150L${p.join("L")}L${p[p.length - 1].split(" ")[0]} 150Z` : "");
+      }
+      const peak = Math.max(0, ...all.map((p) => p[1]));
+      $("#peak").textContent = peak ? tr("Peak {n} Mbps", { n: fmt(peak) }) : "";
+    }
+
+    /* ---- Latency ---- */
+    const probe = (target, i) => timed(target, i);
+
+    async function idleLatency() {
+      let target = await latencyTarget();
+      const times = [];
+      let colo = "";
+      for (let i = 0; i < 22; i++) {
+        let r;
+        try { r = await probe(target, i); } catch { if (target === OWNLAT) throw new Error("no data"); target = latTarget = OWNLAT; i--; continue; }
+        times.push(r.ms);
+        colo = r.colo || colo;
+        if (i >= 2) setLive(median(times.slice(2)), "ms");
+        phase("Measuring latency…", (i / 22) * 10);
+      }
+      const chrono = times.slice(2); // the first two include connection set-up
       // Jitter is how much the delay changes from one check to the next, so it needs the checks in the order they ran.
       const jitter = chrono.slice(1).reduce((s, v, i) => s + Math.abs(v - chrono[i]), 0) / (chrono.length - 1);
-      $("#lat").textContent = `${median.toFixed(0)} ms`;
-      $("#jit").textContent = `${jitter.toFixed(1)} ms`;
-      if (r.colo) $("#colo").textContent = ` (${r.colo})`;
+      return { ms: median(chrono), jitter, colo };
+    }
+
+    /*
+      Latency under load. While data is flowing, a round trip is timed every 250 ms. On a line whose router or modem
+      buffers too much, these queue behind the test data and the delay jumps: that is bufferbloat, and it is why a call
+      stutters when someone else starts a download. Ookla reports it as "loaded latency" and fast.com as "loaded".
+    */
+    function loadedProbe() {
+      const times = [];
+      let on = true, i = 0;
+      const loop = (async () => {
+        await sleep(1200); // let the transfer fill the line first
+        while (on) {
+          try { const r = await probe(latTarget || OWNLAT, 100 + i++); if (on) times.push(r.ms); } catch {}
+          await sleep(250);
+        }
+      })();
+      return async () => { on = false; await loop; return times.length >= 3 ? median(times) : NaN; };
     }
 
     /*
       Where the bytes come from. Cloudflare's own speed-test servers are built to move data at line rate and allow
-      cross-origin use, and the browser opens several parallel connections to them, as Ookla and fast.com do. Pulling
+      cross-origin use, and the browser runs several parallel transfers to them, as Ookla and fast.com do. Pulling
       the test data through our own Worker capped the result far below the real speed, so it is only the fallback.
     */
     const CHUNK = 26214400;
@@ -575,9 +645,10 @@
     }
 
     /*
-      Samples are taken every 250 ms. The first 1.5 s (TCP ramp-up) is ignored, then the slowest 20% and the fastest 5%
-      of the samples are dropped before averaging. One stalled stream or a request restart cannot drag the result down,
-      and one burst cannot inflate it, which is how the big speed tests arrive at a steady-state figure.
+      Adaptive length. Throughput is sampled every 250 ms; the first 1.5 s (TCP ramp-up) is ignored. After the minimum
+      time the test stops as soon as the last two seconds average within 3% of the two seconds before, which is how
+      fast.com decides a line has settled, and it never runs past the maximum. The result is the mean of the settled
+      samples after dropping the slowest 20% and the fastest 5%, so one stalled transfer or one burst cannot move it.
     */
     const steadyMbps = (rates, fallback) => {
       if (rates.length < 8) return fallback;
@@ -585,114 +656,193 @@
       const kept = s.slice(Math.floor(s.length * 0.2), s.length - Math.floor(s.length * 0.05));
       return kept.reduce((a, b) => a + b, 0) / kept.length;
     };
+    const settled = (rates) => {
+      if (rates.length < 16) return false;
+      const avg = (a) => a.reduce((x, y) => x + y, 0) / a.length;
+      const a = avg(rates.slice(-8)), b = avg(rates.slice(-16, -8));
+      return b > 0 && Math.abs(a - b) / b < 0.03;
+    };
 
-    function sampler(start, warmup, onLive) {
+    // Runs one direction. `start(sink, stopped)` launches the transfers and resolves when they have all ended.
+    async function transfer(kind, { min, max, from, to, label, start }) {
+      const t0 = performance.now();
       const rates = [];
-      let last = { t: 0, b: 0 }, total = 0;
-      const recent = [];
-      return {
-        add: (n) => { total += n; },
-        get total() { return total; },
-        rates,
-        tick() {
-          const t = performance.now() - start;
+      let total = 0, last = { t: 0, b: 0 }, stop = false, recent = [], tick;
+      const offset = trace.t0;
+      const done = new Promise((resolve) => {
+        tick = setInterval(() => {
+          const t = performance.now() - t0;
           const dt = t - last.t;
-          if (dt < 50) return t;
-          const rate = mbps(total - last.b, dt);
-          if (t > warmup) rates.push(rate);
-          last = { t, b: total };
-          recent.push(rate);
-          if (recent.length > 4) recent.shift();
-          onLive(recent.reduce((a, b) => a + b, 0) / recent.length);
-          return t;
-        },
-      };
-    }
-
-    async function download() {
-      const DURATION = 8000, STREAMS = 6;
-      const ctl = new AbortController();
-      const start = performance.now();
-      const s = sampler(start, 1500, setLive);
-      const tick = setInterval(() => phase("Testing download…", 15 + Math.min(s.tick() / DURATION, 1) * 45), 250);
-      const worker = async () => {
-        while (performance.now() - start < DURATION) {
-          try {
-            const res = await fetch(src.down(), { signal: ctl.signal, cache: "no-store", ...src.init });
-            if (!res.ok) return;
-            const reader = res.body.getReader();
-            for (;;) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              s.add(value.byteLength);
-              if (performance.now() - start >= DURATION) { ctl.abort(); return; }
-            }
-          } catch { return; }
-        }
-      };
-      await Promise.all(Array.from({ length: STREAMS }, worker));
-      clearInterval(tick);
-      // Streams that died early (for example a rate-limited server) make the figure meaningless.
-      if (s.total < 100000 || performance.now() - start < DURATION - 1000) throw new Error("no data");
-      const result = steadyMbps(s.rates, mbps(s.total, performance.now() - start));
-      $("#down").textContent = `${fmt(result)} Mbps`;
-      setLive(result);
-    }
-
-    async function upload() {
-      const DURATION = 6000, STREAMS = 6, BLOCK = 65536;
-      const block = new Uint8Array(BLOCK);
-      crypto.getRandomValues(block);
-      const body = new Blob(Array.from({ length: 256 }, () => block)); // 16 MB, so a fast line needs few requests
-      const start = performance.now();
-      const s = sampler(start, 1500, setLive);
-      const open = new Set();
-      const tick = setInterval(() => phase("Testing upload…", 60 + Math.min(s.tick() / DURATION, 1) * 40), 250);
-      // XMLHttpRequest reports how many bytes have actually left, so partly sent requests count too.
-      const sendOne = () => new Promise((resolve) => {
-        const xhr = new XMLHttpRequest();
-        let seen = 0, ok = false;
-        open.add(xhr);
-        xhr.open("POST", src.up);
-        xhr.upload.onprogress = (e) => { s.add(e.loaded - seen); seen = e.loaded; };
-        xhr.onload = () => { ok = xhr.status >= 200 && xhr.status < 300; };
-        xhr.onloadend = () => { open.delete(xhr); resolve(ok); };
-        xhr.send(body);
+          if (dt >= 50) {
+            const rate = mbps(total - last.b, dt);
+            if (t > 1500) rates.push(rate);
+            last = { t, b: total };
+            recent.push(rate);
+            if (recent.length > 4) recent.shift();
+            const live = recent.reduce((a, b) => a + b, 0) / recent.length;
+            setLive(live);
+            trace[kind].push([offset + t, live]);
+            draw();
+          }
+          phase(label, from + Math.min(t / max, 1) * (to - from));
+          if (t >= max || (t >= min && settled(rates))) { stop = true; clearInterval(tick); resolve(t); }
+        }, 250);
       });
-      const worker = async () => {
-        while (performance.now() - start < DURATION) {
-          if (!(await sendOne())) return;
-        }
-      };
-      const stopper = setTimeout(() => open.forEach((x) => x.abort()), DURATION);
-      await Promise.all(Array.from({ length: STREAMS }, worker));
-      clearTimeout(stopper);
-      clearInterval(tick);
-      if (s.total < 100000 || performance.now() - start < DURATION - 1000) throw new Error("no data");
-      const result = steadyMbps(s.rates, mbps(s.total, performance.now() - start));
-      $("#up").textContent = `${fmt(result)} Mbps`;
-      setLive(result);
+      const ended = start((n) => { total += n; }, () => stop);
+      const elapsed = await Promise.race([done, ended.then(() => (stop ? null : "early"))]);
+      if (elapsed === "early") { clearInterval(tick); throw new Error("no data"); } // every transfer died early, e.g. a rate limit
+      await ended;
+      const ms = typeof elapsed === "number" ? elapsed : performance.now() - t0;
+      trace.t0 = offset + ms + 400;
+      if (total < 100000) throw new Error("no data");
+      return { mbps: steadyMbps(rates, mbps(total, ms)), bytes: total, ms };
     }
+
+    const download = () => transfer("d", {
+      min: 5000, max: 15000, from: 10, to: 55, label: "Testing download…",
+      start: (sink, stopped) => {
+        const ctl = new AbortController();
+        // A transfer stalled mid-read would never see the stop, so abort them all from outside too.
+        const watch = setInterval(() => { if (stopped()) { ctl.abort(); clearInterval(watch); } }, 100);
+        const worker = async () => {
+          while (!stopped()) {
+            try {
+              const res = await fetch(src.down(), { signal: ctl.signal, cache: "no-store", ...src.init });
+              if (!res.ok) return;
+              const reader = res.body.getReader();
+              for (;;) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                sink(value.byteLength);
+                if (stopped()) { ctl.abort(); return; }
+              }
+            } catch { return; }
+          }
+        };
+        return Promise.all(Array.from({ length: 6 }, worker)).finally(() => clearInterval(watch));
+      },
+    });
+
+    const upload = () => {
+      const BLOCK = 65536;
+      const block = new Uint8Array(BLOCK);
+      crypto.getRandomValues(block); // random bytes, so no link can compress them away
+      const body = new Blob(Array.from({ length: 256 }, () => block)); // 16 MB, so a fast line needs few requests
+      return transfer("u", {
+        min: 4000, max: 12000, from: 58, to: 100, label: "Testing upload…",
+        start: (sink, stopped) => {
+          const open = new Set();
+          // XMLHttpRequest reports how many bytes have actually left, so partly sent requests count too.
+          const sendOne = () => new Promise((resolve) => {
+            const xhr = new XMLHttpRequest();
+            let seen = 0, ok = false;
+            open.add(xhr);
+            xhr.open("POST", src.up);
+            xhr.upload.onprogress = (e) => { if (!stopped()) sink(e.loaded - seen); seen = e.loaded; };
+            xhr.onload = () => { ok = xhr.status >= 200 && xhr.status < 300; };
+            xhr.onloadend = () => { open.delete(xhr); resolve(ok); };
+            xhr.send(body);
+          });
+          const watch = setInterval(() => { if (stopped()) { open.forEach((x) => x.abort()); clearInterval(watch); } }, 100);
+          const worker = async () => { while (!stopped()) { if (!(await sendOne())) return; } };
+          return Promise.all(Array.from({ length: 6 }, worker)).finally(() => clearInterval(watch));
+        },
+      });
+    };
+
+    /* ---- Verdicts ---- */
+
+    /*
+      Bufferbloat grade from the rise in latency under load, on the scale popularised by the Waveform bufferbloat test:
+      under 5 ms A+, under 30 ms A, under 60 ms B, under 200 ms C, under 400 ms D, otherwise F.
+    */
+    function grade(idle, loaded) {
+      const rise = Math.max(0, loaded - idle);
+      const g = rise < 5 ? "A+" : rise < 30 ? "A" : rise < 60 ? "B" : rise < 200 ? "C" : rise < 400 ? "D" : "F";
+      const el = $("#gr");
+      el.textContent = g;
+      el.className = g.startsWith("A") ? "g-ok" : g === "B" || g === "C" ? "g-warn" : "g-bad";
+      $("#grtext").textContent = tr("Latency rose by {ms} ms under load.", { ms: rise.toFixed(0) }) + " " + tr(
+        g.startsWith("A") ? "Calls and games should stay smooth even while the line is busy."
+          : g === "B" || g === "C" ? "You may notice lag in calls and games while someone else is downloading or uploading."
+            : "Calls and games are likely to stutter whenever the line is busy. Smart queue management (SQM) on your router usually fixes this.");
+    }
+
+    // Rules of thumb: Netflix asks for 15 Mbps for 4K, Zoom about 3.8 Mbps each way for 1080p calls.
+    function fits(r) {
+      const set = (id, level) => {
+        const b = $(`#fit-${id} b`);
+        b.className = { y: "y", m: "m", n: "n" }[level];
+        b.textContent = tr({ y: "Great", m: "Works", n: "Struggles" }[level]);
+      };
+      const worstLat = Math.max(r.ldown || r.lat, r.lup || r.lat);
+      set("4k", r.down >= 25 ? "y" : r.down >= 15 ? "m" : "n");
+      set("call", r.down >= 4 && r.up >= 4 && worstLat < 150 && r.jit < 30 ? "y" : r.down >= 2 && r.up >= 1.5 && worstLat < 300 ? "m" : "n");
+      set("game", worstLat < 60 && r.jit < 15 && r.down >= 3 ? "y" : worstLat < 120 && r.jit < 30 ? "m" : "n");
+      set("big", r.up >= 50 ? "y" : r.up >= 10 ? "m" : "n");
+    }
+
+    /* ---- Run ---- */
+
+    // Who and where: the visitor's network from our own API, the server from the latency checks.
+    fetch("/api/me", { cache: "no-store" }).then((r) => r.json()).then((d) => {
+      const place = [d.city, d.countryCode].filter(Boolean).join(", ");
+      $("#srv").textContent = [d.org, place].filter(Boolean).join(" · ");
+    }).catch(() => {});
 
     go.addEventListener("click", async () => {
       go.disabled = true;
-      ["down", "up", "lat", "jit"].forEach((id) => ($("#" + id).textContent = "–"));
+      ["down", "up", "lat", "jit", "ldown", "lup"].forEach((id) => ($("#" + id).textContent = "–"));
+      document.querySelectorAll(".fit b").forEach((b) => { b.textContent = "–"; b.className = ""; });
+      $("#gr").textContent = "–"; $("#gr").className = "";
+      $("#used").textContent = "";
+      trace.d = []; trace.u = []; trace.t0 = 0; draw();
+      ["lat", "down", "up"].forEach((id) => step(id, ""));
       setLive(0);
+      const r = {};
+      let bytes = 0;
       try {
-        await latency();
+        step("lat", "on");
+        const idle = await idleLatency();
+        r.lat = idle.ms; r.jit = idle.jitter;
+        $("#lat").textContent = `${idle.ms.toFixed(0)} ms`;
+        $("#jit").textContent = `${idle.jitter.toFixed(1)} ms`;
+        if (idle.colo) $("#colo").textContent = ` (${idle.colo})`;
+        step("lat", "done");
         await pickSource();
-        // Cloudflare's speed servers limit how much one IP address may transfer per hour. If they refuse, the same step
-        // runs again against our own server instead of failing.
-        // Download and upload are limited separately, so each step picks its own source.
-        const step = async (run) => {
+        // Cloudflare's speed servers limit how much one IP address may transfer per hour. If they refuse, the same
+        // direction runs again against our own server instead of failing. Each direction picks its own source.
+        const run = async (id, fn) => {
+          step(id, "on");
+          const stopLoaded = loadedProbe();
+          let res;
           src = primary;
-          try { await run(); } catch (e) { if (primary === OWNSRC) throw e; src = OWNSRC; await run(); }
+          try { res = await fn(); } catch (e) {
+            if (primary === OWNSRC) { await stopLoaded(); throw e; }
+            src = OWNSRC; trace[id === "down" ? "d" : "u"] = []; res = await fn();
+          }
+          const loaded = await stopLoaded();
+          step(id, "done");
+          bytes += res.bytes;
+          return { ...res, loaded };
         };
-        await step(download);
-        await sleep(300);
-        await step(upload);
+        const d = await run("down", download);
+        r.down = d.mbps; r.ldown = d.loaded;
+        $("#down").textContent = `${fmt(d.mbps)} Mbps`;
+        $("#ldown").textContent = Number.isFinite(d.loaded) ? `${d.loaded.toFixed(0)} ms` : tr("n/a");
+        await sleep(400);
+        const u = await run("up", upload);
+        r.up = u.mbps; r.lup = u.loaded;
+        $("#up").textContent = `${fmt(u.mbps)} Mbps`;
+        $("#lup").textContent = Number.isFinite(u.loaded) ? `${u.loaded.toFixed(0)} ms` : tr("n/a");
+        setLive(d.mbps);
+        const worst = Math.max(Number.isFinite(r.ldown) ? r.ldown : r.lat, Number.isFinite(r.lup) ? r.lup : r.lat);
+        grade(r.lat, worst);
+        fits({ ...r, ldown: Number.isFinite(r.ldown) ? r.ldown : r.lat, lup: Number.isFinite(r.lup) ? r.lup : r.lat });
+        $("#used").textContent = tr("This test moved {mb} MB in {s} seconds.", { mb: (bytes / 1e6).toFixed(0), s: ((d.ms + u.ms) / 1000).toFixed(0) });
         phase("Done", 100);
       } catch {
+        ["lat", "down", "up"].forEach((id) => { if ($("#st-" + id).classList.contains("on")) step(id, ""); });
         phase("The test was interrupted. Check your connection and try again.", 0);
       }
       go.disabled = false;

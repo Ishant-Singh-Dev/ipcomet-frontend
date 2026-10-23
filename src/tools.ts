@@ -96,7 +96,7 @@ export const TOOLS: Tool[] = [
     name: "Speed Test",
     desc: "Latency, download and upload speed",
     title: "Internet Speed Test: Download, Upload and Ping",
-    description: "Test your internet speed in about 20 seconds. Measures download, upload, latency and jitter against the nearest Cloudflare data center.",
+    description: "Free internet speed test: download, upload, ping, jitter and latency under load with a bufferbloat grade, measured against the nearest Cloudflare data center.",
   },
   {
     id: "ping",

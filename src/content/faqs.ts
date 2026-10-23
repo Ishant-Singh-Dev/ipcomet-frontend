@@ -195,7 +195,15 @@ export const TOOL_FAQ: Record<string, Faq[]> = {
   speed: [
     {
       q: "How does this speed test work?",
-      a: "Your browser measures round-trip time to the nearest Cloudflare data center, downloads data over several parallel connections for eight seconds, then uploads data for six seconds. Speeds are reported in megabits per second, the same unit your internet plan uses.",
+      a: "Your browser first times 20 round trips to the nearest Cloudflare data center while the line is idle. It then downloads over six parallel transfers, and then uploads random data the same way. Each direction runs until the speed has settled, between 5 and 15 seconds, while a round trip is timed every quarter second to measure latency under load. The first 1.5 seconds of each transfer are ignored, and the slowest 20% and fastest 5% of samples are dropped, so one stall or burst cannot skew the result. Speeds are reported in megabits per second, the unit your internet plan uses.",
+    },
+    {
+      q: "What is bufferbloat, and what does the grade mean?",
+      a: "Bufferbloat is the extra delay that appears when a router or modem queues too much data while the line is busy. Your connection can be fast and still lag in calls and games whenever someone else is downloading. The grade compares latency while downloading or uploading with idle latency: a rise under 5 ms is A+, under 30 ms A, under 60 ms B, under 200 ms C, under 400 ms D, and anything more is F. A router with smart queue management (SQM), such as fq_codel or CAKE, usually brings it down to A.",
+    },
+    {
+      q: "Why is my result different from Ookla Speedtest or fast.com?",
+      a: "Each test measures the path to its own servers. Ookla usually picks a server inside or near your provider's network, fast.com uses Netflix's video servers, and this test uses Cloudflare's nearest data center, so the three take different routes and can disagree by 10% or more. They also handle ramp-up and outliers differently. Running all three and taking the lowest consistent figure is a fair way to judge your line.",
     },
     {
       q: "Why is my speed lower than my plan?",

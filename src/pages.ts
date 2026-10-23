@@ -261,19 +261,32 @@ function portUi(lt: Tr, ip: string): string {
 }
 
 function speedUi(lt: Tr): string {
-  return ui(`<div class="panel speedhero" style="margin-top:0">
-<div class="big" id="live">0<small>Mbps</small></div>
-<p class="eyebrow" id="phase">${esc(lt("Ready when you are"))}</p>
+  const step = (id: string, label: string) => `<li id="st-${id}"><i></i>${esc(lt(label))}</li>`;
+  const stat = (id: string, label: string, hint: string) =>
+    `<div class="stat"><span>${esc(lt(label))}</span><b id="${id}">–</b><em>${esc(lt(hint))}</em></div>`;
+  const fit = (id: string, label: string) => `<li id="fit-${id}"><span>${esc(lt(label))}</span><b>–</b></li>`;
+  return ui(`<div class="panel speedlab" style="margin-top:0">
+<div class="sl-top"><ol class="rail" aria-label="${esc(lt("Test steps"))}">${step("lat", "Latency")}${step("down", "Download")}${step("up", "Upload")}</ol><p class="srv" id="srv"></p></div>
+<div class="sl-read"><div class="big" id="live">0<small>Mbps</small></div><p class="eyebrow" id="phase" aria-live="polite">${esc(lt("Ready when you are"))}</p></div>
+<svg class="trace" id="trace" viewBox="0 0 600 150" preserveAspectRatio="none" aria-hidden="true"><path class="g" d="M0 37.5H600M0 75H600M0 112.5H600"/><path class="da" id="tr-da" d=""/><path class="d" id="tr-d" d=""/><path class="ua" id="tr-ua" d=""/><path class="u" id="tr-u" d=""/></svg>
+<div class="sl-key" aria-hidden="true"><span class="k-d">${esc(lt("Download"))}</span><span class="k-u">${esc(lt("Upload"))}</span><span id="peak"></span></div>
 <div class="bar2"><i id="prog"></i></div>
 <div class="actions"><button class="btn pri" id="go" type="button">${esc(lt("Start test"))}</button></div>
 </div>
-<div class="stats">
-<div class="stat"><span>${esc(lt("Download"))}</span><b id="down">–</b></div>
-<div class="stat"><span>${esc(lt("Upload"))}</span><b id="up">–</b></div>
-<div class="stat"><span>${esc(lt("Latency"))}</span><b id="lat">–</b></div>
-<div class="stat"><span>${esc(lt("Jitter"))}</span><b id="jit">–</b></div>
+<div class="stats sl-stats">
+${stat("down", "Download", "Steady speed, Mbps")}
+${stat("up", "Upload", "Steady speed, Mbps")}
+${stat("lat", "Idle latency", "Round trip, nothing else running")}
+${stat("jit", "Jitter", "How much the delay varies")}
+${stat("ldown", "Latency while downloading", "Loaded round trip")}
+${stat("lup", "Latency while uploading", "Loaded round trip")}
 </div>
-<p class="note">${lt("Results reflect the path to the nearest Cloudflare data center{colo}, which is typically faster than a trip to a far-away server. The test runs for about 15 seconds and moves as much data as your connection can carry, so on a fast line it can use several hundred megabytes.", { colo: '<span id="colo"></span>' })}</p>`);
+<div class="cols sl-res">
+<div class="card grade" id="grade"><b id="gr">–</b><div><h3>${esc(lt("Bufferbloat grade"))}</h3><p id="grtext">${esc(lt("How much your latency rises when the line is busy. It decides whether calls and games stay smooth while someone else is downloading."))}</p></div></div>
+<div class="card"><h3>${esc(lt("What this connection can handle"))}</h3><ul class="fit">${fit("4k", "4K streaming")}${fit("call", "HD video calls")}${fit("game", "Online gaming")}${fit("big", "Uploading large files")}</ul></div>
+</div>
+<p class="note" id="used"></p>
+<p class="note">${lt("Results reflect the path to the nearest Cloudflare data center{colo}, which is typically faster than a trip to a far-away server. Each direction runs until the speed settles (5 to 15 seconds), so on a fast line the test can use several hundred megabytes.", { colo: '<span id="colo"></span>' })}</p>`);
 }
 
 function webrtcUi(lt: Tr): string {
@@ -298,7 +311,7 @@ const LEADS: Record<string, string> = {
   headers: "These are the request headers your browser sent to this page.",
   browser: "What every website can learn about your browser and device without asking.",
   port: "Check whether a TCP port is reachable on your public IP. Handy for port forwarding and game servers.",
-  speed: "Measure latency, download and upload speed between your device and Cloudflare's nearest edge.",
+  speed: "Measure download, upload, idle latency and latency under load (bufferbloat) between your device and Cloudflare's nearest edge.",
   webrtc: "Browsers can reveal your real IP through WebRTC, even behind a VPN. Run the check to see what is exposed.",
   subnet: "Work out network ranges, masks and usable hosts for any IPv4 or IPv6 CIDR block.",
 };
