@@ -1476,6 +1476,9 @@ wget -qO- https://ipcomet.com/api/ip</code></pre>
 <h2>Windows</h2>
 <p>Windows 10 and 11 ship with curl, so <code>curl.exe https://ipcomet.com/api/ip</code> works in both Command Prompt and PowerShell. Type <code>curl.exe</code> rather than <code>curl</code> in PowerShell, where <code>curl</code> can be an alias for <code>Invoke-WebRequest</code>. The native PowerShell way is:</p>
 <pre><code>(Invoke-RestMethod https://ipcomet.com/api/ip).Trim()</code></pre>
+<p>In Command Prompt (CMD) without curl, ask OpenDNS over DNS instead. The address on the last &ldquo;Address&rdquo; line is your public IPv4 address:</p>
+<pre><code>nslookup -type=A myip.opendns.com 208.67.222.222</code></pre>
+<p>Note that <code>ipconfig</code> does not show your public IP. It lists the private address your router gave your computer, such as 192.168.1.20.</p>
 
 <h2>Python</h2>
 <p>With the <code>requests</code> library:</p>
@@ -1749,6 +1752,9 @@ console.log(ip);</code></pre>
 <li><strong>The database is out of date or coarse.</strong> Different providers disagree, and some only know the country or a default point in a region.</li>
 <li><strong>The address is registered to a head office.</strong> A business may hold its addresses under its headquarters while the connection is somewhere else.</li>
 </ul>
+
+<h2>Does your IP address change with location?</h2>
+<p>Yes, usually. Your public IP address belongs to the network you are connected to, not to your device, so moving from home Wi-Fi to mobile data or to a café network gives you a different address and often a different estimated location. Staying on the same network while you travel, for example through a VPN, keeps the address and the location of that network.</p>
 
 <h2>How accurate is IP geolocation?</h2>
 <p>The country is usually right, the region is often right and the city is only sometimes right. The street or house is never something an IP address can tell. To see how much tools disagree, open the <a href="/">what is my IP address</a> page and the <a href="/lookup">IP lookup</a> and compare what they say.</p>

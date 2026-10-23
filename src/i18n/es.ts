@@ -626,14 +626,14 @@ export const es: LocaleData = {
       name: "Comprobador de puertos",
       desc: "Comprueba si un puerto está abierto en tu IP",
       title: "Comprobador de puertos: puertos abiertos de tu IP",
-      description: "Comprobador de puertos gratuito: mira si un puerto está abierto en tu IP pública (redirección de puertos, juegos, Plex, SSH, escritorio remoto).",
+      description: "¿Cuál es mi puerto y está abierto? Comprobador de puertos gratuito para tu IP pública: redirección de puertos, juegos, Plex, SSH y escritorio remoto.",
       h1: "Comprobador de puertos abiertos",
       lead: "Comprueba si un puerto TCP es accesible en tu IP pública. Útil para la redirección de puertos y los servidores de juegos.",
       about:
         "Un comprobador de puertos verifica si un puerto TCP de tu dirección IP pública acepta conexiones desde internet. Úsalo después de configurar la redirección de puertos para un servidor de juegos, Plex, una cámara de seguridad, SSH o el escritorio remoto. La prueba se hace desde la red de Cloudflare y solo contra tu propia IP, así que refleja lo que realmente ve el exterior.",
       faq: [
         {
-          q: "¿Cómo compruebo si un puerto está abierto?",
+          q: "¿Cómo sé si mi puerto está abierto?",
           a: "Introduce el número de puerto arriba y pulsa Comprobar puerto. La prueba se conecta a tu dirección IP pública desde internet y te dice si está abierto, cerrado o sin respuesta. Para comprobarlo desde tu propio equipo, usa netstat o Test-NetConnection en Windows, o ss y nc en macOS y Linux.",
         },
         {
