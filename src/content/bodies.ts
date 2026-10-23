@@ -3,6 +3,9 @@ export const BODIES: Record<string, string> = {
   "what-is-an-ip-address": `
 <p>An IP address (Internet Protocol address) is a number that identifies a device or network on the internet, so data knows where to go and where it came from. Think of it as the return address on a letter. Without one, a website would have nowhere to send the page you asked for.</p>
 
+<h2>What does IP stand for?</h2>
+<p>IP stands for Internet Protocol, the set of rules that splits data into packets and addresses each one so it can cross the internet. An IP address is simply the address that protocol uses. The first widely used version, IPv4, was defined in 1981, and its successor, IPv6, in 1998.</p>
+
 <h2>What does an IP address look like?</h2>
 <p>There are two formats in use today. An IPv4 address is four numbers separated by dots, such as <code>203.0.113.42</code>. An IPv6 address is longer and written in hexadecimal, such as <code>2001:db8:85a3::8a2e:370:7334</code>. Both do the same job. If you want the details, read <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
 

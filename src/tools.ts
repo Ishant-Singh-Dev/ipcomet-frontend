@@ -88,7 +88,7 @@ export const TOOLS: Tool[] = [
     name: "Port Checker",
     desc: "Check if a port is open on your IP",
     title: "Port Checker: Open Port Check Tool for Your IP",
-    description: "Free open port checker. Check if a port is open on your public IP address, for port forwarding, game servers, Plex, SSH and remote desktop.",
+    description: "Free open port checker and port forwarding tester. Check if a port is open on your public IP address for game servers, Plex, SSH and remote desktop.",
   },
   {
     id: "speed",
@@ -104,7 +104,7 @@ export const TOOLS: Tool[] = [
     name: "Ping Test",
     desc: "Check your latency and jitter",
     title: "Ping Test: Test Your Ping, Latency and Jitter Online",
-    description: "Free internet ping test. Test your ping, latency, jitter and packet loss to the nearest Cloudflare server in about 10 seconds. No install needed.",
+    description: "Free internet ping test. Check your ping, latency, jitter and packet loss to the nearest Cloudflare server in about 10 seconds. No install needed.",
   },
   {
     id: "webrtc",

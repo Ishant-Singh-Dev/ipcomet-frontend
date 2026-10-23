@@ -22,6 +22,14 @@ export const HOME_FAQ: Faq[] = [
     a: "IPv4 addresses look like 203.0.113.7 and there are only about 4.3 billion of them. IPv6 addresses look like 2001:db8::1 and the format provides a practically unlimited supply. Most connections can use both. This page shows whichever your browser used, and checks the other one too.",
   },
   {
+    q: "What is my public IP, and how is it different from my local IP?",
+    a: "Your public IP is the address the internet sees, the one shown at the top of this page. Your router or mobile carrier holds it and every device on that connection shares it. Your local (private) IP, such as 192.168.1.20 or 10.0.0.5, only exists inside your own network and is what ipconfig or your Wi-Fi settings show. Websites never see your local IP, only your public one.",
+  },
+  {
+    q: "What is my IPv4 address?",
+    a: "It is the IPv4 value in the row under your main address at the top of this page, four numbers separated by dots, such as 203.0.113.7. If your connection also has IPv6 the row shows both, because many networks use the two side by side. If IPv4 says not detected, your network reached this page over IPv6 only.",
+  },
+  {
     q: "Is it safe to share my IP address?",
     a: "Sharing your IP address is generally low risk. On its own it reveals your approximate location and ISP, not your name or street address. It does let someone send traffic to your connection, so avoid posting it publicly if you host servers or play games where players attack each other, and use a VPN if you want to hide it.",
   },
