@@ -260,15 +260,15 @@ function portUi(lt: Tr, ip: string): string {
 <div id="out" aria-live="polite"></div>`);
 }
 
-function speedUi(lt: Tr): string {
+function speedUi(lt: Tr, h1: string): string {
   const step = (id: string, label: string) => `<li id="st-${id}"><i></i>${esc(lt(label))}</li>`;
   const stat = (id: string, label: string, hint: string) =>
     `<div class="stat"><span>${esc(lt(label))}</span><b id="${id}">–</b><em>${esc(lt(hint))}</em></div>`;
   const fit = (id: string, label: string) => `<li id="fit-${id}"><span>${esc(lt(label))}</span><b>–</b></li>`;
-  return ui(`<div class="panel speedlab" style="margin-top:0">
-<div class="sl-top"><ol class="rail" aria-label="${esc(lt("Test steps"))}">${step("lat", "Latency")}${step("down", "Download")}${step("up", "Upload")}</ol><p class="srv" id="srv"></p></div>
+  return ui(`<div class="panel speedlab">
+<div class="sl-top"><div><h1 class="sl-h1">${esc(h1)}</h1><p class="srv" id="srv"></p></div><ol class="rail" aria-label="${esc(lt("Test steps"))}">${step("lat", "Latency")}${step("down", "Download")}${step("up", "Upload")}</ol></div>
 <div class="sl-read"><div class="big" id="live">0<small>Mbps</small></div><p class="eyebrow" id="phase" aria-live="polite">${esc(lt("Ready when you are"))}</p></div>
-<svg class="trace" id="trace" viewBox="0 0 600 150" preserveAspectRatio="none" aria-hidden="true"><path class="g" d="M0 37.5H600M0 75H600M0 112.5H600"/><path class="da" id="tr-da" d=""/><path class="d" id="tr-d" d=""/><path class="ua" id="tr-ua" d=""/><path class="u" id="tr-u" d=""/></svg>
+<div class="chart" id="chart"><svg class="trace" id="trace" role="img" tabindex="0" aria-label="${esc(lt("Speed over time. Run the test to draw it."))}"></svg><div class="tip" id="tip" hidden></div></div>
 <div class="sl-key" aria-hidden="true"><span class="k-d">${esc(lt("Download"))}</span><span class="k-u">${esc(lt("Upload"))}</span><span id="peak"></span></div>
 <div class="bar2"><i id="prog"></i></div>
 <div class="actions"><button class="btn pri" id="go" type="button">${esc(lt("Start test"))}</button></div>
@@ -391,7 +391,7 @@ export function toolPage(id: string, origin: string, ctx: ToolPageContext = {}, 
     headers: () => headersUi(lt, ctx.headers ?? new Headers()),
     browser: () => browserUi(lt),
     port: () => portUi(lt, ctx.ip ?? ""),
-    speed: () => speedUi(lt),
+    speed: () => speedUi(lt, copy.h1),
     webrtc: () => webrtcUi(lt),
     subnet: () => subnetUi(lt),
   };
@@ -399,7 +399,8 @@ export function toolPage(id: string, origin: string, ctx: ToolPageContext = {}, 
   const guides = ARTICLES.filter((a) => a.tools.includes(id)).slice(0, 3);
   const others = toolCards(RELATED_TOOLS[id] ?? ["lookup", "dns", "reverse-dns"].filter((x) => x !== id), loc);
 
-  const body = `${toolHeader(copy.h1, copy.lead, copy.meta.name, loc)}
+  // The speed test leads with the test itself; its heading sits inside the panel.
+  const body = `${id === "speed" ? "" : toolHeader(copy.h1, copy.lead, copy.meta.name, loc)}
 ${uis[id]?.() ?? ""}
 <section class="sec"><div class="prose"><h2>${esc(lt("About {name}", { name: copy.meta.name }))}</h2><p>${esc(copy.about)}</p>${copy.more}</div></section>
 ${faqSection(copy.faq, undefined, loc)}

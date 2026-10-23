@@ -566,21 +566,112 @@
     const median = (a) => { const s = a.slice().sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : NaN; };
     const step = (id, state) => { const el = $("#st-" + id); el.classList.remove("on", "done"); if (state) el.classList.add(state); };
 
-    /* ---- Live trace: one timeline, download drawn in the accent colour, upload in ink. ---- */
-    const trace = { d: [], u: [], t0: 0 };
+    /*
+      Live chart. Every 250 ms the one-second rolling speed is plotted against time, download then upload on one
+      timeline and one Mbps axis. The shaded band at the start of each direction is the 1.5 s ramp-up that the result
+      ignores, and the thin line across the rest is the result itself, so the reader sees what was counted.
+    */
+    const trace = { d: [], u: [], t0: 0, phases: [], hover: null };
+    const svg = $("#trace");
+    const tip = $("#tip");
+    const WARM = 1500;
+    const niceStep = (raw) => {
+      const p = 10 ** Math.floor(Math.log10(raw));
+      return [1, 2, 2.5, 5, 10].map((m) => m * p).find((x) => x >= raw);
+    };
+    const points = () => trace.d.map(([t, v]) => ({ t, v, k: "d" })).concat(trace.u.map(([t, v]) => ({ t, v, k: "u" })));
+
     function draw() {
-      const all = trace.d.concat(trace.u);
-      const top = Math.max(1, ...all.map((p) => p[1])) * 1.15;
-      const end = Math.max(1, ...all.map((p) => p[0]));
-      const pts = (arr) => arr.map(([t, v]) => `${((t / end) * 600).toFixed(1)} ${(150 - (v / top) * 146).toFixed(1)}`);
-      for (const k of ["d", "u"]) {
-        const p = pts(trace[k]);
-        $("#tr-" + k).setAttribute("d", p.length ? "M" + p.join("L") : "");
-        $("#tr-" + k + "a").setAttribute("d", p.length ? `M${p[0].split(" ")[0]} 150L${p.join("L")}L${p[p.length - 1].split(" ")[0]} 150Z` : "");
+      const W = svg.clientWidth || 600, H = svg.clientHeight || 240;
+      const M = { l: 46, r: 12, t: 18, b: 24 };
+      const pw = W - M.l - M.r, ph = H - M.t - M.b;
+      const all = points();
+      const vmax = Math.max(0, ...all.map((p) => p.v), ...trace.phases.map((p) => p.result || 0));
+      const ystep = niceStep(Math.max(vmax * 1.08, 20) / 4);
+      const ytop = ystep * Math.ceil(Math.max(vmax * 1.08, 20) / ystep);
+      const tEnd = Math.max(10000, ...all.map((p) => p.t + 250));
+      const xstep = [1000, 2000, 5000, 10000].find((s) => tEnd / s <= 8);
+      const X = (t) => M.l + (t / tEnd) * pw;
+      const Y = (v) => M.t + ph - (v / ytop) * ph;
+      const n = (v) => v.toFixed(1);
+      let g = "";
+      for (let v = 0; v <= ytop + 1e-9; v += ystep) {
+        g += `<line class="${v ? "gl" : "base"}" x1="${M.l}" x2="${W - M.r}" y1="${n(Y(v))}" y2="${n(Y(v))}"/>`;
+        g += `<text x="${M.l - 8}" y="${n(Y(v))}" dy=".32em" text-anchor="end">${Math.round(v)}</text>`;
       }
-      const peak = Math.max(0, ...all.map((p) => p[1]));
+      g += `<text x="${M.l - 8}" y="${M.t - 8}" text-anchor="end">Mbps</text>`;
+      for (let t = 0; t <= tEnd; t += xstep) g += `<text x="${n(X(t))}" y="${H - 6}" text-anchor="${t ? "middle" : "start"}">${t / 1000}s</text>`;
+      for (const p of trace.phases) {
+        const end = p.end ?? Math.max(p.start, ...trace[p.k].map((q) => q[0]));
+        const x1 = X(p.start), x2 = X(Math.min(p.start + WARM, end));
+        if (x2 > x1) g += `<rect class="ramp" x="${n(x1)}" y="${M.t}" width="${n(x2 - x1)}" height="${ph}"/>`;
+        if (x2 - x1 > 54) g += `<text x="${n(x1 + 5)}" y="${M.t + 12}">${esc(tr("Warm-up"))}</text>`;
+      }
+      for (const k of ["d", "u"]) {
+        const pts = trace[k];
+        if (!pts.length) continue;
+        const line = pts.map(([t, v]) => `${n(X(t))},${n(Y(v))}`).join(" ");
+        g += `<polygon class="a${k}" points="${n(X(pts[0][0]))},${n(Y(0))} ${line} ${n(X(pts[pts.length - 1][0]))},${n(Y(0))}"/>`;
+        g += `<polyline class="l${k}" points="${line}"/>`;
+      }
+      for (const p of trace.phases) {
+        if (p.result === undefined) continue;
+        const y = Y(p.result), x1 = X(p.start + WARM), x2 = X(p.end);
+        g += `<line class="r${p.k}" x1="${n(x1)}" x2="${n(x2)}" y1="${n(y)}" y2="${n(y)}"/>`;
+        const ly = y - 7 < M.t + 4 ? y + 15 : y - 7;
+        g += `<text class="rl" x="${n(x2 - 2)}" y="${n(ly)}" text-anchor="end">${fmt(p.result)} Mbps</text>`;
+      }
+      const live = trace.phases.find((p) => p.end === undefined);
+      if (live && trace[live.k].length) {
+        const [t, v] = trace[live.k][trace[live.k].length - 1];
+        g += `<circle class="d${live.k}" cx="${n(X(t))}" cy="${n(Y(v))}" r="4"/>`;
+      }
+      const h = trace.hover;
+      if (h) {
+        g += `<line class="xh" x1="${n(X(h.t))}" x2="${n(X(h.t))}" y1="${M.t}" y2="${M.t + ph}"/>`;
+        g += `<circle class="d${h.k}" cx="${n(X(h.t))}" cy="${n(Y(h.v))}" r="4.5"/>`;
+        const phase = trace.phases.find((p) => p.k === h.k);
+        const warm = phase && h.t < phase.start + WARM;
+        tip.replaceChildren();
+        const b = document.createElement("b");
+        b.textContent = `${fmt(h.v)} Mbps`;
+        const key = document.createElement("i");
+        if (h.k === "u") key.className = "u";
+        tip.append(b, key, document.createTextNode(`${tr(h.k === "d" ? "Download" : "Upload")} · ${(h.t / 1000).toFixed(1)} s`));
+        if (warm) { tip.append(document.createElement("br"), document.createTextNode(tr("Warm-up, not counted"))); }
+        tip.hidden = false;
+        const left = Math.min(Math.max(X(h.t) - tip.offsetWidth / 2, 0), W - tip.offsetWidth);
+        tip.style.left = `${left}px`;
+      } else tip.hidden = true;
+      svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+      svg.innerHTML = g;
+      const peak = Math.max(0, ...all.map((p) => p.v));
       $("#peak").textContent = peak ? tr("Peak {n} Mbps", { n: fmt(peak) }) : "";
     }
+
+    // Hover and keyboard: the crosshair snaps to the nearest sample, on either line.
+    const nearest = (t) => points().reduce((best, p) => (!best || Math.abs(p.t - t) < Math.abs(best.t - t) ? p : best), null);
+    svg.addEventListener("pointermove", (e) => {
+      const r = svg.getBoundingClientRect();
+      const W = r.width, all = points();
+      if (!all.length) return;
+      const tEnd = Math.max(10000, ...all.map((p) => p.t + 250));
+      trace.hover = nearest(((e.clientX - r.left - 46) / (W - 58)) * tEnd);
+      draw();
+    });
+    svg.addEventListener("pointerleave", () => { trace.hover = null; draw(); });
+    svg.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+      const all = points();
+      if (!all.length) return;
+      e.preventDefault();
+      const i = trace.hover ? all.findIndex((p) => p.t === trace.hover.t && p.k === trace.hover.k) : -1;
+      trace.hover = all[Math.min(Math.max(i + (e.key === "ArrowRight" ? 1 : -1), 0), all.length - 1)];
+      draw();
+    });
+    svg.addEventListener("blur", () => { trace.hover = null; draw(); });
+    if (window.ResizeObserver) new ResizeObserver(() => draw()).observe(svg);
+    draw();
 
     /* ---- Latency ---- */
     const probe = (target, i) => timed(target, i);
@@ -669,6 +760,8 @@
       const rates = [];
       let total = 0, last = { t: 0, b: 0 }, stop = false, recent = [], tick;
       const offset = trace.t0;
+      const phaseRec = { k: kind, start: offset };
+      trace.phases = trace.phases.filter((p) => p.k !== kind).concat(phaseRec);
       const done = new Promise((resolve) => {
         tick = setInterval(() => {
           const t = performance.now() - t0;
@@ -695,7 +788,11 @@
       const ms = typeof elapsed === "number" ? elapsed : performance.now() - t0;
       trace.t0 = offset + ms + 400;
       if (total < 100000) throw new Error("no data");
-      return { mbps: steadyMbps(rates, mbps(total, ms)), bytes: total, ms };
+      const result = steadyMbps(rates, mbps(total, ms));
+      phaseRec.end = offset + ms;
+      phaseRec.result = result;
+      draw();
+      return { mbps: result, bytes: total, ms };
     }
 
     const download = () => transfer("d", {
@@ -796,7 +893,7 @@
       document.querySelectorAll(".fit b").forEach((b) => { b.textContent = "–"; b.className = ""; });
       $("#gr").textContent = "–"; $("#gr").className = "";
       $("#used").textContent = "";
-      trace.d = []; trace.u = []; trace.t0 = 0; draw();
+      trace.d = []; trace.u = []; trace.t0 = 0; trace.phases = []; trace.hover = null; draw();
       ["lat", "down", "up"].forEach((id) => step(id, ""));
       setLive(0);
       const r = {};
@@ -839,6 +936,7 @@
         const worst = Math.max(Number.isFinite(r.ldown) ? r.ldown : r.lat, Number.isFinite(r.lup) ? r.lup : r.lat);
         grade(r.lat, worst);
         fits({ ...r, ldown: Number.isFinite(r.ldown) ? r.ldown : r.lat, lup: Number.isFinite(r.lup) ? r.lup : r.lat });
+        svg.setAttribute("aria-label", tr("Download averaged {d} Mbps and upload {u} Mbps.", { d: fmt(d.mbps), u: fmt(u.mbps) }));
         $("#used").textContent = tr("This test moved {mb} MB in {s} seconds.", { mb: (bytes / 1e6).toFixed(0), s: ((d.ms + u.ms) / 1000).toFixed(0) });
         phase("Done", 100);
       } catch {

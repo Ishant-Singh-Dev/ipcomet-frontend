@@ -260,6 +260,10 @@ export const es: LocaleData = {
     Resolver: "Resolvedor",
     "Resolver returned {rcode}.": "El resolvedor devolvió {rcode}.",
     "Results for {name} via {resolver} DNS": "Resultados de {name} mediante el DNS de {resolver}",
+    "Warm-up": "Arranque",
+    "Warm-up, not counted": "Arranque, no se cuenta",
+    "Speed over time. Run the test to draw it.": "Velocidad a lo largo del tiempo. Inicia el test para dibujarla.",
+    "Download averaged {d} Mbps and upload {u} Mbps.": "Descarga media de {d} Mbps y subida de {u} Mbps.",
     "Test steps": "Pasos del test",
     "Idle latency": "Latencia en reposo",
     "Latency while downloading": "Latencia durante la descarga",
@@ -819,7 +823,7 @@ export const es: LocaleData = {
       ["Info del navegador y calculadora de subredes", "Se calculan en tu navegador. Nada de lo que ves o escribes en estas páginas se nos envía."],
     ],
     body: `<h2>Para qué sirve</h2>
-<p>La mayoría de las personas llegan buscando una sola respuesta: <a href="/es/">cuál es mi dirección IP</a>. Las demás herramientas cubren las siguientes preguntas que surgen, como <a href="/es/lookup">dónde está una dirección IP</a>, <a href="/es/dns">qué dicen los registros DNS de un dominio</a>, <a href="/es/whois">quién registró un dominio</a>, <a href="/es/speed">qué tan rápida es una conexión</a> y <a href="/es/port">si un puerto está abierto</a>.</p>
+<p>La mayoría de las personas llegan buscando una sola respuesta: <a href="/es/">cuál es mi dirección IP</a>. Las demás herramientas cubren las siguientes preguntas que surgen, como <a href="/es/lookup">dónde está una dirección IP</a>, <a href="/es/dns">qué dicen los registros DNS de un dominio</a>, <a href="/es/whois">quién registró un dominio</a>, <a href="/es/speed-test">qué tan rápida es una conexión</a> y <a href="/es/port">si un puerto está abierto</a>.</p>
 <h2>De dónde salen los datos</h2>
 <p>Cada resultado del sitio proviene de una de las fuentes de abajo, y las páginas lo indican cuando un resultado es solo una estimación.</p>
 {{sources}}

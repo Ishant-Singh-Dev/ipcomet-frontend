@@ -260,6 +260,10 @@ export const de: LocaleData = {
     Resolver: "Resolver",
     "Resolver returned {rcode}.": "Der Resolver lieferte {rcode}.",
     "Results for {name} via {resolver} DNS": "Ergebnisse für {name} über {resolver}-DNS",
+    "Warm-up": "Anlauf",
+    "Warm-up, not counted": "Anlauf, nicht gewertet",
+    "Speed over time. Run the test to draw it.": "Tempo im Zeitverlauf. Starten Sie den Test, um es zu zeichnen.",
+    "Download averaged {d} Mbps and upload {u} Mbps.": "Download im Mittel {d} Mbit/s, Upload {u} Mbit/s.",
     "Test steps": "Testschritte",
     "Idle latency": "Latenz im Leerlauf",
     "Latency while downloading": "Latenz beim Download",
@@ -819,7 +823,7 @@ export const de: LocaleData = {
       ["Browser-Info und Subnetz-Rechner", "In Ihrem Browser berechnet. Nichts, was Sie auf diesen Seiten sehen oder eingeben, wird an uns gesendet."],
     ],
     body: `<h2>Wofür es gedacht ist</h2>
-<p>Die meisten kommen mit einer einzigen Frage: <a href="/de/">Wie lautet meine IP-Adresse</a>. Die anderen Tools beantworten die nächsten Fragen, etwa <a href="/de/lookup">wo eine IP-Adresse liegt</a>, <a href="/de/dns">was die DNS-Einträge einer Domain sagen</a>, <a href="/de/whois">wer eine Domain registriert hat</a>, <a href="/de/speed">wie schnell eine Verbindung ist</a> und <a href="/de/port">ob ein Port offen ist</a>.</p>
+<p>Die meisten kommen mit einer einzigen Frage: <a href="/de/">Wie lautet meine IP-Adresse</a>. Die anderen Tools beantworten die nächsten Fragen, etwa <a href="/de/lookup">wo eine IP-Adresse liegt</a>, <a href="/de/dns">was die DNS-Einträge einer Domain sagen</a>, <a href="/de/whois">wer eine Domain registriert hat</a>, <a href="/de/speed-test">wie schnell eine Verbindung ist</a> und <a href="/de/port">ob ein Port offen ist</a>.</p>
 <h2>Woher die Daten stammen</h2>
 <p>Jedes Ergebnis auf der Website stammt aus einer der unten genannten Quellen, und die Seiten weisen darauf hin, wenn ein Ergebnis nur eine Schätzung ist.</p>
 {{sources}}

@@ -422,7 +422,7 @@ export const BODIES: Record<string, string> = {
 <p>When just one site is slow, the problem may be the site's own nameservers. Look up its NS records with our <a href="/dns">DNS tool</a> and see how fast they answer. If you run the site, use a reputable DNS provider with servers around the world, and keep TTL values sensible. See <a href="/learn/dns-records-explained">DNS records explained</a>.</p>
 
 <h2>Still slow?</h2>
-<p>Run our <a href="/speed">speed test</a> to check latency and jitter. A high round-trip time points to a connection problem, not DNS.</p>
+<p>Run our <a href="/speed-test">speed test</a> to check latency and jitter. A high round-trip time points to a connection problem, not DNS.</p>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc8484" rel="noopener">RFC 8484: DNS Queries over HTTPS (DoH) (IETF)</a></li><li><a href="https://developers.cloudflare.com/1.1.1.1/" rel="noopener">Cloudflare: 1.1.1.1 DNS resolver documentation</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li></ul>
@@ -753,7 +753,7 @@ export const BODIES: Record<string, string> = {
 <ul>
 <li>To open a port for a game or server, follow <a href="/learn/what-is-port-forwarding">what port forwarding is</a>, then confirm it with the <a href="/port">port checker</a>.</li>
 <li>To find other devices on your network, such as a printer, see <a href="/learn/find-printer-ip-address">how to find a printer's IP address</a>.</li>
-<li>To check how your connection performs, run the <a href="/speed">speed test</a> or the <a href="/ping">ping test</a>.</li>
+<li>To check how your connection performs, run the <a href="/speed-test">speed test</a> or the <a href="/ping">ping test</a>.</li>
 </ul>
 
 <h2>Sources and further reading</h2>
@@ -788,7 +788,7 @@ export const BODIES: Record<string, string> = {
 <p>Providers assign your public address, usually dynamically, and they are the only ones who can link it to your account. Read <a href="/learn/why-does-my-ip-address-change">why your IP address changes</a> and <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
 
 <h2>Check how well your ISP performs</h2>
-<p>Test your connection with the <a href="/speed">speed test</a> and the <a href="/ping">ping test</a>. If your results are far below what you pay for, repeat them on a wired connection before calling support.</p>
+<p>Test your connection with the <a href="/speed-test">speed test</a> and the <a href="/ping">ping test</a>. If your results are far below what you pay for, repeat them on a wired connection before calling support.</p>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc9083" rel="noopener">RFC 9083: JSON Responses for the Registration Data Access Protocol (RDAP) (IETF)</a></li><li><a href="https://search.arin.net/" rel="noopener">ARIN: Search Whois and RDAP</a></li></ul>
@@ -851,7 +851,7 @@ export const BODIES: Record<string, string> = {
 <ul>
 <li><strong>Online:</strong> run our <a href="/ping">ping test</a>. It sends 25 quick checks to the nearest Cloudflare server and reports your average, best, worst, jitter and packet loss.</li>
 <li><strong>Command line:</strong> open Command Prompt or Terminal and run <code>ping 8.8.8.8</code>. On Windows add <code>-t</code> to keep it running, and on macOS and Linux press Ctrl+C to stop. The <code>time=</code> value is your ping in milliseconds.</li>
-<li><strong>Full picture:</strong> the <a href="/speed">speed test</a> also reports latency and jitter alongside download and upload.</li>
+<li><strong>Full picture:</strong> the <a href="/speed-test">speed test</a> also reports latency and jitter alongside download and upload.</li>
 </ul>
 
 <h2>What affects your ping?</h2>
@@ -1189,7 +1189,7 @@ export const BODIES: Record<string, string> = {
 </ul>
 
 <h2>When it is your provider</h2>
-<p>If your ping is high on a wired connection with nothing else running, and the nearest servers are still slow, the problem is upstream. Run a traceroute (<code>tracert example.com</code> on Windows, <code>traceroute example.com</code> on macOS and Linux) to see where the delay appears. Record results from our <a href="/ping">ping test</a> and <a href="/speed">speed test</a> at different times of day, then contact support with that evidence. Congestion in the evening is a common and fixable complaint.</p>
+<p>If your ping is high on a wired connection with nothing else running, and the nearest servers are still slow, the problem is upstream. Run a traceroute (<code>tracert example.com</code> on Windows, <code>traceroute example.com</code> on macOS and Linux) to see where the delay appears. Record results from our <a href="/ping">ping test</a> and <a href="/speed-test">speed test</a> at different times of day, then contact support with that evidence. Congestion in the evening is a common and fixable complaint.</p>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc792" rel="noopener">RFC 792: Internet Control Message Protocol (IETF)</a></li></ul>
@@ -1445,7 +1445,7 @@ export const BODIES: Record<string, string> = {
 <h2>Why is my proxy slow?</h2>
 <ul>
 <li><strong>Distance.</strong> A proxy far from you adds latency to every request. Pick a location near you or near your target, depending on which matters more.</li>
-<li><strong>Your own connection.</strong> Check your baseline with the <a href="/speed">speed test</a> and the <a href="/ping">ping test</a>, so you do not blame the proxy for a slow link.</li>
+<li><strong>Your own connection.</strong> Check your baseline with the <a href="/speed-test">speed test</a> and the <a href="/ping">ping test</a>, so you do not blame the proxy for a slow link.</li>
 <li><strong>Overloaded pools.</strong> Shared datacenter IPs and busy residential pools slow down at peak hours.</li>
 <li><strong>The target.</strong> Some websites throttle or delay traffic from proxy ranges. Test the same proxy against a neutral page and against your real site to see which one is slow.</li>
 <li><strong>Protocol overhead.</strong> It is small. Switching between HTTP and SOCKS5 rarely changes the result.</li>

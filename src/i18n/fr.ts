@@ -266,6 +266,10 @@ export const fr: LocaleData = {
     Resolver: "Résolveur",
     "Resolver returned {rcode}.": "Le résolveur a renvoyé {rcode}.",
     "Results for {name} via {resolver} DNS": "Résultats pour {name} via le DNS {resolver}",
+    "Warm-up": "Montée",
+    "Warm-up, not counted": "Montée, non comptée",
+    "Speed over time. Run the test to draw it.": "Débit au fil du temps. Lancez le test pour le tracer.",
+    "Download averaged {d} Mbps and upload {u} Mbps.": "Téléchargement moyen de {d} Mbit/s et envoi de {u} Mbit/s.",
     "Test steps": "Étapes du test",
     "Idle latency": "Latence au repos",
     "Latency while downloading": "Latence pendant le téléchargement",
@@ -819,7 +823,7 @@ export const fr: LocaleData = {
       ["Infos navigateur et calculateur de sous-réseau", "Calculés dans votre navigateur. Rien de ce que vous voyez ou saisissez sur ces pages ne nous est envoyé."],
     ],
     body: `<h2>À quoi sert ipcomet</h2>
-<p>La plupart des visiteurs cherchent une seule réponse : <a href="/fr/">quelle est mon adresse IP</a>. Les autres outils répondent aux questions qui viennent ensuite, comme <a href="/fr/lookup">où se trouve une adresse IP</a>, <a href="/fr/dns">que disent les enregistrements DNS d’un domaine</a>, <a href="/fr/whois">qui a enregistré un domaine</a>, <a href="/fr/speed">quel est le débit d’une connexion</a> et <a href="/fr/port">si un port est ouvert</a>.</p>
+<p>La plupart des visiteurs cherchent une seule réponse : <a href="/fr/">quelle est mon adresse IP</a>. Les autres outils répondent aux questions qui viennent ensuite, comme <a href="/fr/lookup">où se trouve une adresse IP</a>, <a href="/fr/dns">que disent les enregistrements DNS d’un domaine</a>, <a href="/fr/whois">qui a enregistré un domaine</a>, <a href="/fr/speed-test">quel est le débit d’une connexion</a> et <a href="/fr/port">si un port est ouvert</a>.</p>
 <h2>D’où viennent les données</h2>
 <p>Chaque résultat du site provient de l’une des sources ci-dessous, et les pages précisent lorsqu’un résultat n’est qu’une estimation.</p>
 {{sources}}

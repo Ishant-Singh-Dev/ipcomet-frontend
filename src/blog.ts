@@ -252,7 +252,7 @@ export function aboutPage(origin: string, loc: Locale = "en"): Rendered {
 <h2>Who runs it</h2>
 <p>ipcomet is built and maintained by ${esc(AUTHOR)}, and every guide is published under that name. The guides and the translated pages are drafted with the help of AI tools; the translated pages say so on the page, and each guide shows the date it was last updated.</p>
 <h2>What it is for</h2>
-<p>Most people arrive wanting one answer: <a href="/">what is my IP address</a>. The other tools cover the next questions that come up, such as <a href="/lookup">where an IP address is</a>, <a href="/dns">what a domain's DNS records say</a>, <a href="/whois">who registered a domain</a>, <a href="/speed">how fast a connection is</a> and <a href="/port">whether a port is open</a>. The <a href="/learn">guides</a> explain the ideas behind them and each one links to the tool that lets you test it on your own connection.</p>
+<p>Most people arrive wanting one answer: <a href="/">what is my IP address</a>. The other tools cover the next questions that come up, such as <a href="/lookup">where an IP address is</a>, <a href="/dns">what a domain's DNS records say</a>, <a href="/whois">who registered a domain</a>, <a href="/speed-test">how fast a connection is</a> and <a href="/port">whether a port is open</a>. The <a href="/learn">guides</a> explain the ideas behind them and each one links to the tool that lets you test it on your own connection.</p>
 <h2>Where the data comes from</h2>
 <p>Every result on the site comes from one of the sources below, and the pages say so where a result is only a best guess.</p>
 <div class="tw"><table class="stack"><tbody>${rows}</tbody></table></div>

@@ -92,7 +92,7 @@ export const TOOLS: Tool[] = [
   },
   {
     id: "speed",
-    path: "/speed",
+    path: "/speed-test",
     name: "Speed Test",
     desc: "Latency, download and upload speed",
     title: "Internet Speed Test: Download, Upload and Ping",
