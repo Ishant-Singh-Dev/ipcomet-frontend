@@ -396,7 +396,10 @@ export function toolPage(id: string, origin: string, ctx: ToolPageContext = {}, 
     subnet: () => subnetUi(lt),
   };
 
-  const guides = ARTICLES.filter((a) => a.tools.includes(id)).slice(0, 3);
+  // Guides whose main tool is this page come first, then the others that use it.
+  const guides = ARTICLES.filter((a) => a.tools.includes(id))
+    .sort((a, b) => Number(b.tools[0] === id) - Number(a.tools[0] === id))
+    .slice(0, 3);
   const others = toolCards(RELATED_TOOLS[id] ?? ["lookup", "dns", "reverse-dns"].filter((x) => x !== id), loc);
 
   // The speed test leads with the test itself; its heading sits inside the panel.

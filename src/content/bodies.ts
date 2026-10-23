@@ -858,7 +858,7 @@ export const BODIES: Record<string, string> = {
 <ul>
 <li><strong>Distance.</strong> The farther the server, the higher the ping, because signals take time to travel.</li>
 <li><strong>Wi-Fi.</strong> Weak signal, interference and busy channels add delay and jitter.</li>
-<li><strong>Other traffic.</strong> Uploads, streams and downloads on your network can make ping spike. This is called bufferbloat.</li>
+<li><strong>Other traffic.</strong> Uploads, streams and downloads on your network can make ping spike. This is called <a href="/learn/what-is-bufferbloat">bufferbloat</a>.</li>
 <li><strong>Your provider and its routing.</strong> Congested networks and long routes add delay.</li>
 <li><strong>A VPN.</strong> It adds a detour, so ping is usually higher with one on.</li>
 </ul>
@@ -1159,7 +1159,7 @@ export const BODIES: Record<string, string> = {
 <p>Distance sets a floor your connection cannot beat, because signals take time to travel. A server on another continent cannot give you a low ping no matter what you buy. Most games let you choose a region or show the ping per server, so pick the nearest one with a healthy population.</p>
 
 <h2>3. Stop other traffic on your network</h2>
-<p>A single large upload, cloud backup or 4K stream can add hundreds of milliseconds to everything else. This is called <strong>bufferbloat</strong>, and it is why ping is fine when idle and terrible while someone downloads. Pause big transfers while you play, and if your router supports Smart Queue Management, SQM or fq_codel, turn it on. It is the most effective router setting for gaming.</p>
+<p>A single large upload, cloud backup or 4K stream can add hundreds of milliseconds to everything else. This is called <a href="/learn/what-is-bufferbloat">bufferbloat</a>, and it is why ping is fine when idle and terrible while someone downloads. Pause big transfers while you play, and if your router supports Smart Queue Management, SQM or fq_codel, turn it on. It is the most effective router setting for gaming.</p>
 
 <h2>4. Check your jitter and packet loss, not just ping</h2>
 <p>A steady 60 ms feels better than a ping that jumps between 20 and 200 ms. Our <a href="/ping">ping test</a> reports jitter and packet loss alongside the average. Any packet loss at all points at a physical problem: a bad cable, a failing router, weak Wi-Fi or a fault on your provider's line. Fix that before tuning anything else, and read <a href="/learn/what-is-ping">what is ping</a> for what the numbers mean.</p>
@@ -1770,5 +1770,181 @@ console.log(ip);</code></pre>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li></ul>
+`,
+  "what-is-bufferbloat": `
+<p><strong>Bufferbloat</strong> is the extra delay that builds up when your router or modem holds too much data in a queue while the line is busy. Your speed can look fine and your idle ping can be low, yet a video call freezes the moment someone in the house starts a big download. The quickest way to see it is a <a href="/speed-test">speed test that measures latency under load</a>, which times round trips while the line is full and grades the rise.</p>
+
+<h2>What causes bufferbloat?</h2>
+<p>Bufferbloat happens when a device on the path has a large buffer and no rule for keeping it short. When more data arrives than the connection can send, the extra packets wait in that buffer. A bigger buffer avoids dropped packets, but every packet behind the queue now waits too, including the small ones from a game or a call that only needed a few milliseconds.</p>
+<p>The queue almost always forms at the slowest point between you and the internet. On most home connections that is the upload side of the modem or router, because upload is usually much slower than download. That is why a cloud backup or a video upload often hurts calls more than a download does.</p>
+
+<h2>How do you test for bufferbloat?</h2>
+<p>Measure your latency with nothing running, then measure it again while the connection is saturated, and compare the two. Our <a href="/speed-test">speed test</a> does both automatically: it times 20 round trips on an idle line, then keeps timing round trips every quarter of a second while it downloads and uploads at full speed.</p>
+<ol>
+<li>Use a wired connection if you can, so Wi-Fi does not add its own delay to the result.</li>
+<li>Pause other downloads, streams and backups on the network.</li>
+<li>Run the test and look at three numbers: idle latency, latency while downloading and latency while uploading.</li>
+<li>Read the bufferbloat grade. It is based on the larger of the two rises.</li>
+</ol>
+<p>A plain <a href="/ping">ping test</a> cannot show bufferbloat on its own, because it measures an idle line. The problem only appears when something fills the connection.</p>
+
+<h2>What does the bufferbloat grade mean?</h2>
+<p>The grade is the increase in latency under load, on the scale used by the Waveform bufferbloat test, which itself is a version of the old DSLReports rubric. It grades the rise only, not your speed and not your idle ping.</p>
+<div class="tw"><table><tbody>
+<tr><th>Grade</th><th>Latency increase under load</th><th>What you will notice</th></tr>
+<tr><td>A+</td><td>Under 5 ms</td><td>Nothing. Calls and games stay smooth while the line is busy.</td></tr>
+<tr><td>A</td><td>Under 30 ms</td><td>Nothing in normal use.</td></tr>
+<tr><td>B</td><td>Under 60 ms</td><td>Occasional lag in fast games during big transfers.</td></tr>
+<tr><td>C</td><td>Under 200 ms</td><td>Noticeable delay on calls and in games while someone downloads or uploads.</td></tr>
+<tr><td>D</td><td>Under 400 ms</td><td>Calls stutter and games become hard to play during transfers.</td></tr>
+<tr><td>F</td><td>400 ms or more</td><td>Real-time use breaks down whenever the line is busy.</td></tr>
+</tbody></table></div>
+<p>A result can differ between download and upload. On a typical cable or DSL line the upload grade is worse, and on a well-tuned fiber line both stay at A or A+.</p>
+
+<h2>How do you fix bufferbloat?</h2>
+<p>The fix is a router that manages its queue, a feature usually called Smart Queue Management (SQM). Instead of letting the buffer fill, SQM keeps queues short and gives each flow of traffic its own turn, so a call is not stuck behind a download. The two common algorithms are FQ-CoDel, described in RFC 8290, and CAKE, which is built into Linux and OpenWrt.</p>
+<ol>
+<li>Look for SQM in your router. Depending on the brand it may be called SQM, Smart Queue, Adaptive QoS or bandwidth control. Turn it on.</li>
+<li>Set the speeds slightly below your real line speed. SQM only works when the router, not the modem, is the bottleneck. Run a speed test, then enter about 90% of the measured download and upload. Test again and adjust.</li>
+<li>Retest. A working setup usually moves the grade to A or A+, at the cost of a few percent of peak speed.</li>
+<li>If your router has no SQM, consider one that supports it, or a router that can run OpenWrt. Some providers also manage queues on their side, so it is worth asking yours.</li>
+</ol>
+<p>Older QoS features that only prioritize by device or by app help less, because the queue still fills. Buying a faster plan reduces how often you hit the limit, but the delay comes back the moment anything fills the new, bigger line.</p>
+
+<h2>Bufferbloat or something else?</h2>
+<p>High latency that stays high on an idle line is not bufferbloat. It usually means distance to the server, a weak Wi-Fi signal or a congested route. Our guides on <a href="/learn/what-is-ping">what ping is</a> and <a href="/learn/how-to-lower-ping">how to lower ping</a> cover those cases. If the latency only jumps when the line is full, it is bufferbloat, and SQM is the fix.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is bufferbloat bad for gaming?</h3>
+<p>Yes, but only while the line is busy. With a C grade or worse, a game feels fine until someone starts a download or a console update, then your ping jumps by tens or hundreds of milliseconds. Fixing it with SQM keeps gaming ping close to idle even during transfers.</p>
+<h3>Does a faster internet plan fix bufferbloat?</h3>
+<p>Not by itself. A faster plan fills up less often, but when it does fill, the same oversized buffer causes the same delay. The fix is queue management on the router.</p>
+<h3>Can Wi-Fi cause bufferbloat?</h3>
+<p>Yes. If your Wi-Fi is slower than your internet line, the queue forms in the Wi-Fi access point instead of the modem. Testing once on a cable and once on Wi-Fi shows which one is responsible.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8290" rel="noopener">RFC 8290: The Flow Queue CoDel Packet Scheduler and Active Queue Management Algorithm (IETF)</a></li><li><a href="https://www.waveform.com/tools/bufferbloat" rel="noopener">Waveform: Bufferbloat test and grading scale</a></li></ul>
+`,
+  "what-is-a-good-internet-speed": `
+<p>A <strong>good internet speed</strong> for most homes in 2026 is at least 100 Mbps download and 20 Mbps upload, which is the minimum the US Federal Communications Commission now uses to define broadband. One person who browses and streams can manage with far less, while a family that streams 4K, games and backs up to the cloud will be happier at 300 Mbps or more. To see where you stand, run a <a href="/speed-test">speed test</a> and compare it with the tables below.</p>
+
+<h2>What is a good download speed?</h2>
+<p>Download speed decides how fast pages, videos and files arrive. It matters most for streaming and large downloads, and it adds up across everyone in the house using the connection at the same time.</p>
+<div class="tw"><table><tbody>
+<tr><th>Download speed</th><th>Good for</th></tr>
+<tr><td>Under 25 Mbps</td><td>One person browsing and streaming HD. Struggles with several users.</td></tr>
+<tr><td>25 to 100 Mbps</td><td>A small household with a couple of HD or 4K streams.</td></tr>
+<tr><td>100 to 300 Mbps</td><td>Most homes: several 4K streams, gaming and video calls at once.</td></tr>
+<tr><td>300 Mbps to 1 Gbps</td><td>Large households, heavy downloading, frequent large game updates.</td></tr>
+<tr><td>Over 1 Gbps</td><td>Power users and home servers. Few devices can use this much alone.</td></tr>
+</tbody></table></div>
+<p>These bands are a rule of thumb built from the needs of each activity below. The quickest way to size your own plan is to add up what runs at the same time in your busiest hour, then leave some headroom.</p>
+
+<h2>What is a good upload speed?</h2>
+<p>Upload speed is how fast you send data: your side of a video call, photo and cloud backups, livestreams and large email attachments. Many plans, especially cable, have far less upload than download. The FCC broadband minimum is 20 Mbps upload. Around 20 to 50 Mbps is comfortable for a household that works from home, and creators who upload video or back up large files benefit from 100 Mbps or more, which fiber plans often provide.</p>
+
+<h2>How much speed do common activities need?</h2>
+<div class="tw"><table><tbody>
+<tr><th>Activity</th><th>Speed needed</th><th>Source</th></tr>
+<tr><td>Netflix in HD (720p)</td><td>3 Mbps download</td><td>Netflix</td></tr>
+<tr><td>Netflix in Full HD (1080p)</td><td>5 Mbps download</td><td>Netflix</td></tr>
+<tr><td>Netflix in 4K Ultra HD</td><td>15 Mbps download</td><td>Netflix</td></tr>
+<tr><td>Zoom group call in 1080p</td><td>3.8 Mbps upload, 3.0 Mbps download</td><td>Zoom</td></tr>
+<tr><td>Online gaming</td><td>Little bandwidth, but low and steady ping</td><td>See below</td></tr>
+</tbody></table></div>
+<p>Each figure is for one stream or one call. A home with two 4K streams and a 1080p call running together needs roughly 15 + 15 + 3 = 33 Mbps of download at that moment, plus room for everything else.</p>
+
+<h2>Is 100 Mbps fast?</h2>
+<p>Yes, for most people. 100 Mbps meets the FCC broadband benchmark for download and handles several 4K streams, calls and gaming at once. It starts to feel tight in a large household where many people stream and download together, or when big game updates arrive while others are online.</p>
+
+<h2>Is 300 Mbps fast?</h2>
+<p>Yes. 300 Mbps is more than most households use at any single moment. On paper it carries about twenty 4K Netflix streams at 15 Mbps each. Its real benefit is that large downloads finish quickly and nobody notices when someone else is busy. Whether you get the full 300 often depends on your Wi-Fi more than your plan.</p>
+
+<h2>Is 1 Gbps fast?</h2>
+<p>Very. 1 Gbps download paired with 500 Mbps upload is the FCC's long-term goal for broadband, not today's minimum. Most single devices cannot use a full gigabit over Wi-Fi, so you mainly see the benefit with wired computers, many simultaneous users or very large downloads.</p>
+
+<h2>What is a good speed for gaming?</h2>
+<p>Gaming needs surprisingly little bandwidth. What matters is a low, steady ping. Aim for a ping under about 50 ms to the game server, jitter under 15 ms, and a connection whose latency does not jump when someone else uses the line. That last part is called <a href="/learn/what-is-bufferbloat">bufferbloat</a>, and it causes more lag in busy homes than a slow plan does. For downloading the games themselves, a faster plan saves time on updates that can run to tens of gigabytes.</p>
+
+<h2>Download vs upload speed: what is the difference?</h2>
+<p>Download is data coming to you, and upload is data you send. Streaming and browsing are almost all download. Calls are both, and backups, livestreams and sending large files are almost all upload. If calls break up while streaming works fine, upload is the likely limit.</p>
+
+<h2>Mbps vs MBps</h2>
+<p>Internet speeds are quoted in megabits per second (Mbps, small b). File sizes and download managers usually show megabytes per second (MB/s, capital B). One byte is eight bits, so a 100 Mbps connection downloads at about 12.5 MB/s at best.</p>
+
+<h2>How to check your internet speed properly</h2>
+<ol>
+<li>Run the <a href="/speed-test">speed test</a> on a computer connected by cable, to measure the line rather than the Wi-Fi.</li>
+<li>Pause other downloads, streams and backups first.</li>
+<li>Test at different times of day. A result that drops every evening points to congestion at your provider.</li>
+<li>Repeat on Wi-Fi in the rooms you actually use. A big gap between cable and Wi-Fi means the router or its position is the limit.</li>
+</ol>
+<p>Different speed tests use different servers, so results can disagree by 10% or more. If your results are well below what you pay for, our guide to <a href="/learn/why-is-my-internet-so-slow">why your internet is slow</a> goes through the causes in order.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is 50 Mbps good?</h3>
+<p>For one or two people, yes. 50 Mbps handles a couple of 4K streams or several HD streams with calls at the same time. It falls short of the FCC's 100 Mbps broadband benchmark, so a larger household will notice it during busy hours.</p>
+<h3>Why is my speed lower than my plan?</h3>
+<p>Plans are sold as a maximum, and Wi-Fi, older devices, other users on the network and evening congestion all lower what you see. A wired test is the fairest comparison with your plan.</p>
+<h3>Does a good speed mean low ping?</h3>
+<p>No. Speed and ping are separate. A gigabit line can still lag if its latency is high or rises under load, so check both in the speed test results.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://docs.fcc.gov/public/attachments/FCC-24-27A1.pdf" rel="noopener">FCC 24-27: 2024 Section 706 Report, 100/20 Mbps benchmark and 1 Gbps/500 Mbps long-term goal</a></li><li><a href="https://help.netflix.com/en/node/306" rel="noopener">Netflix Help Center: Internet connection speed recommendations</a></li><li><a href="https://support.zoom.com/hc/en/article?id=zm_kb&amp;sysparm_article=KB0060748" rel="noopener">Zoom Support: bandwidth requirements</a></li></ul>
+`,
+  "why-is-my-internet-so-slow": `
+<p>When <strong>your internet is slow</strong>, the cause is usually one of a few things: weak Wi-Fi, too many devices using the line at once, a busy evening at your provider, a router that lets queues build up, or something on your own device such as a VPN or a background update. The fastest way to find which one is to test in a set order, starting with a <a href="/speed-test">speed test</a> on a wired connection.</p>
+
+<h2>Step 1: Test wired, then on Wi-Fi</h2>
+<p>Plug a computer into the router with a cable and run the speed test. Then run it again on Wi-Fi in the room where things feel slow. This one comparison splits almost every problem in two.</p>
+<ul>
+<li>If wired is fast and Wi-Fi is slow, the problem is inside your home: the router, its position or interference. Go to causes 1 to 3.</li>
+<li>If both are slow, the problem is the line, the router itself or your provider. Go to causes 4 to 7.</li>
+<li>If speeds look fine but things still feel slow, look at latency and DNS. Go to causes 8 to 10.</li>
+</ul>
+
+<h2>1. Weak Wi-Fi signal</h2>
+<p>Wi-Fi speed falls quickly with distance, walls and floors. A router in a cupboard, behind a TV or at one end of the house leaves other rooms with a fraction of the real speed. Move the router to a central, open spot, raised off the floor. For a large home, a mesh system works better than a single router with a range extender, because extenders often halve the speed they repeat.</p>
+
+<h2>2. The wrong Wi-Fi band</h2>
+<p>The 2.4 GHz band reaches further but is slower and crowded. The 5 GHz band, and 6 GHz on newer routers, is much faster at shorter range. If your device sits near the router and still connects at 2.4 GHz, connect it to the 5 GHz network or give the bands separate names so you can choose.</p>
+
+<h2>3. Interference and crowded channels</h2>
+<p>In flats and apartments, many neighbouring networks compete for the same channels, and some household devices interfere on 2.4 GHz. Let the router pick a channel automatically after a restart, or choose a less crowded one in its settings. You can reach those settings through your <a href="/learn/find-router-ip-address">router's IP address</a>.</p>
+
+<h2>4. Too many devices at once</h2>
+<p>Every stream, call, game download and backup shares the same connection. A single 4K stream needs about 15 Mbps, and a console update can take everything that is left. Check what else is running when the internet feels slow, and schedule large updates and backups overnight. Our guide to <a href="/learn/what-is-a-good-internet-speed">what a good internet speed is</a> helps you check whether your plan fits your household.</p>
+
+<h2>5. Lag when the line is busy (bufferbloat)</h2>
+<p>If browsing and calls fall apart only when someone else is downloading or uploading, the router is probably letting a queue build up. This is called <a href="/learn/what-is-bufferbloat">bufferbloat</a>. Our speed test measures latency during the download and upload and gives a grade. A C or worse is fixed by turning on Smart Queue Management (SQM) in the router, not by buying a faster plan.</p>
+
+<h2>6. An old router or modem that needs a restart</h2>
+<p>Routers run for months without a reboot and can slow down or drop connections. Restart the modem and router: unplug both, wait 30 seconds, plug the modem in first, then the router. If problems return often, or the router is several years old and lacks Wi-Fi 6, a newer one is likely to help more than a faster plan. Also check that its firmware is up to date.</p>
+
+<h2>7. Congestion or throttling at your provider</h2>
+<p>If a wired test is fast in the morning and slow every evening, your provider's network is likely congested at peak time. Some plans also slow down after a data cap. Record wired speed test results at different times of day for a few days, then contact your provider with them. The guide to <a href="/learn/what-is-my-isp">finding your ISP</a> helps if you are not sure who runs your line.</p>
+
+<h2>8. A VPN or proxy</h2>
+<p>A VPN sends all your traffic through its server, which adds distance and can cap your speed. Run the speed test with the VPN off and on. A large difference means the VPN server is the bottleneck, so try a closer server or a different protocol. Our guide to <a href="/learn/is-my-vpn-working">checking that a VPN works</a> shows how to confirm it is still protecting you after the change.</p>
+
+<h2>9. Slow DNS</h2>
+<p>If pages take a moment to start loading but then load quickly, DNS may be the delay. Every new website name has to be looked up first, and a slow resolver adds that wait to each one. Switching to a fast public resolver often helps. See <a href="/learn/fix-slow-dns-lookup">how to fix a slow DNS lookup</a>.</p>
+
+<h2>10. Your own device</h2>
+<p>An old laptop, a phone in power-saving mode, a browser with dozens of tabs or a background cloud sync can all make the internet feel slow when the line is fine. Test another device in the same spot. If only one device is slow, the problem is that device: update it, close background apps, and check for a long-running download or update.</p>
+
+<h2>When to contact your provider</h2>
+<p>Call your provider when a wired speed test is well below your plan at several times of day, after you have restarted the modem and router. Give them the results with dates and times. A wired result is the evidence they cannot blame on your Wi-Fi.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Why is my internet slow all of a sudden?</h3>
+<p>A sudden drop usually comes from something that just changed: a large update or backup starting on one device, a router that needs a restart, an outage or works in your area, or a new device crowding the network. Restart the router, check what is downloading, and run a wired speed test.</p>
+<h3>Why is my internet slow at night?</h3>
+<p>Evening is the busiest time on most residential networks, so a provider with too little capacity slows down then. If wired tests are consistently slower in the evening, report it to your provider with the results.</p>
+<h3>Why is my Wi-Fi slow but wired is fine?</h3>
+<p>The line is fine, so the limit is the wireless link: distance, walls, the 2.4 GHz band, interference or an older router. Move closer, switch to 5 GHz, or add a mesh system.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://help.netflix.com/en/node/306" rel="noopener">Netflix Help Center: Internet connection speed recommendations</a></li></ul>
 `,
 };

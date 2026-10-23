@@ -380,6 +380,33 @@ export const ARTICLES: ArticleMeta[] = [
     tools: ["ip", "lookup"],
     related: ["what-is-my-isp", "what-is-an-ip-checker", "can-someone-track-you-by-ip-address", "how-to-choose-an-ip-checker", "what-is-whois"],
   },
+  {
+    slug: "what-is-bufferbloat",
+    title: "What Is Bufferbloat? How to Test and Fix It",
+    description: "Bufferbloat makes a fast connection lag whenever it is busy. Learn what causes it, how to test it with a bufferbloat grade, and how to fix it.",
+    published: "2026-10-23",
+    readMin: 7,
+    tools: ["speed", "ping"],
+    related: ["how-to-lower-ping", "what-is-ping", "what-is-a-good-internet-speed"],
+  },
+  {
+    slug: "what-is-a-good-internet-speed",
+    title: "What Is a Good Internet Speed? Download, Upload and Ping",
+    description: "What counts as a good internet speed in 2026: download and upload for streaming, calls and gaming, whether 100 or 300 Mbps is fast, and how to check.",
+    published: "2026-10-23",
+    readMin: 7,
+    tools: ["speed", "ping"],
+    related: ["why-is-my-internet-so-slow", "what-is-bufferbloat", "what-is-ping"],
+  },
+  {
+    slug: "why-is-my-internet-so-slow",
+    title: "Why Is My Internet So Slow? 10 Causes and Fixes",
+    description: "Find out why your internet is slow with a simple order of tests: wired vs Wi-Fi, time of day, bufferbloat, VPN and DNS, then the fix for each cause.",
+    published: "2026-10-23",
+    readMin: 8,
+    tools: ["speed", "ping"],
+    related: ["what-is-a-good-internet-speed", "what-is-bufferbloat", "fix-slow-dns-lookup"],
+  },
 ];
 
 export const articleBySlug = (slug: string) => ARTICLES.find((a) => a.slug === slug);
