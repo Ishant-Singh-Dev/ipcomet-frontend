@@ -589,7 +589,8 @@
       const vmax = Math.max(0, ...all.map((p) => p.v), ...trace.phases.map((p) => p.result || 0));
       const ystep = niceStep(Math.max(vmax * 1.08, 20) / 4);
       const ytop = ystep * Math.ceil(Math.max(vmax * 1.08, 20) / ystep);
-      const tEnd = Math.max(10000, ...all.map((p) => p.t + 250));
+      // The time axis grows in 5 s steps, so the chart does not rescale on every sample.
+      const tEnd = Math.max(10000, Math.ceil((Math.max(0, ...all.map((p) => p.t)) + 750) / 5000) * 5000);
       const xstep = [1000, 2000, 5000, 10000].find((s) => tEnd / s <= 8);
       const X = (t) => M.l + (t / tEnd) * pw;
       const Y = (v) => M.t + ph - (v / ytop) * ph;
@@ -607,8 +608,9 @@
         if (x2 > x1) g += `<rect class="ramp" x="${n(x1)}" y="${M.t}" width="${n(x2 - x1)}" height="${ph}"/>`;
         if (x2 - x1 > 54) g += `<text x="${n(x1 + 5)}" y="${M.t + 12}">${esc(tr("Warm-up"))}</text>`;
       }
+      const L = trace.live;
       for (const k of ["d", "u"]) {
-        const pts = trace[k];
+        const pts = L && L.k === k && trace[k].length ? trace[k].concat([[L.t, L.v]]) : trace[k];
         if (!pts.length) continue;
         const line = pts.map(([t, v]) => `${n(X(t))},${n(Y(v))}`).join(" ");
         g += `<polygon class="a${k}" points="${n(X(pts[0][0]))},${n(Y(0))} ${line} ${n(X(pts[pts.length - 1][0]))},${n(Y(0))}"/>`;
@@ -621,11 +623,7 @@
         const ly = y - 7 < M.t + 4 ? y + 15 : y - 7;
         g += `<text class="rl" x="${n(x2 - 2)}" y="${n(ly)}" text-anchor="end">${fmt(p.result)} Mbps</text>`;
       }
-      const live = trace.phases.find((p) => p.end === undefined);
-      if (live && trace[live.k].length) {
-        const [t, v] = trace[live.k][trace[live.k].length - 1];
-        g += `<circle class="d${live.k}" cx="${n(X(t))}" cy="${n(Y(v))}" r="4"/>`;
-      }
+      if (L && trace[L.k].length) g += `<circle class="d${L.k}" cx="${n(X(L.t))}" cy="${n(Y(L.v))}" r="4"/>`;
       const h = trace.hover;
       if (h) {
         g += `<line class="xh" x1="${n(X(h.t))}" x2="${n(X(h.t))}" y1="${M.t}" y2="${M.t + ph}"/>`;
@@ -650,16 +648,18 @@
     }
 
     // Hover and keyboard: the crosshair snaps to the nearest sample, on either line.
+    let raf = 0;
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; draw(); }); };
     const nearest = (t) => points().reduce((best, p) => (!best || Math.abs(p.t - t) < Math.abs(best.t - t) ? p : best), null);
     svg.addEventListener("pointermove", (e) => {
       const r = svg.getBoundingClientRect();
       const W = r.width, all = points();
       if (!all.length) return;
-      const tEnd = Math.max(10000, ...all.map((p) => p.t + 250));
+      const tEnd = Math.max(10000, Math.ceil((Math.max(0, ...all.map((p) => p.t)) + 750) / 5000) * 5000);
       trace.hover = nearest(((e.clientX - r.left - 46) / (W - 58)) * tEnd);
-      draw();
+      schedule();
     });
-    svg.addEventListener("pointerleave", () => { trace.hover = null; draw(); });
+    svg.addEventListener("pointerleave", () => { trace.hover = null; schedule(); });
     svg.addEventListener("keydown", (e) => {
       if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
       const all = points();
@@ -667,10 +667,10 @@
       e.preventDefault();
       const i = trace.hover ? all.findIndex((p) => p.t === trace.hover.t && p.k === trace.hover.k) : -1;
       trace.hover = all[Math.min(Math.max(i + (e.key === "ArrowRight" ? 1 : -1), 0), all.length - 1)];
-      draw();
+      schedule();
     });
-    svg.addEventListener("blur", () => { trace.hover = null; draw(); });
-    if (window.ResizeObserver) new ResizeObserver(() => draw()).observe(svg);
+    svg.addEventListener("blur", () => { trace.hover = null; schedule(); });
+    if (window.ResizeObserver) new ResizeObserver(schedule).observe(svg);
     draw();
 
     /* ---- Latency ---- */
@@ -769,6 +769,20 @@
       const offset = trace.t0;
       const phaseRec = { k: kind, start: offset };
       trace.phases = trace.phases.filter((p) => p.k !== kind).concat(phaseRec);
+      /*
+        Samples arrive every 250 ms, but the chart and the big number move every frame: the line's head eases toward
+        the latest one-second speed, so the drawing glides instead of jumping four times a second.
+      */
+      const L = (trace.live = { k: kind, t: offset, v: 0, target: 0 });
+      const frame = () => {
+        if (trace.live !== L) return;
+        L.v += (L.target - L.v) * 0.18;
+        L.t = Math.max(L.t, offset + performance.now() - t0);
+        setLive(L.v);
+        draw();
+        requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
       const done = new Promise((resolve) => {
         tick = setInterval(() => {
           const t = performance.now() - t0;
@@ -780,9 +794,8 @@
             recent.push(rate);
             if (recent.length > 4) recent.shift();
             const live = recent.reduce((a, b) => a + b, 0) / recent.length;
-            setLive(live);
+            L.target = live;
             trace[kind].push([offset + t, live]);
-            draw();
           }
           phase(label, from + Math.min(t / max, 1) * (to - from));
           if (t >= max || (t >= min && settled(rates))) { stop = true; clearInterval(tick); resolve(t); }
@@ -790,14 +803,16 @@
       });
       const ended = start((n) => { total += n; }, () => stop);
       const elapsed = await Promise.race([done, ended.then(() => (stop ? null : "early"))]);
-      if (elapsed === "early") { clearInterval(tick); throw new Error("no data"); } // every transfer died early, e.g. a rate limit
+      if (elapsed === "early") { clearInterval(tick); trace.live = null; throw new Error("no data"); } // every transfer died early, e.g. a rate limit
       await ended;
       const ms = typeof elapsed === "number" ? elapsed : performance.now() - t0;
       trace.t0 = offset + ms + 400;
-      if (total < 100000) throw new Error("no data");
+      if (total < 100000) { trace.live = null; throw new Error("no data"); }
       const result = steadyMbps(rates, mbps(total, ms));
       phaseRec.end = offset + ms;
       phaseRec.result = result;
+      trace.live = null;
+      setLive(result);
       draw();
       return { mbps: result, bytes: total, ms };
     }
@@ -813,11 +828,17 @@
             try {
               const res = await fetch(src.down(), { signal: ctl.signal, cache: "no-store", ...src.init });
               if (!res.ok) return;
-              const reader = res.body.getReader();
+              /*
+                A gigabit test reads about a gigabyte. With the default reader every chunk is a new buffer, and freeing
+                them froze the page for up to half a second as the test ended. A BYOB reader fills one reused buffer.
+              */
+              let reader, buf = new ArrayBuffer(1 << 20);
+              try { reader = res.body.getReader({ mode: "byob" }); } catch { reader = res.body.getReader(); buf = null; }
               for (;;) {
-                const { done, value } = await reader.read();
+                const { done, value } = buf ? await reader.read(new Uint8Array(buf)) : await reader.read();
                 if (done) break;
                 sink(value.byteLength);
+                if (buf) buf = value.buffer;
                 if (stopped()) { ctl.abort(); return; }
               }
             } catch { return; }
