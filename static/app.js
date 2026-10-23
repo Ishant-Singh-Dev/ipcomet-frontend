@@ -717,7 +717,12 @@
       cross-origin use, and the browser runs several parallel transfers to them, as Ookla and fast.com do. Pulling
       the test data through our own Worker capped the result far below the real speed, so it is only the fallback.
     */
-    const CHUNK = 26214400;
+    /*
+      5 MB per request. Cloudflare's speed server rate-limits each IP address, and once a visitor has tested a lot it
+      answers requests of 10 MB or more with 429 (checked 23 Oct 2026: 8 MB still passed, 10 MB did not). Six parallel
+      5 MB requests still fill a gigabit line.
+    */
+    const CHUNK = 5000000;
     const CFSRC = { down: () => `${CF}/__down?bytes=${CHUNK}&r=${Math.random()}`, up: `${CF}/__up`, init: { credentials: "omit" } };
     const OWNSRC = { down: () => `/api/speed/down?bytes=${CHUNK}&r=${Math.random()}`, up: "/api/speed/up", init: {} };
     let src = CFSRC;
@@ -726,12 +731,14 @@
     async function pickSource() {
       const ctl = new AbortController();
       const timer = setTimeout(() => ctl.abort(), 4000);
+      // Ask for a full-size chunk, so a rate limit shows up here (one console line) rather than in all six transfers,
+      // and stop reading as soon as the headers say yes.
       try {
-        const res = await fetch(`${CF}/__down?bytes=1000&r=${Math.random()}`, { cache: "no-store", credentials: "omit", signal: ctl.signal });
+        const res = await fetch(CFSRC.down(), { cache: "no-store", credentials: "omit", signal: ctl.signal });
         if (!res.ok) throw new Error("unavailable");
-        await res.arrayBuffer();
         primary = CFSRC;
       } catch { primary = OWNSRC; }
+      ctl.abort();
       clearTimeout(timer);
     }
 
