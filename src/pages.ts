@@ -300,6 +300,39 @@ function subnetUi(lt: Tr): string {
 <div id="out" aria-live="polite"></div>`);
 }
 
+function macUi(lt: Tr): string {
+  return ui(`<form id="f" autocomplete="off"><textarea id="q" name="q" rows="3" placeholder="${esc(lt("Paste one MAC address, an OUI, or a whole list (arp -a output works too)"))}" aria-label="${esc(lt("MAC addresses"))}" autocapitalize="off" spellcheck="false" required></textarea>
+<div class="row"><button class="btn pri" type="submit">${esc(lt("Look up"))}</button></div></form>
+<div class="chips"><button class="chip" type="button" data-fill="B8:27:EB:12:34:56">B8:27:EB:12:34:56</button><button class="chip" type="button" data-fill="00:00:0C:9F:F0:01">00:00:0C:9F:F0:01</button><button class="chip" type="button" data-fill="F0-18-98">F0-18-98</button><button class="chip" type="button" data-fill="DA:A1:19:6B:2C:7E">DA:A1:19:6B:2C:7E</button></div>
+<div id="out" aria-live="polite"></div>`);
+}
+
+function mailUi(lt: Tr, selector = false): string {
+  return ui(`<form class="row" id="f" autocomplete="off"><input id="q" name="q" placeholder="example.com" aria-label="${esc(lt("Domain or email address"))}" inputmode="url" autocapitalize="off" spellcheck="false" required>${selector ? `<input id="sel" name="selector" placeholder="${esc(lt("Selector (optional)"))}" aria-label="${esc(lt("DKIM selector"))}" autocapitalize="off" spellcheck="false" style="flex:0 1 200px">` : ""}<button class="btn pri" type="submit">${esc(lt("Check"))}</button></form>
+<div class="chips"><button class="chip" type="button" data-fill="gmail.com">gmail.com</button><button class="chip" type="button" data-fill="github.com">github.com</button><button class="chip" type="button" data-fill="paypal.com">paypal.com</button></div>
+<div id="out" aria-live="polite"></div>`);
+}
+
+function propagationUi(lt: Tr): string {
+  return ui(`<form class="row" id="f" autocomplete="off"><input id="q" name="q" placeholder="example.com" aria-label="${esc(lt("Domain"))}" inputmode="url" autocapitalize="off" spellcheck="false" required>
+<select id="type" aria-label="${esc(lt("Record type"))}"><option>A</option><option>AAAA</option><option>CNAME</option><option>MX</option><option>NS</option><option>TXT</option><option>CAA</option><option>SOA</option></select>
+<input id="expect" name="expect" placeholder="${esc(lt("Expected value (optional)"))}" aria-label="${esc(lt("Expected value"))}" autocapitalize="off" spellcheck="false" style="flex:1 1 200px">
+<button class="btn pri" type="submit">${esc(lt("Check"))}</button></form>
+<div class="chips"><button class="chip" type="button" data-fill="github.com">github.com</button><button class="chip" type="button" data-fill="wikipedia.org">wikipedia.org</button><button class="chip" type="button" data-fill="cloudflare.com">cloudflare.com</button></div>
+<div id="out" aria-live="polite"></div>`);
+}
+
+function downloadUi(lt: Tr): string {
+  const opt = (v: string, sel = false) => `<option${sel ? " selected" : ""}>${v}</option>`;
+  return ui(`<form class="row" id="f" autocomplete="off">
+<input id="size" type="number" min="0" step="any" value="10" inputmode="decimal" aria-label="${esc(lt("File size"))}" style="flex:1 1 120px">
+<select id="sunit" aria-label="${esc(lt("Size unit"))}">${opt("MB")}${opt("GB", true)}${opt("TB")}${opt("MiB")}${opt("GiB")}</select>
+<input id="speed" type="number" min="0" step="any" value="100" inputmode="decimal" aria-label="${esc(lt("Internet speed"))}" style="flex:1 1 120px">
+<select id="vunit" aria-label="${esc(lt("Speed unit"))}">${opt("Mbps", true)}${opt("Gbps")}${opt("MB/s")}</select></form>
+<div class="chips"><button class="chip" type="button" data-size="1">1 GB</button><button class="chip" type="button" data-size="4">4 GB</button><button class="chip" type="button" data-size="50">50 GB</button><button class="chip" type="button" data-size="100">100 GB</button><a class="chip" href="/speed-test">${esc(lt("Measure my speed"))}</a></div>
+<div id="out" aria-live="polite"></div>`);
+}
+
 const LEADS: Record<string, string> = {
   ping: "Measure your latency, jitter and packet loss to the nearest Cloudflare server in about ten seconds.",
   "reverse-dns": "Find the hostname (PTR record) that belongs to any IPv4 or IPv6 address.",
@@ -314,6 +347,13 @@ const LEADS: Record<string, string> = {
   speed: "Measure download, upload, idle latency and latency under load (bufferbloat) between your device and Cloudflare's nearest edge.",
   webrtc: "Browsers can reveal your real IP through WebRTC, even behind a VPN. Run the check to see what is exposed.",
   subnet: "Work out network ranges, masks and usable hosts for any IPv4 or IPv6 CIDR block.",
+  mac: "Find the manufacturer behind any MAC address or OUI, check a whole list at once, and see whether an address is a randomized private one.",
+  dmarc: "Check any domain's DMARC record against the current standard, RFC 9989, with SPF, DKIM, MX and MTA-STS in the same report.",
+  spf: "Validate a domain's SPF record, count its DNS lookups against the limit of 10, and follow every include.",
+  dkim: "Find a domain's DKIM keys by scanning common selectors, or test your own selector, and see whether each key is active.",
+  mx: "See which mail servers receive email for a domain, in priority order, and which provider runs them.",
+  propagation: "See what 12 public DNS resolvers return for a record right now, and how long each will keep its cached answer.",
+  download: "Work out how long a download takes at your internet speed, or the speed you need to finish it in time.",
 };
 
 const H1: Record<string, string> = {
@@ -330,6 +370,13 @@ const H1: Record<string, string> = {
   speed: "Internet Speed Test",
   webrtc: "WebRTC Leak Test",
   subnet: "Subnet Calculator",
+  mac: "MAC Address Lookup",
+  dmarc: "DMARC Checker",
+  spf: "SPF Record Checker",
+  dkim: "DKIM Record Checker",
+  mx: "MX Lookup",
+  propagation: "DNS Propagation Checker",
+  download: "Download Time Calculator",
 };
 
 /** Topically related tools, so "More tools" links to what a visitor is likely to need next. */
@@ -347,6 +394,13 @@ const RELATED_TOOLS: Record<string, string[]> = {
   ping: ["speed", "port", "dns"],
   webrtc: ["reputation", "proxy-checker", "browser"],
   subnet: ["lookup", "reputation", "port"],
+  mac: ["subnet", "lookup", "browser"],
+  dmarc: ["spf", "dkim", "mx"],
+  spf: ["dmarc", "dkim", "mx"],
+  dkim: ["dmarc", "spf", "mx"],
+  mx: ["dmarc", "spf", "dns"],
+  propagation: ["dns", "whois", "mx"],
+  download: ["speed", "ping", "subnet"],
 };
 
 export interface ToolPageContext {
@@ -394,6 +448,13 @@ export function toolPage(id: string, origin: string, ctx: ToolPageContext = {}, 
     speed: () => speedUi(lt, copy.h1),
     webrtc: () => webrtcUi(lt),
     subnet: () => subnetUi(lt),
+    mac: () => macUi(lt),
+    dmarc: () => mailUi(lt),
+    spf: () => mailUi(lt),
+    dkim: () => mailUi(lt, true),
+    mx: () => mailUi(lt),
+    propagation: () => propagationUi(lt),
+    download: () => downloadUi(lt),
   };
 
   // Guides whose main tool is this page come first, then the others that use it.

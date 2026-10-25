@@ -1,4 +1,4 @@
-import { LOCALE_DATA, type Locale } from "./i18n";
+import { LOCALE_DATA, localizedPath, type Locale } from "./i18n";
 
 export interface Tool {
   id: string;
@@ -7,6 +7,8 @@ export interface Tool {
   desc: string;
   title: string;
   description: string;
+  /** Published in English only until its text is translated; other languages link to the English page. */
+  enOnly?: boolean;
 }
 
 export const TOOLS: Tool[] = [
@@ -122,9 +124,75 @@ export const TOOLS: Tool[] = [
     title: "Subnet Calculator: CIDR and Subnet Mask Calculator",
     description: "Free subnet mask calculator for IPv4 and IPv6. Enter an IP and CIDR to get the network address, broadcast, host range and usable hosts.",
   },
+  {
+    id: "mac",
+    path: "/mac-lookup",
+    name: "MAC Lookup",
+    desc: "Find the vendor of any MAC address or OUI",
+    title: "MAC Address Lookup: Find the Vendor of Any MAC",
+    description: "Free MAC address lookup: find the vendor of any MAC or OUI from the IEEE registry, check hundreds at once, and spot randomized private addresses.",
+    enOnly: true,
+  },
+  {
+    id: "dmarc",
+    path: "/dmarc-checker",
+    name: "DMARC Checker",
+    desc: "Check a domain's DMARC, SPF and DKIM setup",
+    title: "DMARC Checker: Test Your DMARC Record Free",
+    description: "Free DMARC checker: read and explain any domain's DMARC policy under the new RFC 9989 rules, with SPF, DKIM and MX checks and a suggested next record.",
+    enOnly: true,
+  },
+  {
+    id: "spf",
+    path: "/spf-checker",
+    name: "SPF Checker",
+    desc: "Validate SPF and count its DNS lookups",
+    title: "SPF Checker: Validate SPF Records and Lookups",
+    description: "Free SPF record checker: validate the syntax, count DNS lookups against the 10-lookup limit, see every include, and check DKIM and DMARC at once.",
+    enOnly: true,
+  },
+  {
+    id: "dkim",
+    path: "/dkim-checker",
+    name: "DKIM Checker",
+    desc: "Find DKIM keys by selector and test them",
+    title: "DKIM Checker: Find and Test DKIM Records",
+    description: "Free DKIM checker: scan over 30 common selectors or test your own, and see key type, size and revoked or testing keys, next to SPF and DMARC.",
+    enOnly: true,
+  },
+  {
+    id: "mx",
+    path: "/mx-lookup",
+    name: "MX Lookup",
+    desc: "Mail servers and email provider of a domain",
+    title: "MX Lookup: Check MX Records and Mail Provider",
+    description: "Free MX lookup: see a domain's mail servers in priority order, which email provider runs them, and whether SPF, DKIM, DMARC and MTA-STS are set up.",
+    enOnly: true,
+  },
+  {
+    id: "propagation",
+    path: "/dns-propagation",
+    name: "DNS Propagation",
+    desc: "Check a DNS change across 12 public resolvers",
+    title: "DNS Propagation Checker: See DNS Changes Live",
+    description: "Free DNS propagation checker: see what 12 public DNS resolvers return for any record right now, how long each keeps its cached answer, and when yours lands.",
+    enOnly: true,
+  },
+  {
+    id: "download",
+    path: "/download-time-calculator",
+    name: "Download Time",
+    desc: "How long a file takes at your internet speed",
+    title: "Download Time Calculator: File Size and Speed",
+    description: "Free download time calculator: see how long any file takes at your internet speed, find the speed you need to finish by a deadline, and plug in your speed test.",
+    enOnly: true,
+  },
 ];
 
 export const toolById = (id: string) => TOOLS.find((t) => t.id === id);
+
+/** Where a tool lives for a visitor reading in a language: its own language page, or the English one. */
+export const toolHref = (tool: Tool, locale: Locale) => localizedPath(tool.enOnly ? "en" : locale, tool.path);
 
 /** A tool's name, short description and page title in a language (English where no translation exists). */
 export const localTool = (tool: Tool, locale: Locale): Tool => {

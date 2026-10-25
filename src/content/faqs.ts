@@ -1,4 +1,5 @@
 import type { Faq } from "../layout";
+import ouiMeta from "../../static/oui/meta.json";
 
 export const HOME_FAQ: Faq[] = [
   {
@@ -238,6 +239,136 @@ export const TOOL_FAQ: Record<string, Faq[]> = {
       a: "CIDR notation writes a network as an address followed by a slash and a number, such as 192.168.1.0/24. The number is how many leading bits identify the network, and the remaining bits identify hosts. A bigger number means a smaller network.",
     },
   ],
+  mac: [
+    {
+      q: "How do I find the manufacturer of a MAC address?",
+      a: "Paste the address into the box above. The first six hexadecimal digits (the OUI) identify the company that IEEE assigned the block to, and the tool looks them up in the IEEE MA-L, MA-M and MA-S registries, including the smaller 28-bit and 36-bit blocks that many lookups miss.",
+    },
+    {
+      q: "Why does a MAC lookup say the address is randomized or locally administered?",
+      a: "The second hexadecimal digit of the address is 2, 6, A or E, which means the locally administered bit is set. Phones and computers use addresses like this as private Wi-Fi addresses: Android 10 and later randomize by default, and Apple devices use a different private address for each network. A randomized address does not belong to any manufacturer, so no vendor lookup can name one.",
+    },
+    {
+      q: "Can I look up many MAC addresses at once?",
+      a: "Yes. Paste a list, or the whole output of arp -a, ip neigh or your router's client list. The tool finds every MAC address in the text, in any common format, and shows the vendor of each one. You can copy the results as CSV.",
+    },
+    {
+      q: "Can a MAC address tell me where a device is?",
+      a: "No. A MAC address identifies a network interface, not a place, and it never leaves your local network, so websites cannot see it. A vendor lookup only tells you who made the network card or who registered the block.",
+    },
+    {
+      q: "Is this MAC address lookup private?",
+      a: "Yes. The vendor data is downloaded to your browser in small pieces and the lookup runs there. The addresses you paste are not sent to our server.",
+    },
+  ],
+  dmarc: [
+    {
+      q: "How do I check my DMARC record?",
+      a: "Enter your domain above. The checker reads the TXT record at _dmarc.yourdomain, explains every tag in plain English, and shows whether the policy actually protects you. If a subdomain has no record of its own, it shows the parent record that applies, the way RFC 9989 looks it up.",
+    },
+    {
+      q: "What does p=none, p=quarantine or p=reject mean?",
+      a: "They are the domain owner's request to receiving mail servers. p=none asks for no special treatment and is used while you collect reports. p=quarantine marks failing mail as suspicious, usually sending it to spam. p=reject says failures are not legitimate and asks receivers to refuse them. Only quarantine and reject stop people spoofing your domain.",
+    },
+    {
+      q: "Is DMARC required?",
+      a: "For bulk senders to Gmail, yes. Google requires anyone sending more than 5,000 messages a day to Gmail accounts to set up SPF, DKIM and DMARC, and a policy of p=none is enough to meet that rule. For everyone else it is strongly recommended, because without it anyone can send mail that claims to come from your domain.",
+    },
+    {
+      q: "What changed in RFC 9989?",
+      a: "RFC 9989, published in May 2026, replaces RFC 7489 as the DMARC standard. Records still start with v=DMARC1. It removes the pct tag, adds np for subdomains that do not exist and t for test mode, and finds the policy by walking up the DNS tree. This checker follows the new rules and flags tags that receivers now ignore.",
+    },
+  ],
+  spf: [
+    {
+      q: "How do I check my SPF record?",
+      a: "Enter your domain above. The checker reads the TXT record that starts with v=spf1, follows every include and redirect, counts the DNS lookups, and warns about the mistakes that break SPF: two records, more than 10 lookups, a +all that lets anyone send, or a deprecated ptr mechanism.",
+    },
+    {
+      q: "What is the SPF 10 lookup limit?",
+      a: "RFC 7208 allows at most 10 mechanisms and modifiers that need DNS queries (include, a, mx, ptr, exists and redirect) per check, counted across every nested include. Going over makes SPF return a permanent error, which receivers treat as a failure. ip4, ip6 and all do not count.",
+    },
+    {
+      q: "What is the difference between ~all and -all?",
+      a: "-all is a fail: mail from servers not listed is not authorized. ~all is a softfail, a weaker statement that such mail is probably not authorized. Both are valid; with DMARC at quarantine or reject, ~all is common because DMARC makes the final decision. Never use +all, which authorizes every server on the internet.",
+    },
+    {
+      q: "Can I have two SPF records?",
+      a: "No. If a domain publishes more than one record starting with v=spf1, the result is a permanent error under RFC 7208. Merge them into one record with all the includes you need.",
+    },
+  ],
+  dkim: [
+    {
+      q: "How do I find my DKIM selector?",
+      a: "Open the headers of an email you sent and find the DKIM-Signature header. The s= value is the selector and d= is the domain. Enter both above. The checker also scans over 30 selectors used by common mail services, so it often finds the key without one.",
+    },
+    {
+      q: "Why does the DKIM check find nothing?",
+      a: "DKIM keys live at selector._domainkey.yourdomain, and DNS has no way to list them, so a key can only be found by name. If your provider uses a custom or date-based selector, enter it in the selector box. A domain that does not send mail at all may have no DKIM keys.",
+    },
+    {
+      q: "What does a revoked DKIM key mean?",
+      a: "A DKIM record with an empty p= value means the key has been revoked, according to RFC 6376. Signatures made with that selector fail. It is normal for an old selector to be revoked after a key rotation, as long as a current selector is active.",
+    },
+    {
+      q: "What DKIM key size should I use?",
+      a: "Use a 2048-bit RSA key where your provider supports it. The checker estimates the size of each RSA key from the length of its published public key.",
+    },
+  ],
+  mx: [
+    {
+      q: "How do I look up MX records?",
+      a: "Enter a domain or an email address above. The lookup returns the mail servers listed in the domain's MX records, sorted by priority, and names the provider when the servers belong to a known service such as Google Workspace or Microsoft 365.",
+    },
+    {
+      q: "What does MX priority mean?",
+      a: "Each MX record has a number. Sending servers try the lowest number first and fall back to higher numbers if it does not answer. Records with the same number share the load.",
+    },
+    {
+      q: "What does an MX record of 0 . mean?",
+      a: "A single MX record with priority 0 and a target of a dot is a null MX. It says the domain accepts no email at all, so senders can fail immediately instead of retrying.",
+    },
+    {
+      q: "Why does my domain have no MX records?",
+      a: "Either email was never set up for it, or the records were removed when the domain moved. Without MX records, mail to the domain will usually bounce. Add the records your email provider gives you, then check again here.",
+    },
+  ],
+  propagation: [
+    {
+      q: "How long does DNS propagation take?",
+      a: "Up to the TTL of the old record, counted from the moment you saved the change. Resolvers keep a cached answer for as many seconds as its TTL allows, then ask again and get the new one. A record with a 300-second TTL updates everywhere within about five minutes; one with a 86,400-second TTL can take a day. This checker shows how long each resolver still has to wait.",
+    },
+    {
+      q: "Why do nameserver changes take longer?",
+      a: "When you change nameservers at your registrar, the parent zone has to publish the new delegation, and resolvers cache the old one for the TTL that zone sets. The .com servers, for example, hand out delegation records with a TTL of 172,800 seconds (48 hours).",
+    },
+    {
+      q: "Why do some resolvers show a different answer?",
+      a: "Either they still hold the old answer in cache, or the domain deliberately gives different answers to different places, as content delivery networks do. Enter the value you expect in the optional box: resolvers that already return it are marked, and the rest show how many seconds of cache they have left.",
+    },
+    {
+      q: "Can I make DNS propagate faster?",
+      a: "Plan ahead. Lower the TTL of the record to something like 300 seconds a day before the change, make the change, then raise the TTL again. You cannot force other people's resolvers to drop a cached answer early, although Cloudflare and Google offer pages to purge their own caches.",
+    },
+  ],
+  download: [
+    {
+      q: "How long does it take to download 1 GB at 100 Mbps?",
+      a: "About 80 seconds. One gigabyte is 8,000 megabits, and 8,000 divided by 100 Mbps is 80 seconds. In practice expect a little longer, because protocol overhead, the server and Wi-Fi all take a share.",
+    },
+    {
+      q: "How do I convert Mbps to MB/s?",
+      a: "Divide by 8. Internet speeds are quoted in megabits per second (Mbps) and download managers usually show megabytes per second (MB/s). A 100 Mbps connection downloads at up to 12.5 MB/s.",
+    },
+    {
+      q: "What speed do I need to download 100 GB in an hour?",
+      a: "About 222 Mbps. 100 GB is 800,000 megabits, and 800,000 divided by 3,600 seconds is 222 Mbps. The table under the result shows the speed needed for any size and deadline you enter.",
+    },
+    {
+      q: "Why is my download slower than the calculator says?",
+      a: "The calculator assumes your full line speed for the whole transfer. Real downloads lose some of it to protocol overhead and other devices on the network, and the server may send more slowly than your line can receive. Run our speed test to measure what your connection actually delivers.",
+    },
+  ],
 };
 
 export const TOOL_ABOUT: Record<string, string> = {
@@ -267,6 +398,20 @@ export const TOOL_ABOUT: Record<string, string> = {
     "A WebRTC leak test checks whether your browser exposes an IP address that differs from the one websites normally see. It is most useful if you use a VPN or proxy, because a leak means your real IP address is visible despite the tunnel. The test asks a public STUN server for your IP the same way a video-call site would, and compares the answer with your connection.",
   subnet:
     "A subnet calculator turns a CIDR block into the numbers you need to configure a network: the network and broadcast addresses, the first and last usable host, the subnet and wildcard masks, and how many hosts fit. It supports both IPv4 and IPv6, and runs entirely in your browser, so nothing you type leaves your device.",
+  mac:
+    "A MAC address lookup finds the company behind a network device from the first part of its MAC address. Every Ethernet and Wi-Fi interface has a 48-bit hardware address, and IEEE assigns the leading 24, 28 or 36 bits to organizations in blocks called MA-L, MA-M and MA-S. Use this tool to identify an unknown device on your network, check the hardware in a router's client list, or read the vendor of an access point. It also decodes the address itself: unicast or multicast, universally or locally administered (the sign of a randomized private address), every common format, and the IPv6 link-local address derived from it.",
+  dmarc:
+    "A DMARC checker shows whether a domain tells receiving mail servers what to do with email that fails authentication. DMARC builds on SPF and DKIM: it asks that the domain in the visible From: address matches a domain that passed one of them, and it publishes a policy for messages that do not. Enter a domain to read its DMARC record tag by tag, see the policy that applies to subdomains, find out whether reports are being sent anywhere, and get a suggested next step towards a reject policy. The same report checks SPF, DKIM, MX, MTA-STS and BIMI, so you can see the whole email setup at once.",
+  spf:
+    "An SPF checker reads a domain's Sender Policy Framework record, the TXT record that lists which servers may send email for the domain. It follows every include and redirect, counts the DNS lookups that the record triggers against the limit of 10 set by RFC 7208, and explains the result receivers will reach for mail from unlisted servers. Use it after adding a new email service, when mail starts landing in spam, or before moving DMARC to an enforcing policy.",
+  dkim:
+    "A DKIM checker finds the public keys a domain publishes for DomainKeys Identified Mail, the signature that proves an email was sent by the domain and was not changed on the way. Keys are stored at a name built from a selector, so this tool tries over 30 selectors used by common providers and lets you enter your own. For each key it shows the type, an estimate of the RSA key size, and whether the key is active, revoked or in testing mode.",
+  mx:
+    "An MX lookup shows the mail exchanger records of a domain: the servers that accept email for it, in the order senders try them. It tells you which provider handles a domain's mail, helps you confirm a migration to a new email service, and explains bounces caused by missing or wrong records. The report also checks SPF, DKIM, DMARC and MTA-STS, which decide whether mail from the domain is trusted.",
+  propagation:
+    "A DNS propagation checker shows whether a DNS change has reached the resolvers people actually use. After you edit a record, each resolver keeps serving its cached copy until the record's TTL runs out, so for a while different networks see different answers. This tool asks 12 large public resolvers, including Cloudflare, Google, Cisco OpenDNS, AdGuard, NextDNS and Alibaba, for the same record at once over DNS over HTTPS, and shows each answer with the seconds it has left in that resolver's cache. Add the value you expect and it tells you which resolvers already have it and when the rest should catch up.",
+  download:
+    "A download time calculator works out how long a file takes to transfer at a given internet speed. Enter the file size and your speed, and it shows the time at once, plus a table for common sizes and the speed you would need to finish within a minute, ten minutes or an hour. It handles both decimal units (MB, GB, TB) and the binary units Windows uses (MiB, GiB), and megabits or megabytes per second. Run our speed test first and it hands its result to this page, so the answer uses your real speed.",
 };
 
 /**
@@ -314,4 +459,120 @@ export const TOOL_MORE: Record<string, string> = {
 </ul>
 <h3>When this is useful</h3>
 <p>Developers use a headers viewer to check what a proxy or CDN adds to a request, to debug language or compression negotiation, and to see what any site can read about a visitor without running a script. If a header you expect is missing, a privacy extension, VPN or corporate proxy may have removed it.</p>`,
+  mac: `<h3>How to read a MAC address</h3>
+<p>A MAC address is six bytes, usually written as twelve hexadecimal digits such as <code>B8:27:EB:12:34:56</code>, <code>B8-27-EB-12-34-56</code> or the Cisco style <code>b827.eb12.3456</code>. The first part is the block IEEE assigned to an organization, and the rest is chosen by that organization for each device. Two bits in the first byte have special meanings, as IEEE's guidelines describe: the lowest bit marks a group (multicast) address, and the next bit marks a locally administered address that was not assigned by a manufacturer.</p>
+<div class="tw"><table><tbody>
+<tr><th>Block</th><th>Prefix length</th><th>Example prefix</th></tr>
+<tr><td>MA-L (formerly OUI)</td><td>24 bits, 6 hex digits</td><td>B8:27:EB</td></tr>
+<tr><td>MA-M</td><td>28 bits, 7 hex digits</td><td>00:69:67:A</td></tr>
+<tr><td>MA-S (and the older IAB)</td><td>36 bits, 9 hex digits</td><td>00:1B:C5:07:4</td></tr>
+</tbody></table></div>
+<p>Smaller companies often get an MA-M or MA-S block inside a 24-bit prefix shared with other organizations. This tool checks all three registries, longest match first, so it names the right company where a lookup that only reads the first six digits would not.</p>
+<h3>Randomized and private MAC addresses</h3>
+<p>Modern phones hide their hardware address on Wi-Fi. Android 10 and later use a randomized MAC by default and set the locally administered bit, according to Android's documentation. Apple devices running iOS 14 or later use a different private Wi-Fi address for each network, and from iOS 18 you can choose a fixed or a rotating private address. If a device on your network shows an address whose second digit is 2, 6, A or E, it is almost certainly one of these, and its real manufacturer cannot be read from it.</p>
+<h3>How to find your own MAC address</h3>
+<ul>
+<li>Windows: run <code>ipconfig /all</code> and read the Physical Address of your adapter, or run <code>getmac</code>.</li>
+<li>Mac: run <code>ifconfig en0 | grep ether</code> in Terminal, or hold Option and click the Wi-Fi icon in the menu bar.</li>
+<li>Linux: run <code>ip link</code> and read the value after <code>link/ether</code>.</li>
+<li>iPhone and Android: open the details of the Wi-Fi network you are on. With a private address turned on, that is the address the network sees, not the hardware one.</li>
+</ul>
+<p>Our guide to <a href="/learn/what-is-a-mac-address">what a MAC address is</a> explains how it differs from an IP address and why websites never see it.</p>
+<p class="note">Vendor data: IEEE <a href="https://standards-oui.ieee.org/oui/oui.csv" rel="noopener">MA-L</a>, <a href="https://standards-oui.ieee.org/oui28/mam.csv" rel="noopener">MA-M</a> and <a href="https://standards-oui.ieee.org/oui36/oui36.csv" rel="noopener">MA-S</a> registries, downloaded ${ouiMeta.updated} (${(ouiMeta.L + ouiMeta.M + ouiMeta.S).toLocaleString("en-US")} assignments). Sources: <a href="https://standards.ieee.org/wp-content/uploads/import/documents/tutorials/eui.pdf" rel="noopener">IEEE guidelines for EUI, OUI and CID</a>, <a href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior" rel="noopener">Android MAC randomization behavior</a>, <a href="https://support.apple.com/en-us/102509" rel="noopener">Apple: private Wi-Fi addresses</a>, <a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291 (modified EUI-64)</a>.</p>`,
+  dmarc: `<h3>What this DMARC checker looks at</h3>
+<ul>
+<li>The DMARC record itself, its syntax, and every tag: p, sp, np, t, adkim, aspf, rua, ruf and fo.</li>
+<li>Whether the policy protects the domain. Only quarantine and reject stop spoofing; none only collects reports.</li>
+<li>Inheritance. A subdomain without its own record uses its parent's, and the checker shows where the record was found.</li>
+<li>Tags that RFC 9989 removed, such as pct, which receivers following the new standard ignore.</li>
+<li>SPF, DKIM, MX, MTA-STS, TLS reporting and BIMI, so you can see what DMARC depends on.</li>
+</ul>
+<h3>DMARC tags explained</h3>
+<div class="tw"><table><tbody>
+<tr><th>Tag</th><th>Meaning</th><th>Default</th></tr>
+<tr><td>p</td><td>Policy for the domain: none, quarantine or reject</td><td>none, if missing</td></tr>
+<tr><td>sp</td><td>Policy for subdomains that exist</td><td>same as p</td></tr>
+<tr><td>np</td><td>Policy for subdomains that do not exist (new in RFC 9989)</td><td>sp, then p</td></tr>
+<tr><td>t</td><td>Test mode: y asks receivers to apply one level less than the policy (new in RFC 9989)</td><td>n</td></tr>
+<tr><td>adkim, aspf</td><td>Alignment for DKIM and SPF: r (relaxed) or s (strict)</td><td>r</td></tr>
+<tr><td>rua</td><td>Where to send daily aggregate reports</td><td>none</td></tr>
+<tr><td>ruf</td><td>Where to send failure reports</td><td>none</td></tr>
+</tbody></table></div>
+<h3>How to move to p=reject safely</h3>
+<ol>
+<li>Publish <code>v=DMARC1; p=none; rua=mailto:</code> followed by an address you read, and collect reports for a few weeks.</li>
+<li>Find every service that sends as your domain in the reports, and make sure each one passes SPF or DKIM with your domain.</li>
+<li>Move to p=quarantine, watch the reports again, then move to p=reject.</li>
+</ol>
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/a/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
+  spf: `<h3>What this SPF checker tests</h3>
+<ul>
+<li>That exactly one record starting with v=spf1 exists. Two records are a permanent error.</li>
+<li>The DNS lookup count across all nested includes, against the limit of 10 in RFC 7208.</li>
+<li>Void lookups, includes that return nothing. RFC 7208 says implementations should stop after two.</li>
+<li>The all mechanism at the end: -all (fail), ~all (softfail), ?all (neutral) or the dangerous +all.</li>
+<li>The ptr mechanism, which RFC 7208 says should not be published.</li>
+</ul>
+<h3>SPF qualifiers</h3>
+<div class="tw"><table><tbody>
+<tr><th>Qualifier</th><th>Result</th><th>Meaning</th></tr>
+<tr><td>+ (or none)</td><td>pass</td><td>The server is authorized</td></tr>
+<tr><td>-</td><td>fail</td><td>The server is not authorized</td></tr>
+<tr><td>~</td><td>softfail</td><td>Probably not authorized</td></tr>
+<tr><td>?</td><td>neutral</td><td>No statement either way</td></tr>
+</tbody></table></div>
+<h3>How to fix too many SPF lookups</h3>
+<p>Remove includes for services you no longer use first. Replace an include with the ip4 and ip6 ranges it stands for only when the service publishes fixed ranges, because ip4 and ip6 do not count towards the limit. Sending marketing mail from a subdomain with its own SPF record also keeps the main record short.</p>
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/a/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
+  dkim: `<h3>How DKIM records work</h3>
+<p>A mail server signs each message with a private key and adds a DKIM-Signature header naming the domain (d=) and the selector (s=). The receiver fetches the public key from the TXT record at <code>selector._domainkey.domain</code> and checks the signature. Using selectors lets a domain run several keys at once, one for each service, and rotate them without downtime.</p>
+<h3>Selectors this checker tries</h3>
+<p>Common ones include google (Google Workspace), selector1 and selector2 (Microsoft 365), k1 and k2 (Mailchimp and others), s1 and s2, fm1 to fm3 (Fastmail), protonmail to protonmail3 (Proton), zoho and zmail (Zoho), and default. If yours is not found, read the s= value from the DKIM-Signature header of a message you sent and enter it.</p>
+<h3>Reading a DKIM record</h3>
+<div class="tw"><table><tbody>
+<tr><th>Tag</th><th>Meaning</th></tr>
+<tr><td>v=DKIM1</td><td>Version, if present must come first</td></tr>
+<tr><td>k=</td><td>Key type, rsa when missing</td></tr>
+<tr><td>p=</td><td>The public key. Empty means the key is revoked</td></tr>
+<tr><td>t=y</td><td>Testing: receivers treat signed mail like unsigned mail</td></tr>
+</tbody></table></div>
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/a/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
+  mx: `<h3>What an MX lookup shows</h3>
+<p>Every domain that receives email publishes MX records naming its mail servers, each with a priority number. Senders try the lowest number first. This lookup lists the servers, recognizes common providers from their hostnames (Google Workspace, Microsoft 365, Zoho, Proton, Fastmail, iCloud, Cloudflare Email Routing and others), and detects a null MX that says the domain takes no mail.</p>
+<h3>Checking a migration to a new email provider</h3>
+<ol>
+<li>Replace the old MX records with the ones your new provider gives you, and remove any you no longer need.</li>
+<li>Run this lookup and confirm only the new servers appear.</li>
+<li>Update SPF to include the new provider and set up its DKIM key, then check both in the same report.</li>
+</ol>
+<p>DNS changes can take a while to reach every resolver. Our <a href="/dns">DNS lookup</a> lets you query Cloudflare and Google directly.</p>
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/a/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
+  propagation: `<h3>How this checker differs from map-based tools</h3>
+<p>Most propagation checkers send a query from servers in different countries and show a tick or a cross on a map. That tells you what one server saw at one moment. This tool asks each resolver directly, reads the TTL in its answer, and subtracts any time the answer spent in an HTTP cache, as RFC 8484 requires. The remaining TTL is how long that resolver will keep its current answer, which is the real countdown to your change appearing there.</p>
+<p>Large resolvers run many sites around the world. Queries from this tool reach the site of each provider nearest to the Cloudflare data center that handles your request, so caches in other regions can hold a different copy for a while.</p>
+<h3>Resolvers checked</h3>
+<p>Cloudflare 1.1.1.1, Google Public DNS 8.8.8.8, Cisco OpenDNS, AdGuard DNS (unfiltered), Control D, NextDNS, DNS.SB, Alibaba Public DNS, Tencent DNSPod, LibreDNS, dnsforge and 360 Secure DNS.</p>
+<h3>Reading the results</h3>
+<ul>
+<li>New value: the resolver already returns the value you entered.</li>
+<li>Old value: it still returns something else. The TTL column says how many seconds until it asks again.</li>
+<li>No record: the resolver got NXDOMAIN or an empty answer, common for a brand new record that a resolver cached as missing.</li>
+<li>No answer: the resolver did not reply in time. Try again.</li>
+</ul>
+<p>To see every record type for a domain from Cloudflare or Google, use the <a href="/dns">DNS lookup</a>. The guide to <a href="/learn/how-to-flush-dns-cache">flushing your DNS cache</a> clears the copy on your own device.</p>
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc1035" rel="noopener">RFC 1035 (DNS and TTL)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8484" rel="noopener">RFC 8484 (DNS over HTTPS)</a>. The 48-hour .com delegation TTL was read from a.gtld-servers.net.</p>`,
+  download: `<h3>How download time is calculated</h3>
+<p>Time in seconds equals the file size in bits divided by the speed in bits per second. A byte is 8 bits, so a 10 GB file is 80,000 megabits, and at 100 Mbps it takes 800 seconds, a little over 13 minutes.</p>
+<h3>MB or MiB, GB or GiB?</h3>
+<div class="tw"><table><tbody>
+<tr><th>Unit</th><th>Bytes</th><th>Prefix</th></tr>
+<tr><td>1 MB (megabyte)</td><td>1,000,000</td><td>Decimal, 10 to the power 6</td></tr>
+<tr><td>1 MiB (mebibyte)</td><td>1,048,576</td><td>Binary, 2 to the power 20</td></tr>
+<tr><td>1 GB (gigabyte)</td><td>1,000,000,000</td><td>Decimal, 10 to the power 9</td></tr>
+<tr><td>1 GiB (gibibyte)</td><td>1,073,741,824</td><td>Binary, 2 to the power 30</td></tr>
+</tbody></table></div>
+<p>NIST defines the binary prefixes kibi, mebi and gibi as powers of 2, separate from the decimal kilo, mega and giga. Some software labels binary sizes with the decimal names, so a size shown as "4 GB" may really be 4 GiB, about 4.29 billion bytes. Pick the unit that matches where you read the size.</p>
+<h3>Speeds: Mbps and MB/s</h3>
+<p>Internet plans and our <a href="/speed-test">speed test</a> use megabits per second. Browsers and game launchers often show megabytes per second, which is eight times smaller for the same connection. Our guide to <a href="/learn/what-is-a-good-internet-speed">what a good internet speed is</a> explains how much speed different households need.</p>
+<p class="note">Source: <a href="https://physics.nist.gov/cuu/Units/binary.html" rel="noopener">NIST, prefixes for binary multiples</a>.</p>`,
 };

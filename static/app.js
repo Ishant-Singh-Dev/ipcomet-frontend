@@ -969,6 +969,8 @@
         fits({ ...r, ldown: Number.isFinite(r.ldown) ? r.ldown : r.lat, lup: Number.isFinite(r.lup) ? r.lup : r.lat });
         svg.setAttribute("aria-label", tr("Download averaged {d} Mbps and upload {u} Mbps.", { d: fmt(d.mbps), u: fmt(u.mbps) }));
         $("#used").textContent = tr("This test moved {mb} MB in {s} seconds.", { mb: (bytes / 1e6).toFixed(0), s: ((d.ms + u.ms) / 1000).toFixed(0) });
+        if (!$("#dlcalc")) $("#used").insertAdjacentHTML("afterend", `<p id="dlcalc"></p>`);
+        $("#dlcalc").innerHTML = `<a href="/download-time-calculator?speed=${encodeURIComponent(d.mbps.toFixed(0))}">${esc(tr("How long will a download take at this speed?"))}</a>`;
         phase("Done", 100);
       } catch {
         ["lat", "down", "up"].forEach((id) => { if ($("#st-" + id).classList.contains("on")) step(id, ""); });
@@ -1128,6 +1130,332 @@
     const input = wireForm(run);
     input.addEventListener("input", () => run(input.value.trim()));
     if (!new URLSearchParams(location.search).get("q")) run(input.value.trim());
+  }
+
+  /* ---------- Email checks: DMARC, SPF, DKIM, MX ---------- */
+
+  const badge = (tone, text) => `<span class="badge ${tone}">${esc(tr(text))}</span>`;
+  const table = (head, rows) => `<div class="tw"><table><tbody><tr>${head.map((h) => `<th>${esc(tr(h))}</th>`).join("")}</tr>${rows.join("")}</tbody></table></div>`;
+
+  function mailSummary(d, k) {
+    const s = d.spf, m = d.dmarc, p = (m.tags && m.tags.p || "none").toLowerCase();
+    const keys = (k.dkim && k.dkim.found) || [];
+    const active = keys.filter((x) => !x.revoked);
+    const spfTone = !s.record || s.error || s.lookups > 10 || s.all === "+" ? "bad" : s.all === "?" || !s.all ? "warn" : "ok";
+    const items = [
+      ["MX records", d.mx.nullMx ? ["warn", "Null MX: accepts no mail"] : d.mx.hosts.length ? ["ok", d.mx.provider || tr("{n} servers", { n: d.mx.hosts.length })] : ["bad", "None found"]],
+      ["SPF", !s.record ? ["bad", "Missing"] : [spfTone, tr("{n} of 10 lookups", { n: s.lookups })]],
+      ["DKIM", k.error ? ["warn", "Not checked"] : active.length ? ["ok", tr("{n} active keys found", { n: active.length })] : ["warn", "None found among common selectors"]],
+      ["DMARC", !m.record ? ["bad", "Missing"] : p === "reject" || p === "quarantine" ? [m.tags.t === "y" ? "warn" : "ok", tr("p={p}", { p }) + (m.tags.t === "y" ? " (test mode)" : "")] : ["warn", "p=none: monitoring only"]],
+      ["MTA-STS", d.mtaSts.record ? [d.mtaSts.policy && d.mtaSts.policy.mode === "enforce" ? "ok" : "warn", d.mtaSts.policy ? tr("mode: {m}", { m: d.mtaSts.policy.mode || "?" }) : "Record found, policy unreadable"] : ["", "Not set up (optional)"]],
+      ["TLS reporting", d.tlsRpt ? ["ok", "Set up"] : ["", "Not set up (optional)"]],
+      ["BIMI", d.bimi ? ["ok", "Set up"] : ["", "Not set up (optional)"]],
+    ];
+    // Google's rule for bulk senders: SPF and DKIM, plus a DMARC record (p=none is enough).
+    const gmail = s.record && !s.error && s.lookups <= 10 && active.length && m.record;
+    return table(["Check", "Result"], items.map(([name, [tone, text]]) => `<tr><td>${esc(tr(name))}</td><td>${badge(tone, text)}</td></tr>`)) +
+      note(gmail ? "Meets Gmail's authentication rules for bulk senders: SPF, DKIM and a DMARC record." : "Does not yet meet Gmail's rules for bulk senders, which require SPF, DKIM and a DMARC record.", gmail ? "ok" : "warn");
+  }
+
+  function dmarcSection(d) {
+    const m = d.dmarc;
+    if (!m.record) {
+      return note("No DMARC record found. Anyone can send mail that claims to come from this domain, and receivers get no instructions. Start with the record below and an address you read.", "bad") +
+        kv([["Suggested record", `v=DMARC1; p=none; rua=mailto:dmarc-reports@${d.domain}`, { mono: true, copy: true }], ["Publish at", `_dmarc.${d.domain}`, { mono: true }]]);
+    }
+    const t = m.tags, p = (t.p || "none").toLowerCase();
+    const named = { none: "none: no action, reports only", quarantine: "quarantine: treat failures as suspicious (spam folder)", reject: "reject: refuse failing mail" };
+    const align = (v) => (v || "r").toLowerCase() === "s" ? "strict" : "relaxed";
+    const next = p === "reject" ? "" : m.record.replace(/(^|;\s*)p\s*=\s*\w+/i, `$1p=${p === "none" ? "quarantine" : "reject"}`).replace(/;\s*pct\s*=\s*\d+/i, "") + (t.rua ? "" : `; rua=mailto:dmarc-reports@${d.domain}`);
+    const notes = [
+      !t.p ? note("The record has no p tag, so receivers treat it as p=none.", "warn") : "",
+      p === "none" ? note("p=none only collects reports. It does not stop anyone spoofing this domain. Move to quarantine, then reject, once your reports show every legitimate sender passing.", "warn") : "",
+      t.pct !== undefined ? note("The pct tag was removed in RFC 9989 (May 2026), and receivers that follow the new standard ignore it. Use t=y for a test phase instead.", "warn") : "",
+      !t.rua ? note("No rua address, so nobody receives the daily aggregate reports that show who sends mail as this domain.", "warn") : "",
+      m.multiple ? note("More than one DMARC record was found. Receivers may ignore all of them; keep exactly one.", "bad") : "",
+      m.inherited ? note(tr("This domain has no record of its own and uses the policy published at _dmarc.{at}.", { at: m.foundAt })) : "",
+    ].join("");
+    return notes + kv([
+      ["Record", m.record, { mono: true, copy: true }],
+      ["Policy (p)", named[p] || p],
+      ["Subdomain policy (sp)", t.sp ? named[t.sp.toLowerCase()] || t.sp : tr("Same as p")],
+      ["Non-existent subdomains (np)", t.np ? named[t.np.toLowerCase()] || t.np : ""],
+      ["Test mode (t)", t.t ? (t.t === "y" ? "Yes: receivers apply one level less than the policy" : "No") : ""],
+      ["DKIM alignment", align(t.adkim)],
+      ["SPF alignment", align(t.aspf)],
+      ["Aggregate reports (rua)", t.rua, { mono: true }],
+      ["Failure reports (ruf)", t.ruf, { mono: true }],
+      ["Suggested next record", next, { mono: true, copy: true }],
+    ]);
+  }
+
+  function spfSection(d) {
+    const s = d.spf;
+    if (!s.record) return note(s.error === "No SPF record found." ? "No SPF record found. Add one TXT record that starts with v=spf1 and lists the services that send mail for this domain." : s.error || "No SPF record found.", "bad");
+    const allText = { "-": "-all (fail): unlisted servers are not allowed", "~": "~all (softfail): unlisted servers are probably not allowed", "?": "?all (neutral): no statement", "+": "+all: every server on the internet is allowed" };
+    const tree = (n) => `<li><span class="mono">${esc(n.domain)}</span>${n.error ? ` ${badge("warn", n.error)}` : ""}${n.children.length ? `<ul>${n.children.map(tree).join("")}</ul>` : ""}</li>`;
+    return [
+      s.error ? note(s.error, "bad") : "",
+      s.lookups > 10 ? note(tr("This record needs {n} DNS lookups. RFC 7208 allows 10, so receivers return a permanent error and SPF fails.", { n: s.lookups }), "bad") : "",
+      s.all === "+" ? note("+all authorizes every server on the internet to send as this domain. Change it to ~all or -all.", "bad") : "",
+      !s.all ? note("The record has no all mechanism, so unlisted servers get a neutral result. End it with ~all or -all.", "warn") : "",
+      s.usesPtr ? note("The record uses ptr, which RFC 7208 says should not be published. Replace it with ip4, ip6 or include.", "warn") : "",
+      s.voidLookups > 2 ? note(tr("{n} lookups returned nothing. RFC 7208 lets receivers stop after two.", { n: s.voidLookups }), "warn") : "",
+    ].join("") + kv([
+      ["Record", s.record, { mono: true, copy: true }],
+      ["DNS lookups", `${s.lookups} / 10`],
+      ["Unlisted servers", allText[s.all] || "No all mechanism"],
+    ]) + (s.tree.children.length ? `<h4>${esc(tr("Includes"))}</h4><ul class="tree">${s.tree.children.map(tree).join("")}</ul>` : "");
+  }
+
+  function dkimSection(k) {
+    if (k.error) return note(k.error, "bad");
+    const keys = k.dkim.found;
+    if (!keys.length) return note(tr("No DKIM key found among {n} common selectors. Find the s= value in the DKIM-Signature header of an email you sent and enter it as the selector.", { n: k.dkim.checked }), "warn");
+    return table(["Selector", "Key", "Status"], keys.map((x) => `<tr><td class="mono">${esc(x.selector)}</td><td>${esc(x.keyType.toUpperCase())}${x.approxBits ? ` · ${esc(tr("about {n} bits", { n: x.approxBits }))}` : ""}</td><td>${x.revoked ? badge("bad", "Revoked") : x.testing ? badge("warn", "Testing") : badge("ok", "Active")}</td></tr>`)) +
+      (keys.some((x) => x.approxBits && x.approxBits < 2048) ? note("A key under 2048 bits was found. Rotate to a 2048-bit RSA key if your provider supports it.", "warn") : "");
+  }
+
+  function mxSection(d) {
+    const x = d.mx;
+    if (x.nullMx) return note("This domain publishes a null MX record: it does not accept email.", "warn");
+    if (!x.hosts.length) return note("No MX records found, so mail to this domain will usually bounce.", "bad");
+    return (x.provider ? kv([["Email provider", x.provider]]) : "") + table(["Priority", "Mail server"], x.hosts.map((h) => `<tr><td>${h.preference}</td><td class="mono">${esc(h.host)}</td></tr>`));
+  }
+
+  function extrasSection(d) {
+    const st = d.mtaSts;
+    if (!st.record && !d.tlsRpt && !d.bimi) return note("No MTA-STS, TLS reporting or BIMI records. They are optional: MTA-STS makes other servers require encryption when delivering to you, and BIMI shows your logo in some inboxes.");
+    return kv([
+      ["MTA-STS record", st.record, { mono: true }],
+      ["MTA-STS mode", st.policy && st.policy.mode],
+      ["MTA-STS policy", st.policyError],
+      ["TLS reporting (TLS-RPT)", d.tlsRpt, { mono: true }],
+      ["BIMI", d.bimi, { mono: true }],
+    ]);
+  }
+
+  function mailCheck(focus) {
+    const order = { dmarc: ["dmarc", "spf", "dkim", "mx"], spf: ["spf", "dmarc", "dkim", "mx"], dkim: ["dkim", "spf", "dmarc", "mx"], mx: ["mx", "spf", "dmarc", "dkim"] }[focus];
+    const titles = { dmarc: "DMARC", spf: "SPF", dkim: "DKIM", mx: "MX records" };
+    wireForm(async (q) => {
+      if (!q) return;
+      pushQuery(q);
+      loading("Checking DNS records…");
+      const domain = encodeURIComponent(q);
+      const sel = $("#sel") ? $("#sel").value.trim() : "";
+      try {
+        const [d, k] = await Promise.all([
+          api("/api/mail?domain=" + domain),
+          api(`/api/mail?part=dkim&domain=${domain}${sel ? "&selector=" + encodeURIComponent(sel) : ""}`).catch((err) => ({ error: err.message })),
+        ]);
+        const body = { dmarc: () => dmarcSection(d), spf: () => spfSection(d), dkim: () => dkimSection(k), mx: () => mxSection(d) };
+        out.innerHTML = `<p style="margin:0 0 12px"><span class="badge">${esc(d.domain)}</span></p>` + mailSummary(d, k) +
+          order.map((id) => `<h3>${esc(tr(titles[id]))}</h3>${body[id]()}`).join("") +
+          `<h3>${esc(tr("MTA-STS, TLS reporting and BIMI"))}</h3>${extrasSection(d)}`;
+      } catch (err) { out.innerHTML = note(err.message, "bad"); }
+    });
+  }
+
+  /* ---------- DNS propagation ---------- */
+
+  const ttlText = (s) => s >= 3600 ? tr("{h} h {m} min", { h: Math.floor(s / 3600), m: Math.floor((s % 3600) / 60) }) : s >= 60 ? (s % 60 ? tr("{m} min {s} s", { m: Math.floor(s / 60), s: s % 60 }) : tr("{m} min", { m: s / 60 })) : tr("{s} s", { s });
+
+  function propagation() {
+    const clean = (v) => String(v || "").trim().replace(/\.$/, "").replace(/^"|"$/g, "").toLowerCase();
+    const run = async (q) => {
+      if (!q) return;
+      pushQuery(q);
+      loading("Asking 12 resolvers…");
+      const type = $("#type").value;
+      const expect = clean($("#expect").value);
+      try {
+        const d = await api(`/api/propagation?name=${encodeURIComponent(q)}&type=${type}`);
+        const answered = d.results.filter((r) => r.ok);
+        const values = (r) => r.answers.filter((a) => a.type === d.type).map((a) => a.data);
+        const key = (r) => values(r).map(clean).sort().join(" | ");
+        const counts = {};
+        answered.forEach((r) => { const k = key(r); if (k) counts[k] = (counts[k] || 0) + 1; });
+        const majority = Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0] || "";
+        const hasNew = (r) => expect && values(r).some((v) => clean(v) === expect || clean(v).endsWith(" " + expect));
+        const status = (r) => !r.ok ? ["", r.error || "No answer"]
+          : !values(r).length ? ["warn", r.rcode === "NXDOMAIN" ? "No record (NXDOMAIN)" : "No record"]
+          : expect ? (hasNew(r) ? ["ok", "New value"] : ["warn", "Old value"])
+          : key(r) === majority ? ["ok", "Same as most"] : ["warn", "Different"];
+        const rows = d.results.map((r) => {
+          const [tone, text] = status(r);
+          const ttl = r.ok && r.answers.length ? Math.min(...r.answers.map((a) => a.ttl)) : null;
+          return `<tr><td>${esc(r.label)}<br><small class="mono">${esc(r.ip)}</small></td><td class="mono">${values(r).map(esc).join("<br>") || "–"}</td><td>${ttl === null ? "–" : esc(ttlText(ttl))}</td><td>${badge(tone, text)}</td></tr>`;
+        });
+        let summary;
+        if (expect) {
+          const done = answered.filter(hasNew);
+          const waiting = answered.filter((r) => values(r).length && !hasNew(r));
+          const eta = waiting.length ? Math.max(...waiting.map((r) => Math.min(...r.answers.map((a) => a.ttl)))) : 0;
+          summary = done.length === answered.length
+            ? note(tr("All {n} resolvers that answered return the new value.", { n: answered.length }), "ok")
+            : note(tr("{done} of {n} resolvers return the new value.", { done: done.length, n: answered.length }) + (eta ? " " + tr("The others should ask again within {t}.", { t: ttlText(eta) }) : ""), done.length ? "warn" : "bad");
+        } else {
+          const same = majority ? counts[majority] : 0;
+          summary = note(tr("{same} of {n} resolvers return the same answer.", { same, n: answered.length }) + (same < answered.length ? " " + tr("Enter the value you expect to see which ones have your change.") : ""), same === answered.length && same ? "ok" : "warn");
+        }
+        out.innerHTML = summary + table(["Resolver", d.type, "Cache left", "Status"], rows) +
+          `<p><button class="btn sm" type="button" id="again">${esc(tr("Check again"))}</button> <small>${esc(tr("Checked at {t}", { t: new Date(d.checkedAt).toLocaleTimeString() }))}</small></p>`;
+        $("#again").addEventListener("click", () => run(q));
+      } catch (err) { out.innerHTML = note(err.message, "bad"); }
+    };
+    wireForm(run);
+  }
+
+  /* ---------- Download time calculator ---------- */
+
+  const BYTES = { MB: 1e6, GB: 1e9, TB: 1e12, MiB: 2 ** 20, GiB: 2 ** 30 };
+  const BITRATE = { Mbps: 1e6, Gbps: 1e9, "MB/s": 8e6 };
+  function durationText(sec) {
+    if (!Number.isFinite(sec)) return "–";
+    if (sec < 1) return tr("under a second");
+    const d = Math.floor(sec / 86400), h = Math.floor((sec % 86400) / 3600), m = Math.floor((sec % 3600) / 60), s = Math.round(sec % 60);
+    return [d && tr("{n} d", { n: d }), h && tr("{n} h", { n: h }), m && tr("{n} min", { n: m }), !d && s && tr("{n} s", { n: s })].filter(Boolean).join(" ");
+  }
+  const mbps = (n) => n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 2)} Gbps` : `${n.toFixed(n >= 100 ? 0 : 1)} Mbps`;
+
+  function download() {
+    const size = $("#size"), sunit = $("#sunit"), speed = $("#speed"), vunit = $("#vunit");
+    // The speed test links here with its result (?speed=); nothing is stored in the browser.
+    const params = new URLSearchParams(location.search);
+    if (Number(params.get("speed")) > 0) { speed.value = params.get("speed"); vunit.value = "Mbps"; }
+    if (Number(params.get("size")) > 0) size.value = params.get("size");
+    const calc = () => {
+      const bits = Number(size.value) * BYTES[sunit.value] * 8;
+      const rate = Number(speed.value) * BITRATE[vunit.value];
+      if (!(bits > 0) || !(rate > 0)) { out.innerHTML = note("Enter a file size and a speed above zero."); return; }
+      const sizes = [["100 MB", 1e8], ["1 GB", 1e9], ["5 GB", 5e9], ["25 GB", 25e9], ["100 GB", 1e11]];
+      const deadlines = [["1 min", 60], ["10 min", 600], ["1 h", 3600], ["8 h", 28800]];
+      out.innerHTML =
+        `<p class="ip" style="font-size:clamp(1.6rem,6vw,3rem);margin:8px 0 4px">${esc(durationText(bits / rate))}</p>` +
+        note(tr("{size} {unit} at {speed} {vunit}, which is {mbs} MB/s. Real downloads are usually a little slower than the line speed.", { size: size.value, unit: sunit.value, speed: speed.value, vunit: vunit.value, mbs: (rate / 8e6).toFixed(rate >= 8e7 ? 0 : 1) })) +
+        `<h3>${esc(tr("Other sizes at this speed"))}</h3>` + table(["File size", "Time"], sizes.map(([label, b]) => `<tr><td>${label}</td><td>${esc(durationText((b * 8) / rate))}</td></tr>`)) +
+        `<h3>${esc(tr("Speed needed for this file"))}</h3>` + table(["Finish within", "Speed needed"], deadlines.map(([label, sec]) => `<tr><td>${esc(tr(label))}</td><td>${esc(mbps(bits / sec / 1e6))}</td></tr>`));
+    };
+    $("#f").addEventListener("submit", (e) => { e.preventDefault(); calc(); });
+    [size, sunit, speed, vunit].forEach((el) => el.addEventListener("input", calc));
+    document.querySelectorAll("[data-size]").forEach((b) => b.addEventListener("click", () => { size.value = b.dataset.size; sunit.value = "GB"; calc(); }));
+    calc();
+  }
+
+  /* ---------- MAC address lookup ---------- */
+
+  // Vendor data comes from the IEEE registries, cut into small files by prefix (scripts/gen-oui.ts), so a lookup
+  // downloads a few kilobytes and the addresses typed here never leave the browser.
+  const ouiFiles = new Map();
+  const ouiFile = (path) => {
+    if (!ouiFiles.has(path)) ouiFiles.set(path, fetch(path).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+    return ouiFiles.get(path);
+  };
+  async function macVendor(hex) {
+    const meta = (await ouiFile("/oui/meta.json")) || { split: [] };
+    let key = hex.slice(0, 2).toLowerCase();
+    while (meta.split.includes(key) && key.length < 8) key += (hex[key.length] || "0").toLowerCase();
+    const shard = await ouiFile(`/oui/${key.slice(0, 2)}${key.slice(2).replace(/(.)/g, "/$1")}.json`);
+    if (!shard) return { error: true };
+    // Longest match first: a 36-bit MA-S block can sit inside a 24-bit prefix shared by many companies.
+    for (const [size, len, block] of [["S", 9, "MA-S (36-bit)"], ["M", 7, "MA-M (28-bit)"], ["L", 6, "MA-L (24-bit)"]]) {
+      const hit = hex.length >= len && shard[size][hex.slice(0, len)];
+      if (hit) return { org: hit[0], country: hit[1], block, prefix: hex.slice(0, len) };
+    }
+    const shared = Object.keys(shard.M).concat(Object.keys(shard.S)).filter((k) => k.startsWith(hex.slice(0, 6))).length;
+    return { shared };
+  }
+
+  // Full addresses in colon, hyphen, Cisco-dot or bare form, as printed by arp -a, ip neigh and router pages.
+  const MAC_RE = /\b(?:[0-9a-f]{1,2}[:-]){5}[0-9a-f]{1,2}\b|\b[0-9a-f]{4}\.[0-9a-f]{4}\.[0-9a-f]{4}\b|\b[0-9a-f]{12}\b/gi;
+  function macsIn(text) {
+    const found = (text.match(MAC_RE) || []).map((m) =>
+      /[:-]/.test(m) ? m.split(/[:-]/).map((o) => o.padStart(2, "0")).join("") : m.replace(/\./g, ""));
+    // A lone prefix (B8:27:EB, B8-27-EB, B827EB, or 7 and 9 digit MA-M and MA-S prefixes) is looked up as an OUI.
+    if (!found.length) {
+      const bare = text.trim().replace(/[:.\s-]/g, "");
+      if (/^[0-9a-f]{6,11}$/i.test(bare)) found.push(bare);
+    }
+    return [...new Set(found.map((m) => m.toUpperCase()))].slice(0, 1000);
+  }
+
+  function macFacts(hex) {
+    const first = parseInt(hex.slice(0, 2), 16);
+    const full = hex.length === 12;
+    const pairs = full ? hex.match(/../g) : [];
+    const special = hex === "FFFFFFFFFFFF" ? "Broadcast address (every device on the network)"
+      : hex.startsWith("01005E") ? "IPv4 multicast address"
+      : hex.startsWith("3333") ? "IPv6 multicast address"
+      : hex === "000000000000" ? "All zeros (unset or placeholder)" : "";
+    let linkLocal = "";
+    if (full && !(first & 1)) {
+      // Modified EUI-64 (RFC 4291): flip the universal/local bit and put FF:FE in the middle.
+      const b = pairs.map((p) => parseInt(p, 16));
+      const g = [((b[0] ^ 2) << 8) | b[1], (b[2] << 8) | 0xff, 0xfe00 | b[3], (b[4] << 8) | b[5]].map((n) => n.toString(16));
+      linkLocal = "fe80::" + (g[0] === "0" ? g.slice(1) : g).join(":");
+    }
+    return {
+      group: Boolean(first & 1),
+      local: Boolean(first & 2),
+      special,
+      formats: full ? [pairs.join(":"), pairs.join("-"), hex.toLowerCase().match(/..../g).join("."), hex] : [],
+      linkLocal,
+    };
+  }
+
+  const regionName = (code) => { try { return new Intl.DisplayNames([LANG], { type: "region" }).of(code) || code; } catch { return code; } };
+  const macType = (f) => f.special || (f.group ? "Multicast (group) address" : f.local ? "Locally administered: likely a randomized private address" : "Universally administered (assigned by the manufacturer)");
+
+  function mac() {
+    const run = async (text) => {
+      const list = macsIn(text);
+      if (!list.length) { out.innerHTML = note("No MAC address found. Enter something like B8:27:EB:12:34:56, B8-27-EB or b827.eb12.3456.", "bad"); return; }
+      if (list.length === 1) pushQuery(list[0]);
+      loading("Looking up vendors…");
+      const rows = await Promise.all(list.map(async (hex) => ({ hex, facts: macFacts(hex), v: await macVendor(hex) })));
+      const meta = (await ouiFile("/oui/meta.json")) || {};
+      const pooled = (v) => v.org === "IEEE Registration Authority";
+      const vendorText = (r) => r.facts.special ? tr("Not applicable") : pooled(r.v) ? tr("Shared IEEE block (enter the full address)") : r.v.org ? r.v.org : r.v.error ? tr("Vendor data unavailable") : r.facts.local && !r.facts.group ? tr("None (randomized or locally assigned)") : tr("Not in the IEEE registry");
+      const dated = meta.updated ? note(tr("IEEE registry data from {date}.", { date: fmtDate(meta.updated) })) : "";
+
+      if (rows.length === 1) {
+        const { hex, facts: f, v } = rows[0];
+        const headline = f.special ? `<span class="badge">${esc(tr(f.special))}</span>`
+          : pooled(v) ? `<span class="badge warn">${esc(tr("Shared IEEE block"))}</span>`
+          : v.org ? `<span class="badge ok">${esc(v.org)}</span>`
+          : f.local && !f.group ? `<span class="badge warn">${esc(tr("Randomized or locally administered"))}</span>`
+          : `<span class="badge warn">${esc(tr("Unknown vendor"))}</span>`;
+        const explain = pooled(v)
+          ? note("IEEE keeps this 24-bit prefix and splits it into smaller MA-M or MA-S blocks for other companies. Enter the full MAC address to see which company the device belongs to.", "warn")
+          : !v.org && f.local && !f.group
+          ? note("The locally administered bit is set, so this address was not assigned by a manufacturer. Phones and laptops use addresses like this as private Wi-Fi addresses (Android 10 and later, iOS 14 and later), and software can set them too. No lookup can name a vendor for it.", "warn")
+          : !v.org && v.shared ? note(tr("This 24-bit prefix is shared: IEEE assigned {n} smaller blocks inside it. Enter the full MAC address to see which company it belongs to.", { n: v.shared }), "warn")
+          : !v.org && !v.error ? note("This prefix is not in the IEEE public registry. It may be unassigned, or assigned to a company that asked IEEE to keep the listing private.") : "";
+        out.innerHTML = `<p style="margin:0 0 12px">${headline}</p>${explain}` + kv([
+          ["Vendor", pooled(v) ? "" : v.org],
+          ["Country", v.country && !pooled(v) ? regionName(v.country) : ""],
+          ["Assigned block", v.block ? `${v.block} · ${v.prefix.match(/.{1,2}/g).join(":")}` : "", {}],
+          ["Address type", macType(f)],
+          ["Colon format", f.formats[0], { mono: true, copy: true }],
+          ["Hyphen format", f.formats[1], { mono: true, copy: true }],
+          ["Cisco format", f.formats[2], { mono: true, copy: true }],
+          ["Bare hex", f.formats[3], { mono: true, copy: true }],
+          ["IPv6 link-local (EUI-64)", f.linkLocal, { mono: true, copy: true }],
+        ]) + dated;
+        return;
+      }
+
+      const found = rows.filter((r) => r.v.org && !pooled(r.v)).length;
+      const random = rows.filter((r) => !r.v.org && r.facts.local && !r.facts.group).length;
+      const csv = ["MAC,Vendor,Country,Type", ...rows.map((r) => [r.facts.formats[0] || r.hex, r.v.org || "", r.v.country || "", macType(r.facts)].map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))].join("\n");
+      out.innerHTML =
+        note(tr("{n} addresses: {found} vendors found, {random} randomized or locally administered.", { n: rows.length, found, random }), found ? "ok" : "warn") +
+        `<div class="tw"><table><tbody><tr><th>${esc(tr("MAC address"))}</th><th>${esc(tr("Vendor"))}</th><th>${esc(tr("Type"))}</th></tr>` +
+        rows.map((r) => `<tr><td class="mono">${esc(r.facts.formats[0] || r.hex)}</td><td>${esc(vendorText(r))}</td><td>${esc(tr(r.facts.special || (r.facts.group ? "Multicast" : r.facts.local ? "Randomized / local" : "Universal")))}</td></tr>`).join("") +
+        `</tbody></table></div><p><button class="btn sm" type="button" data-copy="${esc(csv)}">${esc(tr("Copy as CSV"))}</button></p>` + dated;
+    };
+    wireForm(run);
   }
 
   /* ---------- proxy checker ---------- */
@@ -1333,7 +1661,8 @@
   }
 
   /* ---------- boot ---------- */
-  const pages = { ip: home, lookup, dns, "reverse-dns": reverseDns, reputation, "proxy-checker": proxyChecker, ping, whois, browser: browserInfo, port, speed, webrtc, subnet };
+  const pages = { ip: home, lookup, dns, "reverse-dns": reverseDns, reputation, "proxy-checker": proxyChecker, ping, whois, browser: browserInfo, port, speed, webrtc, subnet, mac,
+    dmarc: () => mailCheck("dmarc"), spf: () => mailCheck("spf"), dkim: () => mailCheck("dkim"), mx: () => mailCheck("mx"), propagation, download };
   const start = () => { initConsent(); if (pages[page]) pages[page](); };
   if (LANG === "en") start();
   else {

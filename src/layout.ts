@@ -1,6 +1,6 @@
 import { ARTICLES } from "./content/articles";
 import { activeLocales, LOCALE_META, localizedPath, t, type Faq, type Locale } from "./i18n";
-import { localTool, TOOLS } from "./tools";
+import { localTool, toolHref, TOOLS } from "./tools";
 import { esc } from "./html";
 
 export { TOOLS } from "./tools";
@@ -159,6 +159,8 @@ h3{font-size:1.15rem;letter-spacing:-.02em;margin:0 0 6px}
 
 form.row{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 6px}
 input,select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--dash);border-radius:12px;height:52px;padding:0 16px;min-width:0}
+.toc{margin:0 0 30px;padding:16px 20px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.toc .lbl{margin:0}.toc ol{margin:8px 0 0;padding-left:20px;columns:2 240px;column-gap:28px}.toc li{margin:4px 0;break-inside:avoid}.toc a{text-decoration:none}.prose h2[id]{scroll-margin-top:84px}
+textarea{display:block;width:100%;font:14px/1.5 ui-monospace,"SF Mono",Menlo,Consolas,monospace;color:var(--ink);background:var(--card);border:1px solid var(--dash);border-radius:12px;padding:14px 16px;margin:0 0 10px;resize:vertical;min-height:52px}
 .pform{display:grid;gap:10px;margin:0 0 6px}
 .pform .row{display:flex;gap:10px;flex-wrap:wrap}
 input{flex:1 1 240px}
@@ -358,9 +360,9 @@ export function renderPage(o: PageOptions): string {
   const tools = TOOLS.map((x) => localTool(x, loc));
   const main = ["lookup", "dns", "whois", "speed"].map((id) => tools.find((x) => x.id === id)!);
   const dnav =
-    main.map((x) => `<a href="${lp(x.path)}"${active(x.id)}>${esc(x.name)}</a>`).join("") +
+    main.map((x) => `<a href="${toolHref(x, loc)}"${active(x.id)}>${esc(x.name)}</a>`).join("") +
     `<details class="menu"><summary class="nl">${esc(lt("All tools"))}</summary><div class="mega">${tools
-      .map((x) => `<a href="${lp(x.path)}"><b>${esc(x.name)}</b><span>${esc(x.desc)}</span></a>`)
+      .map((x) => `<a href="${toolHref(x, loc)}"><b>${esc(x.name)}</b><span>${esc(x.desc)}</span></a>`)
       .join("")}</div></details><a href="/learn"${o.id === "learn" ? ' aria-current="page"' : ""}>${esc(lt("Learn"))}</a>`;
 
   // Language switcher: the same page in another language when it exists, otherwise that language's home page.
@@ -376,9 +378,9 @@ export function renderPage(o: PageOptions): string {
   const drawerLangs = languages.length > 1 ? `<h5>${esc(lt("Language"))}</h5>${languages.map(langLink).join("")}` : "";
   const footerLangs = languages.length > 1 ? `<nav class="langrow" aria-label="${esc(lt("Language"))}">${languages.map(langLink).join("")}</nav>` : "";
 
-  const drawer = tools.map((x) => `<a href="${lp(x.path)}">${esc(x.name)}</a>`).join("") + `<a href="/learn">${esc(lt("Learn"))}</a>` + drawerLangs;
+  const drawer = tools.map((x) => `<a href="${toolHref(x, loc)}">${esc(x.name)}</a>`).join("") + `<a href="/learn">${esc(lt("Learn"))}</a>` + drawerLangs;
 
-  const footerTools = tools.map((x) => `<li><a href="${lp(x.path)}">${esc(x.name)}</a></li>`).join("");
+  const footerTools = tools.map((x) => `<li><a href="${toolHref(x, loc)}">${esc(x.name)}</a></li>`).join("");
   const footerLearn = ARTICLES.slice(0, 6)
     .map((a) => `<li><a href="/learn/${a.slug}"${loc === "en" ? "" : ' hreflang="en" lang="en"'}>${esc(a.title.replace(/:.*$/, "").replace(/ \(.*\)$/, ""))}</a></li>`)
     .join("");
@@ -497,7 +499,7 @@ export const articleCards = (slugs?: string[], big = false, loc: Locale = "en") 
 export const toolCards = (ids?: string[], loc: Locale = "en") => {
   const all = TOOLS.map((x) => localTool(x, loc));
   const list = ids ? ids.map((i) => all.find((x) => x.id === i)!).filter(Boolean) : all.filter((x) => x.id !== "ip");
-  return `<div class="tools">${list.map((x) => `<a class="tool" href="${localizedPath(loc, x.path)}"><b>${esc(x.name)}</b><span>${esc(x.desc)}</span></a>`).join("")}</div>`;
+  return `<div class="tools">${list.map((x) => `<a class="tool" href="${toolHref(x, loc)}"><b>${esc(x.name)}</b><span>${esc(x.desc)}</span></a>`).join("")}</div>`;
 };
 
 export const appJsonLd = (origin: string, name: string, description: string, path: string, loc: Locale = "en") => ({

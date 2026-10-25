@@ -6,6 +6,7 @@ import {
   AUTHOR_ID,
   BRAND,
   breadcrumbJsonLd,
+  faqJsonLd,
   LOGO_PATH,
   OG_IMAGE,
   organizationJsonLd,
@@ -137,17 +138,44 @@ ${sections}
   };
 }
 
+const plain = (html: string) => html.replace(/<[^>]+>/g, "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/\s+/g, " ").trim();
+const anchor = (text: string) => plain(text).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
+
+/**
+ * Gives every section heading an id and builds an "On this page" list from them, and reads the questions and
+ * answers under "Frequently asked questions" for FAQPage structured data. Both come from the body itself, so
+ * every guide gets them without extra fields.
+ */
+function articleParts(body: string) {
+  const sections: Array<[string, string]> = [];
+  const used = new Set<string>();
+  const html = body.replace(/<h2>([\s\S]*?)<\/h2>/g, (_, inner: string) => {
+    let id = anchor(inner) || "section";
+    while (used.has(id)) id += "-2";
+    used.add(id);
+    if (!/^Sources and further reading$/i.test(plain(inner))) sections.push([id, plain(inner)]);
+    return `<h2 id="${id}">${inner}</h2>`;
+  });
+  const faqHtml = body.split(/<h2>Frequently asked questions<\/h2>/i)[1]?.split(/<h2>/)[0] ?? "";
+  const faq = [...faqHtml.matchAll(/<h3>([\s\S]*?)<\/h3>\s*<p>([\s\S]*?)<\/p>/g)].map((m) => ({ q: plain(m[1] ?? ""), a: plain(m[2] ?? "") }));
+  const toc = sections.length >= 4
+    ? `<nav class="toc" aria-label="On this page"><p class="lbl">On this page</p><ol>${sections.map(([id, text]) => `<li><a href="#${id}">${esc(text)}</a></li>`).join("")}</ol></nav>`
+    : "";
+  return { html, toc, faq };
+}
+
 export function articlePage(slug: string, origin: string): Rendered {
   const a = articleBySlug(slug);
-  const body = BODIES[slug];
-  if (!a || !body) throw new Error(`Unknown article: ${slug}`);
+  const raw = BODIES[slug];
+  if (!a || !raw) throw new Error(`Unknown article: ${slug}`);
   const path = `/learn/${slug}`;
+  const { html: body, toc, faq } = articleParts(raw);
 
   const tools = toolCards(a.tools);
   const page = `<article>
 <section class="phead"><p class="crumbs"><a href="/">Home</a> / <a href="/learn">Learn</a></p><h1>${esc(a.title)}</h1>
 <p class="meta">Published by <a href="/about">${esc(AUTHOR)}</a> · Updated ${fmt(a.published)} · ${a.readMin} min read</p></section>
-<div class="prose">${body}
+<div class="prose">${toc}${body}
 <div class="cta"><h3>Try it yourself</h3><p>See the real numbers for your own connection with our free tools.</p></div></div>
 <div style="margin-top:-20px;max-width:720px">${tools}</div>
 </article>
@@ -178,6 +206,7 @@ export function articlePage(slug: string, origin: string): Rendered {
         ...(origin ? { image: [origin + OG_IMAGE.path], mainEntityOfPage: origin + path } : {}),
       },
       breadcrumbJsonLd(origin, [["Home", "/"], ["Learn", "/learn"], [a.title, path]]),
+      faqJsonLd(faq),
     ],
   };
 }
