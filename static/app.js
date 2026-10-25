@@ -182,17 +182,20 @@
     const own = $(".hero").dataset.ip;
     const show = (id, ip) => { $(id).textContent = ip || tr("Not detected"); };
     const isLocal = /^(::1$|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|fe80:|fc|fd)/i.test(own);
-    ipify("https://api4.ipify.org?format=json").then((ip) => {
+    const v4 = ipify("https://api4.ipify.org?format=json").then((ip) => {
       show("#v4", ip);
-      if (isLocal && ip) {
-        // Running on a local network or dev server: show the address websites actually see.
+      // Lead with IPv4 when the browser connected over IPv6, since that is the address people expect to see;
+      // the IPv6 address stays on the line below. On a local network or dev server, show the address websites see.
+      const lead = ip && (isLocal || own.includes(":"));
+      if (lead) {
         ipEl.textContent = ip;
         document.querySelector("[data-copy]").dataset.copy = ip;
       }
+      return lead ? ip : own;
     });
     ipify("https://api6.ipify.org?format=json").then((ip) => show("#v6", ip));
 
-    api("/api/lookup?q=" + encodeURIComponent(own))
+    v4.then((ip) => api("/api/lookup?q=" + encodeURIComponent(ip)))
       .then((d) => { $("#rdns").textContent = d.hostname || tr("None"); })
       .catch(() => { $("#rdns").textContent = tr("None"); });
   }
