@@ -86,7 +86,7 @@ export const BODIES: Record<string, string> = {
 <tr><td><code>172.16.0.0 – 172.31.255.255</code></td><td>172.16.0.0/12</td><td>Medium networks, Docker</td></tr>
 <tr><td><code>192.168.0.0 – 192.168.255.255</code></td><td>192.168.0.0/16</td><td>Most home routers</td></tr>
 </tbody></table></div>
-<p>Other special ranges you may meet include <code>127.0.0.1</code> (your own device, called loopback), <code>169.254.x.x</code> (self-assigned when DHCP fails) and <code>100.64.0.0/10</code> (used by providers for carrier-grade NAT).</p>
+<p>Other special ranges you may meet include <code>127.0.0.1</code> (your own device, called loopback), <code>169.254.x.x</code> (<a href="/learn/what-is-a-169-254-ip-address">self-assigned when DHCP fails</a>) and <code>100.64.0.0/10</code> (used by providers for <a href="/learn/what-is-cgnat">carrier-grade NAT</a>).</p>
 
 <h2>How do public and private IP addresses work together?</h2>
 <p>Your router performs <strong>network address translation</strong> (NAT). When your laptop requests a web page, the router replaces the laptop's private address with the public one, remembers who asked, and forwards the reply back to the right device. Unsolicited traffic from the internet has no matching entry, so the router drops it. That is a useful side effect: NAT acts as a basic shield.</p>
@@ -195,7 +195,7 @@ export const BODIES: Record<string, string> = {
 </ul>
 
 <h2>Mobile networks and shared addresses</h2>
-<p>Mobile carriers and some home providers use <strong>carrier-grade NAT</strong>, sharing one public address between many customers. Your visible address can change often, and may even appear to be in a different city. It also makes hosting at home hard, because inbound connections cannot reach you. Read <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for the background.</p>
+<p>Mobile carriers and some home providers use <a href="/learn/what-is-cgnat"><strong>carrier-grade NAT</strong></a>, sharing one public address between many customers. Your visible address can change often, and may even appear to be in a different city. It also makes hosting at home hard, because inbound connections cannot reach you. Read <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for the background.</p>
 
 <h2>What about IPv6?</h2>
 <p>With IPv6, your provider typically delegates a prefix to your router, and devices create their own addresses inside it. Devices also rotate temporary addresses for privacy, so the address a website sees can change within a day even though the prefix does not. More in <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
@@ -312,13 +312,14 @@ export const BODIES: Record<string, string> = {
 <li><code>32400</code> Plex</li>
 <li><code>51820</code> WireGuard (UDP)</li>
 </ul>
+<p>For the full table, see our <a href="/learn/common-ports-list">common ports list</a>.</p>
 
 <h2>Why does a port still show as closed?</h2>
 <ul>
 <li><strong>The service is not listening</strong> on that port or is bound only to localhost.</li>
 <li><strong>A firewall blocks it</strong> on the device or the router.</li>
 <li><strong>Double NAT.</strong> A second router, such as your provider's modem behind your own router, needs its own forwarding rule or bridge mode.</li>
-<li><strong>Carrier-grade NAT.</strong> If your router's WAN address differs from the address on our <a href="/">IP checker</a>, your provider shares one address between customers and inbound connections will never arrive. Ask for a public address, or use a tunnel. See <a href="/learn/why-does-my-ip-address-change">why your IP address changes</a>.</li>
+<li><strong>Carrier-grade NAT.</strong> Our <a href="/learn/what-is-cgnat">CGNAT guide</a> explains it in full. If your router's WAN address differs from the address on our <a href="/">IP checker</a>, your provider shares one address between customers and inbound connections will never arrive. Ask for a public address, or use a tunnel. See <a href="/learn/why-does-my-ip-address-change">why your IP address changes</a>.</li>
 <li><strong>UDP.</strong> Our checker tests TCP only, because UDP has no handshake to confirm.</li>
 </ul>
 
@@ -444,6 +445,7 @@ export const BODIES: Record<string, string> = {
 <p><code>netstat -ano | findstr :8080</code></p>
 <p>A line with <code>LISTENING</code> means a program is waiting on that port. To test a connection to another machine, use PowerShell:</p>
 <p><code>Test-NetConnection -ComputerName 192.168.1.50 -Port 443</code></p>
+<p>Not sure which port a service uses? Our <a href="/learn/common-ports-list">common ports list</a> has the standard numbers.</p>
 <p>Look for <code>TcpTestSucceeded : True</code>.</p>
 
 <h2>Method 3: macOS and Linux</h2>
@@ -845,7 +847,7 @@ export const BODIES: Record<string, string> = {
 <tr><td>100 to 150 ms</td><td>Slow. Lag is noticeable.</td></tr>
 <tr><td>Over 150 ms</td><td>Poor. Games feel delayed and calls can stutter.</td></tr>
 </tbody></table></div>
-<p>These are rough guides. Two related numbers matter as much. <strong>Jitter</strong> is how much your ping changes from moment to moment, and <strong>packet loss</strong> is the share of messages that never arrive. High jitter or any packet loss causes stutter even when the average ping is low. Our guide to <a href="/learn/what-is-packet-loss">packet loss</a> shows how to test for it and where it comes from.</p>
+<p>These are rough guides. Two related numbers matter as much. <a href="/learn/what-is-jitter"><strong>Jitter</strong></a> is how much your ping changes from moment to moment, and <strong>packet loss</strong> is the share of messages that never arrive. High jitter or any packet loss causes stutter even when the average ping is low. Our guide to <a href="/learn/what-is-packet-loss">packet loss</a> shows how to test for it and where it comes from.</p>
 
 <h2>How to test your ping</h2>
 <ul>
@@ -2014,7 +2016,7 @@ console.log(ip);</code></pre>
 </ol>
 
 <h2>Packet loss, latency and jitter</h2>
-<p>These three numbers describe different problems, and a connection can fail one while passing the others. Latency, or <a href="/learn/what-is-ping">ping</a>, is how long a round trip takes. Jitter is how much that time changes from one packet to the next; our tests report it as the average change between consecutive round trips. Packet loss is the share of packets that never come back. Calls and fast games need all three to be low, and our guide on <a href="/learn/how-to-lower-ping">how to lower ping</a> covers the latency side.</p>
+<p>These three numbers describe different problems, and a connection can fail one while passing the others. Latency, or <a href="/learn/what-is-ping">ping</a>, is how long a round trip takes. <a href="/learn/what-is-jitter">Jitter</a> is how much that time changes from one packet to the next; our tests report it as the average change between consecutive round trips. Packet loss is the share of packets that never come back. Calls and fast games need all three to be low, and our guide on <a href="/learn/how-to-lower-ping">how to lower ping</a> covers the latency side.</p>
 
 <h2>Frequently asked questions</h2>
 <h3>Is 1% packet loss bad?</h3>
@@ -2028,5 +2030,305 @@ console.log(ip);</code></pre>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ping" rel="noopener">Microsoft Learn: ping command reference</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/pathping" rel="noopener">Microsoft Learn: pathping command reference</a></li><li><a href="https://learn.microsoft.com/en-us/training/modules/plan-optimize-network-performance-for-teams-phone-system/2-understand-teams-network-requirements" rel="noopener">Microsoft Learn: Understand Teams network requirements (loss, jitter and latency targets)</a></li><li><a href="https://learn.microsoft.com/en-us/microsoftteams/prepare-network" rel="noopener">Microsoft Learn: Prepare your organization's network for Teams (Wi-Fi and VPN guidance)</a></li><li><a href="https://man7.org/linux/man-pages/man8/ping.8.html" rel="noopener">ping(8) Linux manual page</a></li><li><a href="https://man.freebsd.org/cgi/man.cgi?query=ping&amp;sektion=8" rel="noopener">ping(8) FreeBSD manual page</a></li><li><a href="https://manpages.debian.org/bookworm/mtr-tiny/mtr.8.en.html" rel="noopener">mtr(8) manual page</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9293" rel="noopener">RFC 9293: Transmission Control Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8085" rel="noopener">RFC 8085: UDP Usage Guidelines (IETF)</a></li><li><a href="https://developers.cloudflare.com/1.1.1.1/" rel="noopener">Cloudflare Docs: 1.1.1.1 public DNS resolver</a></li></ul>
+`,
+  "common-ports-list": `
+<p>A <strong>port number</strong> tells a computer which program should receive a piece of network traffic. The IP address gets data to the right device, and the port gets it to the right service on that device, such as a web server on port 443 or SSH on port 22. The list below covers the ports you are most likely to meet, with the names they are registered under at IANA, the body that assigns them. To see whether a port is reachable on your own connection, use our <a href="/port">port checker</a>.</p>
+
+<h2>What is a port number?</h2>
+<p>A port is a number from 0 to 65535 that is part of every TCP and UDP connection. A server program listens on a fixed port so that clients know where to find it, and your device picks a temporary port for its own end of each connection. TCP and UDP each have their own set of numbers, so a service can be registered for TCP, for UDP or for both.</p>
+
+<h2>The three port ranges</h2>
+<p>RFC 6335 splits the 65,536 port numbers into three ranges, and IANA only hands out numbers in the first two.</p>
+<div class="tw"><table><tbody>
+<tr><th>Range</th><th>Name</th><th>Assigned by IANA?</th></tr>
+<tr><td>0 to 1023</td><td>System ports, also called well-known ports</td><td>Yes</td></tr>
+<tr><td>1024 to 49151</td><td>User ports, also called registered ports</td><td>Yes</td></tr>
+<tr><td>49152 to 65535</td><td>Dynamic, private or ephemeral ports</td><td>Never</td></tr>
+</tbody></table></div>
+<p>Because dynamic ports are never assigned, any program can use them for short-lived connections. Most of the services people search for sit in the well-known range.</p>
+
+<h2>Common ports list</h2>
+<p>Each entry is the service name and protocol from the IANA registry, with a note on what you will usually find using it.</p>
+<div class="tw"><table><tbody>
+<tr><th>Port</th><th>Protocol</th><th>Service</th><th>Used for</th></tr>
+<tr><td>20, 21</td><td>TCP</td><td>FTP data, FTP control</td><td>File transfer</td></tr>
+<tr><td>22</td><td>TCP</td><td>SSH</td><td>Secure remote login, SFTP and Git over SSH</td></tr>
+<tr><td>23</td><td>TCP</td><td>Telnet</td><td>Old remote login</td></tr>
+<tr><td>25</td><td>TCP</td><td>SMTP</td><td>Mail between mail servers</td></tr>
+<tr><td>53</td><td>UDP and TCP</td><td>DNS</td><td>Turning names into IP addresses</td></tr>
+<tr><td>67, 68</td><td>UDP</td><td>DHCP server, DHCP client</td><td>Handing out IP addresses on a network</td></tr>
+<tr><td>69</td><td>UDP</td><td>TFTP</td><td>Simple file transfer, network booting</td></tr>
+<tr><td>80</td><td>TCP</td><td>HTTP</td><td>Unencrypted websites</td></tr>
+<tr><td>110</td><td>TCP</td><td>POP3</td><td>Downloading email</td></tr>
+<tr><td>123</td><td>UDP</td><td>NTP</td><td>Clock synchronization</td></tr>
+<tr><td>137 to 139</td><td>UDP and TCP</td><td>NetBIOS</td><td>Older Windows file and name services</td></tr>
+<tr><td>143</td><td>TCP</td><td>IMAP</td><td>Reading email on the server</td></tr>
+<tr><td>161, 162</td><td>UDP</td><td>SNMP, SNMP traps</td><td>Monitoring network equipment</td></tr>
+<tr><td>389</td><td>TCP and UDP</td><td>LDAP</td><td>Directory services</td></tr>
+<tr><td>443</td><td>TCP and UDP</td><td>HTTPS</td><td>Encrypted websites and most web APIs</td></tr>
+<tr><td>445</td><td>TCP</td><td>Microsoft-DS (SMB)</td><td>Windows file and printer sharing</td></tr>
+<tr><td>465</td><td>TCP</td><td>Submissions</td><td>Sending email over TLS</td></tr>
+<tr><td>500</td><td>UDP</td><td>ISAKMP (IKE)</td><td>Setting up IPsec VPNs</td></tr>
+<tr><td>514</td><td>UDP</td><td>Syslog</td><td>Sending logs to a log server</td></tr>
+<tr><td>587</td><td>TCP</td><td>Submission</td><td>Sending email from a mail app</td></tr>
+<tr><td>636</td><td>TCP</td><td>LDAPS</td><td>LDAP over TLS</td></tr>
+<tr><td>853</td><td>TCP and UDP</td><td>DNS over TLS, DTLS or QUIC</td><td>Encrypted DNS</td></tr>
+<tr><td>993</td><td>TCP</td><td>IMAPS</td><td>IMAP over TLS</td></tr>
+<tr><td>995</td><td>TCP</td><td>POP3S</td><td>POP3 over TLS</td></tr>
+<tr><td>1194</td><td>UDP and TCP</td><td>OpenVPN</td><td>OpenVPN tunnels</td></tr>
+<tr><td>1433</td><td>TCP</td><td>Microsoft SQL Server</td><td>Database</td></tr>
+<tr><td>1723</td><td>TCP</td><td>PPTP</td><td>Old VPN protocol</td></tr>
+<tr><td>1812, 1813</td><td>UDP</td><td>RADIUS, RADIUS accounting</td><td>Network login for Wi-Fi and VPNs</td></tr>
+<tr><td>3306</td><td>TCP</td><td>MySQL</td><td>Database</td></tr>
+<tr><td>3389</td><td>TCP and UDP</td><td>MS WBT Server (RDP)</td><td>Windows Remote Desktop</td></tr>
+<tr><td>3478</td><td>UDP and TCP</td><td>STUN, TURN</td><td>Helping calls and games get through NAT</td></tr>
+<tr><td>4500</td><td>UDP</td><td>IPsec NAT traversal</td><td>IPsec VPNs behind a router</td></tr>
+<tr><td>5060, 5061</td><td>UDP and TCP</td><td>SIP, SIP over TLS</td><td>Internet phone calls</td></tr>
+<tr><td>5353</td><td>UDP</td><td>Multicast DNS</td><td>Finding printers and devices on the local network</td></tr>
+<tr><td>5432</td><td>TCP</td><td>PostgreSQL</td><td>Database</td></tr>
+<tr><td>5900</td><td>TCP</td><td>RFB (VNC)</td><td>Remote screen sharing</td></tr>
+<tr><td>6379</td><td>TCP</td><td>Redis</td><td>In-memory database and cache</td></tr>
+<tr><td>8080</td><td>TCP</td><td>HTTP alternate</td><td>Second web server, development servers, proxies</td></tr>
+<tr><td>9100</td><td>TCP</td><td>Printer PDL data stream</td><td>Sending print jobs straight to a printer</td></tr>
+<tr><td>27017</td><td>TCP</td><td>MongoDB</td><td>Database</td></tr>
+<tr><td>32400</td><td>TCP</td><td>Plex</td><td>Plex Media Server</td></tr>
+</tbody></table></div>
+<p>A registration only says what a port is reserved for. Any program can be set to listen on any port, so traffic on port 443 is very likely HTTPS but not guaranteed to be.</p>
+
+<h2>The most searched ports</h2>
+
+<h3>Port 443</h3>
+<p>Port 443 is HTTPS, the encrypted web. HTTP's own standard, RFC 9110, makes 443 the default port for https addresses, which is why you never have to type it. It is registered for both TCP and UDP. Blocking it breaks most websites and apps.</p>
+
+<h3>Port 80</h3>
+<p>Port 80 is plain HTTP, the default for http addresses in RFC 9110. Many sites answer on port 80 only to send you on to the HTTPS version on 443.</p>
+
+<h3>Port 22</h3>
+<p>Port 22 is SSH, used to log in to servers and routers securely, copy files with SFTP or SCP, and push code to Git hosts. A server that exposes it to the internet should allow key-based logins only.</p>
+
+<h3>Port 53</h3>
+<p>Port 53 is DNS, registered for both UDP and TCP. Encrypted DNS over TLS has its own port, 853. Our <a href="/learn/what-is-a-dns-server">DNS server guide</a> explains what happens when your device asks a resolver for an address.</p>
+
+<h3>Port 3389</h3>
+<p>Port 3389 is Windows Remote Desktop. Microsoft's documentation confirms that Remote Desktop listens on 3389 by default and shows how to change it. CISA lists exposed RDP among the weaknesses used in ransomware attacks, where attackers log in with weak or stolen passwords, and recommends multi-factor authentication.</p>
+
+<h3>Port 8080</h3>
+<p>Port 8080 is registered as an alternate HTTP port. It is a common choice for a second web server on the same machine, a development server or a web proxy, since port 80 is often already taken.</p>
+
+<h2>Which ports are risky to open?</h2>
+<p>Every port you forward on your router lets the whole internet knock on that service. A few deserve extra care.</p>
+<ul>
+<li>Remote Desktop (3389). CISA warns that attackers break in through RDP with weak or compromised credentials. Put it behind a VPN or use multi-factor authentication.</li>
+<li>SMB file sharing (139 and 445). CISA notes that the old SMBv1 version sends everything in clear text, and recommends a newer SMB version and carrying SMB over an encrypted VPN.</li>
+<li>Databases (1433, 3306, 5432, 6379, 27017). These are meant for your own apps to reach. Keep them on the local network or behind a VPN.</li>
+<li>Telnet (23) and plain FTP (21). Use SSH and SFTP instead, which encrypt the session.</li>
+</ul>
+<p>Our guide to <a href="/learn/what-is-port-forwarding">port forwarding</a> covers opening a port safely when you do need one.</p>
+
+<h2>TCP ports vs UDP ports</h2>
+<p>TCP sets up a connection with a handshake before any data moves, so you can test a TCP port by trying to connect. UDP just sends packets, with no handshake and no resending, which suits DNS lookups, calls and games. Because nothing answers a probe, an open UDP port is hard to confirm from outside, and that is why our port checker tests TCP.</p>
+
+<h2>How to check which ports are open</h2>
+<p>Use the <a href="/port">port checker</a> to test whether a port on your public IP address can be reached from the internet. To see what is listening on your own computer, run <code>netstat -an</code> on Windows or <code>lsof -i -P</code> on a Mac. Our guide on <a href="/learn/how-to-check-if-a-port-is-open">how to check if a port is open</a> walks through each method and what the results mean.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>How many ports are there?</h3>
+<p>There are 65,536 port numbers, from 0 to 65535, for each of TCP and UDP. Numbers 0 to 1023 are well-known ports, 1024 to 49151 are registered ports, and 49152 to 65535 are dynamic ports that IANA never assigns.</p>
+<h3>What port does HTTPS use?</h3>
+<p>Port 443. Plain HTTP uses port 80.</p>
+<h3>What port does email use?</h3>
+<p>Mail servers talk to each other on port 25. Mail apps send through 465 (TLS from the start) or 587, and read mail through IMAP on 993 or POP3 on 995. RFC 8314 recommends the TLS-from-the-start ports over upgrading a plain connection.</p>
+<h3>Is port 8080 the same as port 80?</h3>
+<p>Both carry HTTP, but they are separate ports. A server on 8080 has to be addressed with the port in the URL, for example <code>http://example.com:8080</code>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" rel="noopener">IANA Service Name and Transport Protocol Port Number Registry</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6335" rel="noopener">RFC 6335: IANA procedures for port numbers, including the three ranges (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110: HTTP Semantics, default ports 80 and 443 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc2131" rel="noopener">RFC 2131: Dynamic Host Configuration Protocol, ports 67 and 68 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8314" rel="noopener">RFC 8314: Use of TLS for email submission and access (IETF)</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remotepc/change-listening-port" rel="noopener">Microsoft Learn: Change the Remote Desktop listening port</a></li><li><a href="https://www.cisa.gov/stopransomware/misconfigurations-and-weaknesses-known-be-used-ransomware-campaigns" rel="noopener">CISA: Misconfigurations and weaknesses known to be used in ransomware campaigns</a></li></ul>
+`,
+  "what-is-cgnat": `
+<p><strong>CGNAT</strong>, or carrier-grade NAT, means your internet provider shares one public IPv4 address between many customers. Browsing, streaming and email work as normal, but anything that needs the internet to reach you, such as port forwarding, hosting a game server or remote access to a camera, usually fails. The quickest check is to compare the WAN address in your router with the public IP shown on our <a href="/">IP checker</a>. If they differ, you are probably behind CGNAT.</p>
+
+<h2>What is CGNAT?</h2>
+<p>CGNAT is a second layer of address sharing, run by your provider. At home, your router already uses NAT to put every device behind one address. With CGNAT, that address is not public either: the provider's equipment shares one public IPv4 address among several subscribers, which is how RFC 6888 defines a carrier-grade NAT. Providers do this because they do not have a public IPv4 address for every customer.</p>
+<p>Outgoing connections are fine, because the provider's NAT remembers who started each one and sends the replies back. Incoming connections are the problem. When a packet arrives at the shared public address unasked, the provider has no way to know which of its customers it is for, so it is dropped.</p>
+
+<h2>What is 100.64.0.0/10?</h2>
+<p>100.64.0.0/10, the range from 100.64.0.0 to 100.127.255.255, is the address block set aside for CGNAT. RFC 6598 calls it Shared Address Space and reserves it for providers to number the link between their CGNAT equipment and your router. It is separate from the private ranges in RFC 1918, and packets using it must not cross from one provider's network to another. If your router's WAN address starts with 100.64 through 100.127, you are behind CGNAT.</p>
+
+<h2>How to tell if you are behind CGNAT</h2>
+<ol>
+<li>Open your router's admin page and find its WAN or Internet IP address. Our guide to <a href="/learn/find-router-ip-address">finding your router's IP address</a> shows how to get in.</li>
+<li>Open the <a href="/">ipcomet home page</a> and note your public IPv4 address.</li>
+<li>Compare the two using the table below.</li>
+</ol>
+<div class="tw"><table><tbody>
+<tr><th>Router WAN address</th><th>What it means</th></tr>
+<tr><td>Same as your public IP</td><td>No CGNAT. You have your own public IPv4 address.</td></tr>
+<tr><td>Between 100.64.0.0 and 100.127.255.255</td><td>CGNAT. This is the shared address range from RFC 6598.</td></tr>
+<tr><td>Private: 10.x.x.x, 172.16.x.x to 172.31.x.x, or 192.168.x.x</td><td>Double NAT. Either another router of yours sits in front, or your provider runs CGNAT with private addresses.</td></tr>
+<tr><td>A different public address</td><td>Usually CGNAT or a provider proxy. Ask your provider.</td></tr>
+</tbody></table></div>
+<p>A traceroute gives a second opinion. Run <code>tracert 1.1.1.1</code> on Windows or <code>traceroute 1.1.1.1</code> on a Mac. If one of the first hops after your router has an address between 100.64 and 100.127, your traffic passes through the provider's CGNAT.</p>
+
+<h2>What does CGNAT break?</h2>
+<p>RFC 7021 reports tests of common applications behind CGNAT. Web browsing, email, video streaming and video calls kept working. The problems clustered around anything that needs an incoming connection:</p>
+<ul>
+<li>Servers inside the home, such as an FTP server, could not be reached.</li>
+<li>Peer-to-peer apps that wait for incoming connections failed. BitTorrent could download but not seed.</li>
+<li>Peer-to-peer gaming failed in some setups, including two players behind the same CGNAT address trying to connect to each other.</li>
+<li>IP-based location and abuse tracking get harder, because many customers share one address.</li>
+</ul>
+<p>That last point affects you too. If someone else on your shared address gets it blocked by a website or listed for spam, you can see CAPTCHAs or blocks you did nothing to earn. Our <a href="/reputation">IP reputation check</a> shows whether your current address is on common blocklists.</p>
+
+<h2>CGNAT vs double NAT</h2>
+<p>Double NAT is two routers in your own home, for example your provider's modem-router with your own router plugged in behind it. You can fix it yourself by putting the first device into bridge mode or forwarding the port on both. CGNAT happens inside the provider's network, so no setting on your side removes it. The <a href="/learn/what-is-port-forwarding">port forwarding guide</a> covers the double NAT fix.</p>
+
+<h2>How to get around CGNAT</h2>
+<ol>
+<li>Ask your provider for a public IPv4 address. Some offer it on request or as an add-on, and it removes CGNAT for your connection.</li>
+<li>Use IPv6 if your provider offers it. IPv6 has enough addresses for every device, so incoming connections over IPv6 do not go through NAT, though your router's firewall still has to allow them.</li>
+<li>Use a tunnel. Services such as Cloudflare Tunnel run a small program on your machine that connects out to their network, so your service is reachable without a publicly routable IP address or an open inbound port.</li>
+<li>Use a VPN provider that offers port forwarding. Incoming traffic then arrives at the VPN's public address and comes down the tunnel to you.</li>
+</ol>
+<p>The standard for CGNAT equipment, RFC 6888, also requires support for a protocol that lets subscribers request their own mappings, normally the Port Control Protocol. Whether your provider turns it on is another matter, so ask.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is CGNAT bad?</h3>
+<p>For browsing, streaming and calls it is usually unnoticeable. It is a problem if you host anything at home, need port forwarding for a game or camera, or share an address that gets blocked.</p>
+<h3>Does CGNAT slow down my internet?</h3>
+<p>Not much for everyday use. In the RFC 7021 tests, single video streams played with somewhat longer buffering, and some large transfers ran slower in one setup. Raw speed mostly depends on your plan and Wi-Fi.</p>
+<h3>Is 100.64.x.x a private IP address?</h3>
+<p>Not in the RFC 1918 sense. It is Shared Address Space reserved for providers, and like private addresses it is not reachable from the public internet.</p>
+<h3>Why does my IP address show a different city?</h3>
+<p>Behind CGNAT, the public address belongs to the provider's equipment, which may sit in another city. Our guide on <a href="/learn/why-is-my-ip-location-wrong">why your IP location is wrong</a> explains the other causes.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6888" rel="noopener">RFC 6888: Common Requirements for Carrier-Grade NATs (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc7021" rel="noopener">RFC 7021: Assessing the Impact of Carrier-Grade NAT on Network Applications (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/" rel="noopener">Cloudflare Docs: Cloudflare Tunnel</a></li></ul>
+`,
+  "what-is-a-169-254-ip-address": `
+<p>A <strong>169.254 IP address</strong> means your device asked the network for an address, got no answer, and gave itself one. Windows calls this APIPA (Automatic Private IP Addressing), and the standard name is an IPv4 link-local address. While you have one, you can reach other devices on the same cable or Wi-Fi at best, but not the internet. The usual fix is to restart the router and renew the address, covered step by step below.</p>
+
+<h2>What is APIPA?</h2>
+<p>APIPA is what a device does when it is set to get its address automatically and the DHCP server, normally your router, does not reply. The rules come from RFC 3927. The device picks an address at random between 169.254.1.0 and 169.254.254.255, checks with an ARP probe that no other device on the network already uses it, and keeps it until a proper address arrives. The first and last 256 addresses of 169.254.0.0/16 are reserved and never chosen.</p>
+<p>Routers must not forward packets to or from these addresses, so a 169.254 address only works on the local link. There is no gateway and no route to the internet, which is why the connection icon shows a warning even though Wi-Fi appears connected.</p>
+
+<h2>Why did I get a 169.254 address?</h2>
+<p>Something stopped the DHCP exchange between your device and the router. Common causes:</p>
+<ul>
+<li>The router is off, still starting up or has frozen.</li>
+<li>The Wi-Fi link is weak or dropped while the device was asking for an address.</li>
+<li>The Ethernet cable or port is faulty.</li>
+<li>DHCP is turned off in the router, or its pool of addresses is used up because too many devices are connected.</li>
+<li>Firewall or VPN software on the device is blocking the request.</li>
+<li>The network adapter's driver is out of date or misbehaving.</li>
+</ul>
+
+<h2>How to check your IP address</h2>
+<ul>
+<li>Windows: open Command Prompt and run <code>ipconfig /all</code>. Look at the IPv4 address of the adapter you use. Microsoft notes that ipconfig shows whether a setting came from DHCP or from APIPA.</li>
+<li>Mac: open System Settings, select Network, pick your connection, click Details and then TCP/IP. macOS may also say the connection has a self-assigned IP address.</li>
+<li>iPhone and Android: open the Wi-Fi settings and tap the network you are on to see its IP address.</li>
+</ul>
+<p>If the address starts with 169.254 and no router address is listed, DHCP has failed. A working setup shows a private address such as 192.168.1.20 and a <a href="/learn/what-is-my-default-gateway">default gateway</a>.</p>
+
+<h2>How to fix a 169.254 IP address</h2>
+<ol>
+<li>Restart the router and modem. Unplug them, wait 30 seconds, plug the modem in first and then the router, and give them a couple of minutes.</li>
+<li>Renew the address. On Windows, run <code>ipconfig /release</code> and then <code>ipconfig /renew</code>. On a Mac, go to System Settings, Network, your connection, Details, TCP/IP, and click Renew DHCP Lease.</li>
+<li>Reconnect. Forget the Wi-Fi network and join it again, or try another cable and router port.</li>
+<li>Turn off VPN and firewall software for a moment and renew again. If that works, add an exception.</li>
+<li>Check the router's DHCP settings. Make sure DHCP is on and the address pool is larger than the number of devices you own.</li>
+<li>Update or reinstall the network adapter's driver, or reset the network settings on the device.</li>
+<li>If only one device fails while others work, the problem is that device. If every device gets a 169.254 address, it is the router.</li>
+</ol>
+
+<h2>When a 169.254 address is normal</h2>
+<p>Link-local addresses are useful when no DHCP server exists. Two computers joined directly by a cable can talk to each other with 169.254 addresses, and some printers and network gadgets use one during setup.</p>
+<p>Cloud servers use one special address in the range on purpose. On Amazon EC2, the instance metadata service lives at 169.254.169.254, and AWS documents it as a link-local address that is valid only from inside the instance.</p>
+
+<h2>What about IPv6 fe80 addresses?</h2>
+<p>IPv6 has its own link-local range, fe80::/10, and every IPv6 interface is required to have one, per RFC 4291. Seeing an fe80 address next to a working IPv4 address is normal and is not a fault. Like 169.254, routers never forward it.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is 169.254 a private IP address?</h3>
+<p>It is not one of the private ranges in RFC 1918 (10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16). It is a separate link-local range, and it is even more limited, because it never leaves the local network segment. Our guide to <a href="/learn/public-vs-private-ip-address">public and private IP addresses</a> covers the difference.</p>
+<h3>Can a 169.254 address reach the internet?</h3>
+<p>No. Routers are required to drop traffic to and from link-local addresses, so you need a real address from DHCP or a manual setting.</p>
+<h3>What is 169.254.169.254?</h3>
+<p>It is the address cloud platforms such as Amazon EC2 use for their instance metadata service. It is reachable only from inside the cloud server.</p>
+<h3>Will my device fix itself?</h3>
+<p>Often, yes. A device with a link-local address keeps using DHCP as normal, and once a routable address works it must use that one for new connections, according to RFC 3927.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc3927" rel="noopener">RFC 3927: Dynamic Configuration of IPv4 Link-Local Addresses (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture, link-local addresses (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft Learn: ipconfig command reference</a></li><li><a href="https://support.apple.com/guide/mac-help/mchlp1545/mac" rel="noopener">Apple Support: Renew the DHCP lease on Mac</a></li><li><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html" rel="noopener">AWS Documentation: Access instance metadata for an EC2 instance</a></li></ul>
+`,
+  "what-is-jitter": `
+<p><strong>Jitter</strong> is how much your ping changes from one packet to the next, measured in milliseconds. A connection that answers in 20, 21 and 22 ms has low jitter; one that jumps between 20 and 90 ms has high jitter, even if the average looks fine. High jitter makes calls break up and games stutter. Our <a href="/ping">ping test</a> measures it in a few seconds.</p>
+
+<h2>What is jitter?</h2>
+<p>Jitter is variation in the delay of packets as they arrive. Data leaves your device as an even stream, but congestion, queues and radio interference on the way can bunch some packets up and hold others back. Network standards call this packet delay variation. RFC 3393 avoids the word jitter because different groups use it in different ways, and that is worth remembering when two tools give you different numbers.</p>
+
+<h2>How is jitter measured?</h2>
+<p>There is more than one formula, so results from different tests are not directly comparable.</p>
+<ul>
+<li>Our <a href="/ping">ping test</a> and <a href="/speed-test">speed test</a> take the average change between consecutive round trips. Pings of 20, 30 and 25 ms change by 10 and 5 ms, so the jitter is 7.5 ms.</li>
+<li>Voice and video apps that use RTP follow RFC 3550, which defines interarrival jitter as a smoothed running average: each new difference moves the estimate one sixteenth of the way toward it.</li>
+<li>The ping command on a Mac or Linux prints a standard deviation (stddev) at the end, which is another way of describing the spread.</li>
+</ul>
+
+<h2>What is a good jitter?</h2>
+<p>Lower is better, and for calls Microsoft publishes concrete limits for Teams that work as a yardstick for any voice or video app.</p>
+<div class="tw"><table><tbody>
+<tr><th>Jitter</th><th>What it means</th></tr>
+<tr><td>Under 15 ms</td><td>Meets Microsoft's Teams target even for the provider's part of the path alone. Good for calls and games.</td></tr>
+<tr><td>15 to 30 ms</td><td>Within Teams' end-to-end target from your device, Wi-Fi included. Usually fine.</td></tr>
+<tr><td>Over 30 ms</td><td>Above Teams' target. Our ping test marks the connection as unstable, and calls may break up.</td></tr>
+</tbody></table></div>
+<p>Microsoft's targets apply to any 15-second interval, so a short burst of high jitter in the middle of a call counts. For fast online games, steady matters as much as low: a constant 50 ms often feels better than a ping that swings between 20 and 80.</p>
+
+<h2>Why does jitter make calls and games stutter?</h2>
+<p>Call apps hold incoming audio in a jitter buffer, which Cisco's documentation calls a playout delay buffer, and play it out at a steady pace. A packet that arrives after its turn has passed is thrown away, and you hear a dropout. Most buffers adapt, growing when jitter rises, but a bigger buffer adds delay, so high jitter costs you either gaps or lag. Games have no buffer to hide behind. A late update shows up as stutter or players jumping around.</p>
+
+<h2>How to test your jitter</h2>
+<ol>
+<li>Run our <a href="/ping">ping test</a>. It sends 25 checks to the nearest Cloudflare data center and reports average ping, best, worst, jitter and packet loss.</li>
+<li>Run the <a href="/speed-test">speed test</a> to see jitter alongside download, upload and latency under load.</li>
+<li>For a longer sample, run <code>ping -c 100 1.1.1.1</code> on Mac or Linux and read the stddev, or <code>ping -n 100 1.1.1.1</code> on Windows and compare the minimum and maximum.</li>
+<li>Test once on a cable and once on Wi-Fi, and repeat at the time of day your calls break up.</li>
+</ol>
+
+<h2>What causes jitter?</h2>
+<ul>
+<li>Wi-Fi. Devices take turns on the air and retry after interference, so the delay varies from packet to packet. Microsoft points out that the 2.4 GHz band is crowded with household devices and that 5 GHz suits real-time media better.</li>
+<li>A busy connection. When an upload or download fills the line, queues in the router grow and shrink, and every packet waits a different amount of time. This is <a href="/learn/what-is-bufferbloat">bufferbloat</a>, and it shows up as jitter during transfers.</li>
+<li>Congestion at your provider, often in the evening.</li>
+<li>VPNs, which add a longer and more variable path.</li>
+<li>Weak mobile signal on 4G or 5G.</li>
+</ul>
+
+<h2>How to reduce jitter</h2>
+<ol>
+<li>Use an Ethernet cable for calls and gaming. If you must use Wi-Fi, connect to the 5 GHz band and sit closer to the router.</li>
+<li>Pause large uploads, cloud backups and game updates during calls.</li>
+<li>Turn on Smart Queue Management (SQM) or QoS in your router if it has it. Microsoft also recommends QoS or WMM on Wi-Fi so voice and video traffic gets priority.</li>
+<li>Turn off the VPN for calls, or use split tunneling so call traffic goes direct.</li>
+<li>Restart the router and update its firmware.</li>
+<li>If jitter is high on a cable at quiet times, contact your provider with your ping test results.</li>
+</ol>
+
+<h2>Jitter vs latency vs packet loss</h2>
+<p>Latency, or <a href="/learn/what-is-ping">ping</a>, is how long one round trip takes. Jitter is how much that time varies. <a href="/learn/what-is-packet-loss">Packet loss</a> is the share of packets that never arrive. They often come together, because the same full queue or weak Wi-Fi causes all three, but a connection can have low latency and still suffer from jitter.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is 5 ms jitter good?</h3>
+<p>Yes. It is well under Microsoft's 15 ms and 30 ms targets, and you will not notice it on calls or in games.</p>
+<h3>Is jitter the same as ping?</h3>
+<p>No. Ping is the delay of a round trip. Jitter is how much that delay changes between packets.</p>
+<h3>Does jitter affect download speed?</h3>
+<p>Not directly. Downloads measure how much data arrives per second, and buffering hides timing changes. Jitter matters for real-time traffic such as calls, live streams and games.</p>
+<h3>Can a VPN reduce jitter?</h3>
+<p>Rarely. A VPN adds distance and another server to the path. It can only help when your provider's normal route is badly congested and the VPN's route avoids it.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc3393" rel="noopener">RFC 3393: IP Packet Delay Variation Metric (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3550" rel="noopener">RFC 3550: RTP, interarrival jitter in section 6.4.1 (IETF)</a></li><li><a href="https://www.cisco.com/c/en/us/support/docs/voice/voice-quality/18902-jitter-packet-voice.html" rel="noopener">Cisco: Understanding jitter in packet voice networks</a></li><li><a href="https://learn.microsoft.com/en-us/training/modules/plan-optimize-network-performance-for-teams-phone-system/2-understand-teams-network-requirements" rel="noopener">Microsoft Learn: Understand Teams network requirements (jitter targets)</a></li><li><a href="https://learn.microsoft.com/en-us/microsoftteams/prepare-network" rel="noopener">Microsoft Learn: Prepare your organization's network for Teams (Wi-Fi, QoS and VPN guidance)</a></li></ul>
 `,
 };

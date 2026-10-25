@@ -416,6 +416,42 @@ export const ARTICLES: ArticleMeta[] = [
     tools: ["ping", "speed"],
     related: ["what-is-ping", "how-to-lower-ping", "what-is-bufferbloat", "why-is-my-internet-so-slow"],
   },
+  {
+    slug: "common-ports-list",
+    title: "Common Ports List: TCP and UDP Port Numbers",
+    description: "A list of common TCP and UDP port numbers from the IANA registry: what ports 22, 53, 80, 443, 3389 and 8080 do, the ranges, and which are risky to open.",
+    published: "2026-10-25",
+    readMin: 8,
+    tools: ["port", "ip"],
+    related: ["what-is-port-forwarding", "how-to-check-if-a-port-is-open", "what-is-a-dns-server"],
+  },
+  {
+    slug: "what-is-cgnat",
+    title: "What Is CGNAT? How to Tell If You Are Behind It",
+    description: "CGNAT means your provider shares one public IPv4 address between many customers. Check if you are behind it, see what it breaks, and how to get around it.",
+    published: "2026-10-25",
+    readMin: 7,
+    tools: ["ip", "port"],
+    related: ["what-is-port-forwarding", "public-vs-private-ip-address", "why-does-my-ip-address-change", "static-vs-dynamic-ip-address"],
+  },
+  {
+    slug: "what-is-a-169-254-ip-address",
+    title: "169.254 IP Address (APIPA): What It Means and How to Fix",
+    description: "A 169.254 address means your device got no answer from the router and gave itself one. Learn what APIPA is and how to fix it on Windows, Mac and phones.",
+    published: "2026-10-25",
+    readMin: 6,
+    tools: ["ip", "subnet"],
+    related: ["public-vs-private-ip-address", "what-is-my-default-gateway", "find-router-ip-address"],
+  },
+  {
+    slug: "what-is-jitter",
+    title: "What Is Jitter? Good Jitter Levels, Tests and Fixes",
+    description: "Jitter is how much your ping varies from one packet to the next. See what counts as good jitter, how to test it, and how to fix choppy calls and game lag.",
+    published: "2026-10-25",
+    readMin: 7,
+    tools: ["ping", "speed"],
+    related: ["what-is-packet-loss", "what-is-ping", "how-to-lower-ping", "what-is-bufferbloat"],
+  },
 ];
 
 export const articleBySlug = (slug: string) => ARTICLES.find((a) => a.slug === slug);
