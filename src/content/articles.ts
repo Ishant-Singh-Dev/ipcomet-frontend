@@ -407,6 +407,15 @@ export const ARTICLES: ArticleMeta[] = [
     tools: ["speed", "ping"],
     related: ["what-is-a-good-internet-speed", "what-is-bufferbloat", "fix-slow-dns-lookup"],
   },
+  {
+    slug: "what-is-packet-loss",
+    title: "What Is Packet Loss? How to Test and Fix It",
+    description: "Packet loss makes calls sound robotic and games skip. Test it with ping, find the hop where it starts, and fix the usual causes, from Wi-Fi to your ISP.",
+    published: "2026-10-25",
+    readMin: 8,
+    tools: ["ping", "speed"],
+    related: ["what-is-ping", "how-to-lower-ping", "what-is-bufferbloat", "why-is-my-internet-so-slow"],
+  },
 ];
 
 export const articleBySlug = (slug: string) => ARTICLES.find((a) => a.slug === slug);

@@ -845,7 +845,7 @@ export const BODIES: Record<string, string> = {
 <tr><td>100 to 150 ms</td><td>Slow. Lag is noticeable.</td></tr>
 <tr><td>Over 150 ms</td><td>Poor. Games feel delayed and calls can stutter.</td></tr>
 </tbody></table></div>
-<p>These are rough guides. Two related numbers matter as much. <strong>Jitter</strong> is how much your ping changes from moment to moment, and <strong>packet loss</strong> is the share of messages that never arrive. High jitter or any packet loss causes stutter even when the average ping is low.</p>
+<p>These are rough guides. Two related numbers matter as much. <strong>Jitter</strong> is how much your ping changes from moment to moment, and <strong>packet loss</strong> is the share of messages that never arrive. High jitter or any packet loss causes stutter even when the average ping is low. Our guide to <a href="/learn/what-is-packet-loss">packet loss</a> shows how to test for it and where it comes from.</p>
 
 <h2>How to test your ping</h2>
 <ul>
@@ -1162,7 +1162,7 @@ export const BODIES: Record<string, string> = {
 <p>A single large upload, cloud backup or 4K stream can add hundreds of milliseconds to everything else. This is called <a href="/learn/what-is-bufferbloat">bufferbloat</a>, and it is why ping is fine when idle and terrible while someone downloads. Pause big transfers while you play, and if your router supports Smart Queue Management, SQM or fq_codel, turn it on. It is the most effective router setting for gaming.</p>
 
 <h2>4. Check your jitter and packet loss, not just ping</h2>
-<p>A steady 60 ms feels better than a ping that jumps between 20 and 200 ms. Our <a href="/ping">ping test</a> reports jitter and packet loss alongside the average. Any packet loss at all points at a physical problem: a bad cable, a failing router, weak Wi-Fi or a fault on your provider's line. Fix that before tuning anything else, and read <a href="/learn/what-is-ping">what is ping</a> for what the numbers mean.</p>
+<p>A steady 60 ms feels better than a ping that jumps between 20 and 200 ms. Our <a href="/ping">ping test</a> reports jitter and packet loss alongside the average. Any <a href="/learn/what-is-packet-loss">packet loss</a> at all points at a physical problem: a bad cable, a failing router, weak Wi-Fi or a fault on your provider's line. Fix that before tuning anything else, and read <a href="/learn/what-is-ping">what is ping</a> for what the numbers mean.</p>
 
 <h2>5. Restart and update your router</h2>
 <p>Routers accumulate state and slow down over weeks. Restart it, install any firmware update, and if it is more than about five years old consider replacing it. Old hardware is a common hidden cause of bufferbloat.</p>
@@ -1919,7 +1919,7 @@ console.log(ip);</code></pre>
 <p>If browsing and calls fall apart only when someone else is downloading or uploading, the router is probably letting a queue build up. This is called <a href="/learn/what-is-bufferbloat">bufferbloat</a>. Our speed test measures latency during the download and upload and gives a grade. A C or worse is fixed by turning on Smart Queue Management (SQM) in the router, not by buying a faster plan.</p>
 
 <h2>6. An old router or modem that needs a restart</h2>
-<p>Routers run for months without a reboot and can slow down or drop connections. Restart the modem and router: unplug both, wait 30 seconds, plug the modem in first, then the router. If problems return often, or the router is several years old and lacks Wi-Fi 6, a newer one is likely to help more than a faster plan. Also check that its firmware is up to date.</p>
+<p>Routers run for months without a reboot and can slow down, drop connections or start <a href="/learn/what-is-packet-loss">losing packets</a>. Restart the modem and router: unplug both, wait 30 seconds, plug the modem in first, then the router. If problems return often, or the router is several years old and lacks Wi-Fi 6, a newer one is likely to help more than a faster plan. Also check that its firmware is up to date.</p>
 
 <h2>7. Congestion or throttling at your provider</h2>
 <p>If a wired test is fast in the morning and slow every evening, your provider's network is likely congested at peak time. Some plans also slow down after a data cap. Record wired speed test results at different times of day for a few days, then contact your provider with them. The guide to <a href="/learn/what-is-my-isp">finding your ISP</a> helps if you are not sure who runs your line.</p>
@@ -1946,5 +1946,87 @@ console.log(ip);</code></pre>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://help.netflix.com/en/node/306" rel="noopener">Netflix Help Center: Internet connection speed recommendations</a></li></ul>
+`,
+  "what-is-packet-loss": `
+<p><strong>Packet loss</strong> is the share of data packets that leave your device and never reach the other end, or never make it back. A little of it makes video calls sound robotic and games skip or rubber-band, while web pages and downloads just slow down. To check for it, run a <a href="/ping">ping test</a> for a quick look, then a longer ping from the command line for an exact percentage, and test your router and the internet separately to see where the loss starts.</p>
+
+<h2>What is packet loss?</h2>
+<p>Packet loss is data that goes missing in transit. Everything you send online is cut into small packets, and each one travels on its own through your Wi-Fi or cable, your router, your provider and several other networks. If any link on the way is faulty or too full, some packets are dropped. Loss is counted as a percentage: send 100 packets, get 98 back, and you have 2% packet loss.</p>
+<p>How much you notice depends on the traffic. Web pages and downloads travel over connections that detect missing data and send it again, which is how TCP works, so loss shows up as slowness and pauses. Calls and most online games use UDP, which never resends anything. A lost packet in a call is a gap in the audio, and in a game it is a missed update about where everyone is.</p>
+
+<h2>How much packet loss is acceptable?</h2>
+<p>On a healthy wired connection, a long ping test should lose nothing or close to it. For calls, Microsoft publishes concrete targets for Teams, and they make a useful yardstick for any voice or video app.</p>
+<div class="tw"><table><tbody>
+<tr><th>Part of the path</th><th>Packet loss</th><th>Burst loss</th></tr>
+<tr><td>Your device to Microsoft's network, including Wi-Fi and your provider</td><td>Under 1% in any 15 seconds</td><td>Under 10% in any 200 ms</td></tr>
+<tr><td>The edge of your network to Microsoft's network (the provider's part alone)</td><td>Under 0.1% in any 15 seconds</td><td>Under 1% in any 200 ms</td></tr>
+</tbody></table></div>
+<p>The gap between the two rows matters. Most of the allowance is left for your own Wi-Fi and home network, and the provider's part of the trip is expected to be almost loss-free. In practice, treat 0% as normal, an occasional single lost packet as harmless, and any loss you can repeat on a wired connection as a fault worth tracking down.</p>
+
+<h2>How to test for packet loss</h2>
+<p>Start with a quick test in the browser, then use your computer's own ping command for an exact number. Testing two targets, your router and a server on the internet, tells you whether the loss is inside your home or beyond it.</p>
+
+<h3>Quick check in the browser</h3>
+<p>Our <a href="/ping">ping test</a> sends 25 checks to the nearest Cloudflare data center. The first two warm up the connection and are not counted. Any of the remaining 23 that gets no answer within 3 seconds counts as lost, so each lost check adds about 4%. The test also reports your worst time and your jitter.</p>
+<p>A web page cannot send raw ping packets, so these checks travel over the browser's normal web connection, which resends lost data on its own. Light packet loss therefore tends to show up as a slow check, with a high worst time and high jitter, more often than as a lost one. If your worst time is far above your average, run the longer test below.</p>
+
+<h3>Ping from the command line</h3>
+<p>The ping command built into every computer sends ICMP echo requests and counts the replies. Its defaults are no good for measuring loss: Windows sends only 4 pings, and Mac and Linux keep going until you stop them. Send 100 instead, so that a 1% loss has a chance to show up.</p>
+<ul>
+<li>Windows (Command Prompt or PowerShell): <code>ping -n 100 1.1.1.1</code></li>
+<li>Mac and Linux (Terminal): <code>ping -c 100 1.1.1.1</code></li>
+</ul>
+<p>When it finishes, read the summary. Windows lists Sent, Received and Lost with a percentage. A Mac prints a line such as "100 packets transmitted, 100 packets received, 0.0% packet loss", and Linux a very similar one. The address 1.1.1.1 is Cloudflare's public DNS resolver, which answers pings, so it makes a convenient target.</p>
+
+<h3>Test your router, then the internet</h3>
+<p>Run the same 100-ping test twice: once to your router and once to 1.1.1.1. Your router is your <a href="/learn/what-is-my-default-gateway">default gateway</a>, and that guide shows how to find its address on any device.</p>
+<ul>
+<li>Loss to the router means the problem is inside your home: Wi-Fi, a cable or the router itself.</li>
+<li>A clean result to the router with loss to 1.1.1.1 points past your home: the modem, the line or your provider.</li>
+<li>No loss to either, while calls still break up, suggests loss that comes and goes, or jitter and <a href="/learn/what-is-bufferbloat">bufferbloat</a>. Repeat the tests at the time the problem happens.</li>
+</ul>
+
+<h3>Find where the loss starts</h3>
+<p>To see which hop drops packets, use a tool that pings every router on the path. On Windows, run <code>pathping 1.1.1.1</code>. It lists the route first, then sends 100 queries to each hop and gathers statistics for a minute or more, depending on how many hops there are. On Mac and Linux, install mtr with your package manager and run <code>mtr -rw -c 100 1.1.1.1</code>, which sends 100 rounds of probes, one per second, and prints a report.</p>
+<p>Reading the result comes down to one rule: only loss that carries on to the final hop is real. Many routers answer pings addressed to themselves at low priority, so they can show loss while forwarding your traffic perfectly well. Microsoft's pathping documentation and the mtr manual both describe this. If hop 4 shows 30% and every hop after it shows 0%, ignore hop 4. If loss starts at one hop and every later hop, including the destination, shows about the same, the problem is at that hop or on the link just before it. In pathping, loss on the link lines (marked with a vertical bar) points to a congested link, and loss at a router's own address suggests that router is overloaded.</p>
+<p>Where the loss starts tells you who can fix it. On a home connection, hop 1 is normally your own router, so loss that starts there is yours. Loss that starts in the next few hops usually belongs to your provider, whose name often appears in the hop hostnames. Loss far along the route is on a network neither of you controls. Our guide to <a href="/learn/what-is-my-isp">finding your ISP</a> helps you match the names.</p>
+
+<h2>What causes packet loss?</h2>
+<ul>
+<li>Weak or crowded Wi-Fi. Distance, walls and interference cost a wireless link far more retries and dropped packets than a cable. The 2.4 GHz band is shared with many household devices, and Microsoft notes that 5 GHz is better suited to real-time media.</li>
+<li>A damaged cable or a loose connector. A bent, crushed or old Ethernet cable, or a worn port, can drop packets while the connection still looks fine.</li>
+<li>A congested link. When more data arrives than a link can carry, its queue fills and the router drops what does not fit. At home this happens when someone fills the upload or download. On the provider's side it tends to show up in the busy evening hours.</li>
+<li>An overloaded or failing router. Old or overheating routers and firmware bugs can drop packets under load.</li>
+<li>A fault on the line or in the modem. Problems with the cable, DSL or fiber line cause loss that a restart does not fix.</li>
+<li>A VPN. It reroutes everything through its own server, adding hops, and Microsoft notes that some VPNs do not support UDP at all.</li>
+</ul>
+
+<h2>How to fix packet loss</h2>
+<p>Work from your own device outward, and retest after each step so you know what helped.</p>
+<ol>
+<li>Plug in a cable. If the loss disappears on a wired connection, the problem is Wi-Fi: move closer to the router, switch to the 5 GHz band or change the channel. Our guide to <a href="/learn/why-is-my-internet-so-slow">why your internet is slow</a> covers Wi-Fi fixes in more detail.</li>
+<li>Swap the Ethernet cable and try a different port on the router.</li>
+<li>Restart the modem and router, and update the router's firmware.</li>
+<li>Check whether the loss only happens while the line is busy. If it appears when someone downloads or uploads, the router's queue is overflowing. Pause big transfers during calls, or turn on Smart Queue Management as described in the <a href="/learn/what-is-bufferbloat">bufferbloat guide</a>.</li>
+<li>Turn off your VPN and test again.</li>
+<li>Update your network adapter's driver, or test another device in the same spot to rule out your own computer.</li>
+<li>If the loss starts at your provider's hops, contact them. Send the evidence: a clean ping to your router, a lossy ping to the internet and a pathping or mtr report, each with the date and time.</li>
+</ol>
+
+<h2>Packet loss, latency and jitter</h2>
+<p>These three numbers describe different problems, and a connection can fail one while passing the others. Latency, or <a href="/learn/what-is-ping">ping</a>, is how long a round trip takes. Jitter is how much that time changes from one packet to the next; our tests report it as the average change between consecutive round trips. Packet loss is the share of packets that never come back. Calls and fast games need all three to be low, and our guide on <a href="/learn/how-to-lower-ping">how to lower ping</a> covers the latency side.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is 1% packet loss bad?</h3>
+<p>For calls it is right at the limit. Microsoft's target for Teams is under 1% in any 15 seconds over the whole path, Wi-Fi included. A steady 1% on a wired connection means something is wrong and is worth fixing.</p>
+<h3>Why does traceroute show packet loss at only one hop?</h3>
+<p>That router gives low priority to pings sent to itself, which does not affect the traffic it forwards. Loss only matters when it continues through every later hop to the destination.</p>
+<h3>Can my internet provider cause packet loss?</h3>
+<p>Yes. If pings to your router are clean, pings to the internet lose packets, and pathping or mtr shows the loss starting at your provider's first hops and carrying on to the end, the fault is on their side. Report it with those results.</p>
+<h3>Does a faster internet plan fix packet loss?</h3>
+<p>Only when the loss comes from filling your line. Loss from Wi-Fi, a bad cable, a failing router or a fault on the line stays the same on a faster plan.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ping" rel="noopener">Microsoft Learn: ping command reference</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/pathping" rel="noopener">Microsoft Learn: pathping command reference</a></li><li><a href="https://learn.microsoft.com/en-us/training/modules/plan-optimize-network-performance-for-teams-phone-system/2-understand-teams-network-requirements" rel="noopener">Microsoft Learn: Understand Teams network requirements (loss, jitter and latency targets)</a></li><li><a href="https://learn.microsoft.com/en-us/microsoftteams/prepare-network" rel="noopener">Microsoft Learn: Prepare your organization's network for Teams (Wi-Fi and VPN guidance)</a></li><li><a href="https://man7.org/linux/man-pages/man8/ping.8.html" rel="noopener">ping(8) Linux manual page</a></li><li><a href="https://man.freebsd.org/cgi/man.cgi?query=ping&amp;sektion=8" rel="noopener">ping(8) FreeBSD manual page</a></li><li><a href="https://manpages.debian.org/bookworm/mtr-tiny/mtr.8.en.html" rel="noopener">mtr(8) manual page</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9293" rel="noopener">RFC 9293: Transmission Control Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8085" rel="noopener">RFC 8085: UDP Usage Guidelines (IETF)</a></li><li><a href="https://developers.cloudflare.com/1.1.1.1/" rel="noopener">Cloudflare Docs: 1.1.1.1 public DNS resolver</a></li></ul>
 `,
 };
