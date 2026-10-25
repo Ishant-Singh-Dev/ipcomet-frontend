@@ -131,7 +131,6 @@ export const TOOLS: Tool[] = [
     desc: "Find the vendor of any MAC address or OUI",
     title: "MAC Address Lookup: Find the Vendor of Any MAC",
     description: "Free MAC address lookup: find the vendor of any MAC or OUI from the IEEE registry, check hundreds at once, and spot randomized private addresses.",
-    enOnly: true,
   },
   {
     id: "dmarc",
@@ -140,7 +139,6 @@ export const TOOLS: Tool[] = [
     desc: "Check a domain's DMARC, SPF and DKIM setup",
     title: "DMARC Checker: Test Your DMARC Record Free",
     description: "Free DMARC checker: read and explain any domain's DMARC policy under the new RFC 9989 rules, with SPF, DKIM and MX checks and a suggested next record.",
-    enOnly: true,
   },
   {
     id: "spf",
@@ -149,7 +147,6 @@ export const TOOLS: Tool[] = [
     desc: "Validate SPF and count its DNS lookups",
     title: "SPF Checker: Validate SPF Records and Lookups",
     description: "Free SPF record checker: validate the syntax, count DNS lookups against the 10-lookup limit, see every include, and check DKIM and DMARC at once.",
-    enOnly: true,
   },
   {
     id: "dkim",
@@ -158,7 +155,6 @@ export const TOOLS: Tool[] = [
     desc: "Find DKIM keys by selector and test them",
     title: "DKIM Checker: Find and Test DKIM Records",
     description: "Free DKIM checker: scan over 30 common selectors or test your own, and see key type, size and revoked or testing keys, next to SPF and DMARC.",
-    enOnly: true,
   },
   {
     id: "mx",
@@ -167,7 +163,6 @@ export const TOOLS: Tool[] = [
     desc: "Mail servers and email provider of a domain",
     title: "MX Lookup: Check MX Records and Mail Provider",
     description: "Free MX lookup: see a domain's mail servers in priority order, which email provider runs them, and whether SPF, DKIM, DMARC and MTA-STS are set up.",
-    enOnly: true,
   },
   {
     id: "propagation",
@@ -176,7 +171,6 @@ export const TOOLS: Tool[] = [
     desc: "Check a DNS change across 12 public resolvers",
     title: "DNS Propagation Checker: See DNS Changes Live",
     description: "Free DNS propagation checker: see what 12 public DNS resolvers return for any record right now, how long each keeps its cached answer, and when yours lands.",
-    enOnly: true,
   },
   {
     id: "download",
@@ -185,7 +179,6 @@ export const TOOLS: Tool[] = [
     desc: "How long a file takes at your internet speed",
     title: "Download Time Calculator: File Size and Speed",
     description: "Free download time calculator: see how long any file takes at your internet speed, find the speed you need to finish by a deadline, and plug in your speed test.",
-    enOnly: true,
   },
 ];
 

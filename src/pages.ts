@@ -322,14 +322,14 @@ function propagationUi(lt: Tr): string {
 <div id="out" aria-live="polite"></div>`);
 }
 
-function downloadUi(lt: Tr): string {
+function downloadUi(lt: Tr, lp: (path: string) => string): string {
   const opt = (v: string, sel = false) => `<option${sel ? " selected" : ""}>${v}</option>`;
   return ui(`<form class="row" id="f" autocomplete="off">
 <input id="size" type="number" min="0" step="any" value="10" inputmode="decimal" aria-label="${esc(lt("File size"))}" style="flex:1 1 120px">
 <select id="sunit" aria-label="${esc(lt("Size unit"))}">${opt("MB")}${opt("GB", true)}${opt("TB")}${opt("MiB")}${opt("GiB")}</select>
 <input id="speed" type="number" min="0" step="any" value="100" inputmode="decimal" aria-label="${esc(lt("Internet speed"))}" style="flex:1 1 120px">
 <select id="vunit" aria-label="${esc(lt("Speed unit"))}">${opt("Mbps", true)}${opt("Gbps")}${opt("MB/s")}</select></form>
-<div class="chips"><button class="chip" type="button" data-size="1">1 GB</button><button class="chip" type="button" data-size="4">4 GB</button><button class="chip" type="button" data-size="50">50 GB</button><button class="chip" type="button" data-size="100">100 GB</button><a class="chip" href="/speed-test">${esc(lt("Measure my speed"))}</a></div>
+<div class="chips"><button class="chip" type="button" data-size="1">1 GB</button><button class="chip" type="button" data-size="4">4 GB</button><button class="chip" type="button" data-size="50">50 GB</button><button class="chip" type="button" data-size="100">100 GB</button><a class="chip" href="${lp("/speed-test")}">${esc(lt("Measure my speed"))}</a></div>
 <div id="out" aria-live="polite"></div>`);
 }
 
@@ -454,7 +454,7 @@ export function toolPage(id: string, origin: string, ctx: ToolPageContext = {}, 
     dkim: () => mailUi(lt, true),
     mx: () => mailUi(lt),
     propagation: () => propagationUi(lt),
-    download: () => downloadUi(lt),
+    download: () => downloadUi(lt, lp),
   };
 
   // Guides whose main tool is this page come first, then the others that use it.

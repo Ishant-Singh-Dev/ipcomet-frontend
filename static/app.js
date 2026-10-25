@@ -970,7 +970,7 @@
         svg.setAttribute("aria-label", tr("Download averaged {d} Mbps and upload {u} Mbps.", { d: fmt(d.mbps), u: fmt(u.mbps) }));
         $("#used").textContent = tr("This test moved {mb} MB in {s} seconds.", { mb: (bytes / 1e6).toFixed(0), s: ((d.ms + u.ms) / 1000).toFixed(0) });
         if (!$("#dlcalc")) $("#used").insertAdjacentHTML("afterend", `<p id="dlcalc"></p>`);
-        $("#dlcalc").innerHTML = `<a href="/download-time-calculator?speed=${encodeURIComponent(d.mbps.toFixed(0))}">${esc(tr("How long will a download take at this speed?"))}</a>`;
+        $("#dlcalc").innerHTML = `<a href="${LANG === "en" ? "" : "/" + LANG}/download-time-calculator?speed=${encodeURIComponent(d.mbps.toFixed(0))}">${esc(tr("How long will a download take at this speed?"))}</a>`;
         phase("Done", 100);
       } catch {
         ["lat", "down", "up"].forEach((id) => { if ($("#st-" + id).classList.contains("on")) step(id, ""); });
@@ -1153,7 +1153,7 @@
     ];
     // Google's rule for bulk senders: SPF and DKIM, plus a DMARC record (p=none is enough).
     const gmail = s.record && !s.error && s.lookups <= 10 && active.length && m.record;
-    return table(["Check", "Result"], items.map(([name, [tone, text]]) => `<tr><td>${esc(tr(name))}</td><td>${badge(tone, text)}</td></tr>`)) +
+    return table(["Record type", "Result"], items.map(([name, [tone, text]]) => `<tr><td>${esc(tr(name))}</td><td>${badge(tone, text)}</td></tr>`)) +
       note(gmail ? "Meets Gmail's authentication rules for bulk senders: SPF, DKIM and a DMARC record." : "Does not yet meet Gmail's rules for bulk senders, which require SPF, DKIM and a DMARC record.", gmail ? "ok" : "warn");
   }
 
