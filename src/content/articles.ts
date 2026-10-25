@@ -224,7 +224,7 @@ export const ARTICLES: ArticleMeta[] = [
     description: "A MAC address identifies your device on the local network. Learn how it differs from an IP address, how to find yours and why websites never see it.",
     published: "2026-10-08",
     readMin: 6,
-    tools: ["ip", "lookup"],
+    tools: ["mac", "ip", "lookup"],
     related: ["what-is-an-ip-address", "public-vs-private-ip-address", "what-is-my-default-gateway", "find-printer-ip-address"],
   },
   {
@@ -441,7 +441,7 @@ export const ARTICLES: ArticleMeta[] = [
     published: "2026-10-25",
     readMin: 6,
     tools: ["ip", "subnet"],
-    related: ["public-vs-private-ip-address", "what-is-my-default-gateway", "find-router-ip-address"],
+    related: ["public-vs-private-ip-address", "what-is-my-default-gateway", "cidr-subnet-mask-explained"],
   },
   {
     slug: "what-is-jitter",

@@ -992,7 +992,7 @@ export const BODIES: Record<string, string> = {
 <p>A MAC address is a hardware identifier burned into every network adapter: your laptop's Wi-Fi chip, your phone, your TV, your console. It identifies a device on a local network, while an IP address identifies it on the wider internet. The two are easy to confuse, so here is the difference and how to find yours.</p>
 
 <h2>What does a MAC address look like?</h2>
-<p>It is 48 bits, written as six pairs of hexadecimal digits, for example <code>00:1A:2B:3C:4D:5E</code>. Some systems use dashes or dots instead of colons. The first three pairs are the <strong>OUI</strong>, which identifies the manufacturer, so a MAC address can reveal whether a device is an Apple, Samsung or Intel product. The last three pairs identify the individual adapter.</p>
+<p>It is 48 bits, written as six pairs of hexadecimal digits, for example <code>00:1A:2B:3C:4D:5E</code>. Some systems use dashes or dots instead of colons. The first three pairs are the <strong>OUI</strong>, which identifies the manufacturer, so a MAC address can reveal whether a device is an Apple, Samsung or Intel product. Paste any address into our <a href="/mac-lookup">MAC address lookup</a> to see its manufacturer. The last three pairs identify the individual adapter.</p>
 <p>Every network interface has its own, so a laptop with both Wi-Fi and Ethernet has two.</p>
 
 <h2>What is the difference between a MAC address and an IP address?</h2>
@@ -2152,7 +2152,7 @@ console.log(ip);</code></pre>
 <p>Outgoing connections are fine, because the provider's NAT remembers who started each one and sends the replies back. Incoming connections are the problem. When a packet arrives at the shared public address unasked, the provider has no way to know which of its customers it is for, so it is dropped.</p>
 
 <h2>What is 100.64.0.0/10?</h2>
-<p>100.64.0.0/10, the range from 100.64.0.0 to 100.127.255.255, is the address block set aside for CGNAT. RFC 6598 calls it Shared Address Space and reserves it for providers to number the link between their CGNAT equipment and your router. It is separate from the private ranges in RFC 1918, and packets using it must not cross from one provider's network to another. If your router's WAN address starts with 100.64 through 100.127, you are behind CGNAT.</p>
+<p>100.64.0.0/10, the range from 100.64.0.0 to 100.127.255.255 (the /10 is <a href="/learn/cidr-subnet-mask-explained">CIDR notation</a>), is the address block set aside for CGNAT. RFC 6598 calls it Shared Address Space and reserves it for providers to number the link between their CGNAT equipment and your router. It is separate from the private ranges in RFC 1918, and packets using it must not cross from one provider's network to another. If your router's WAN address starts with 100.64 through 100.127, you are behind CGNAT.</p>
 
 <h2>How to tell if you are behind CGNAT</h2>
 <ol>
@@ -2250,7 +2250,7 @@ console.log(ip);</code></pre>
 
 <h2>Frequently asked questions</h2>
 <h3>Is 169.254 a private IP address?</h3>
-<p>It is not one of the private ranges in RFC 1918 (10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16). It is a separate link-local range, and it is even more limited, because it never leaves the local network segment. Our guide to <a href="/learn/public-vs-private-ip-address">public and private IP addresses</a> covers the difference.</p>
+<p>It is not one of the private ranges in RFC 1918 (10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16, written in <a href="/learn/cidr-subnet-mask-explained">CIDR notation</a>). It is a separate link-local range, and it is even more limited, because it never leaves the local network segment. Our guide to <a href="/learn/public-vs-private-ip-address">public and private IP addresses</a> covers the difference.</p>
 <h3>Can a 169.254 address reach the internet?</h3>
 <p>No. Routers are required to drop traffic to and from link-local addresses, so you need a real address from DHCP or a manual setting.</p>
 <h3>What is 169.254.169.254?</h3>
