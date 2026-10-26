@@ -333,6 +333,24 @@ function downloadUi(lt: Tr, lp: (path: string) => string): string {
 <div id="out" aria-live="polite"></div>`);
 }
 
+function asnUi(lt: Tr): string {
+  return ui(`<form class="row" id="f" autocomplete="off"><input id="q" name="q" placeholder="AS13335 or 8.8.8.8" aria-label="${esc(lt("AS number or IP address"))}" autocapitalize="off" spellcheck="false" required><button class="btn pri" type="submit">${esc(lt("Look up"))}</button></form>
+<div class="chips"><button class="chip" type="button" data-fill="AS13335">AS13335</button><button class="chip" type="button" data-fill="AS15169">AS15169</button><button class="chip" type="button" data-fill="1.1.1.1">1.1.1.1</button><button class="chip" type="button" id="mine">${esc(lt("My IP"))}</button></div>
+<div id="out" aria-live="polite"></div>`);
+}
+
+function redirectsUi(lt: Tr): string {
+  return ui(`<form class="row" id="f" autocomplete="off"><input id="q" name="q" placeholder="http://example.com" aria-label="${esc(lt("URL"))}" inputmode="url" autocapitalize="off" spellcheck="false" required><button class="btn pri" type="submit">${esc(lt("Check"))}</button></form>
+<div class="chips"><button class="chip" type="button" data-fill="http://github.com">http://github.com</button><button class="chip" type="button" data-fill="http://www.wikipedia.org">http://www.wikipedia.org</button><button class="chip" type="button" data-fill="t.co">t.co</button></div>
+<div id="out" aria-live="polite"></div>`);
+}
+
+function emailHeadersUi(lt: Tr): string {
+  return ui(`<form id="f" autocomplete="off"><textarea id="q" name="q" rows="8" placeholder="${esc(lt("Paste the full headers of an email (in Gmail: More, then Show original)"))}" aria-label="${esc(lt("Email headers"))}" spellcheck="false" required></textarea>
+<div class="row"><button class="btn pri" type="submit">${esc(lt("Analyze"))}</button></div></form>
+<div id="out" aria-live="polite"></div>`);
+}
+
 const LEADS: Record<string, string> = {
   ping: "Measure your latency, jitter and packet loss to the nearest Cloudflare server in about ten seconds.",
   "reverse-dns": "Find the hostname (PTR record) that belongs to any IPv4 or IPv6 address.",
@@ -354,6 +372,9 @@ const LEADS: Record<string, string> = {
   mx: "See which mail servers receive email for a domain, in priority order, and which provider runs them.",
   propagation: "See what 12 public DNS resolvers return for a record right now, and how long each will keep its cached answer.",
   download: "Work out how long a download takes at your internet speed, or the speed you need to finish it in time.",
+  asn: "Find who runs an autonomous system, every IP prefix it announces, or the ASN behind any IP address.",
+  redirects: "Follow a URL through every redirect and see each status code, destination and timing.",
+  "email-headers": "Paste an email's raw headers to trace the servers it passed through, find the sender's IP, and read its SPF, DKIM and DMARC results.",
 };
 
 const H1: Record<string, string> = {
@@ -377,6 +398,9 @@ const H1: Record<string, string> = {
   mx: "MX Lookup",
   propagation: "DNS Propagation Checker",
   download: "Download Time Calculator",
+  asn: "ASN Lookup",
+  redirects: "Redirect Checker",
+  "email-headers": "Email Header Analyzer",
 };
 
 /** Topically related tools, so "More tools" links to what a visitor is likely to need next. */
@@ -401,6 +425,9 @@ const RELATED_TOOLS: Record<string, string[]> = {
   mx: ["dmarc", "spf", "dns"],
   propagation: ["dns", "whois", "mx"],
   download: ["speed", "ping", "subnet"],
+  asn: ["lookup", "whois", "reputation"],
+  redirects: ["headers", "dns", "propagation"],
+  "email-headers": ["dmarc", "spf", "reputation"],
 };
 
 export interface ToolPageContext {
@@ -455,6 +482,9 @@ export function toolPage(id: string, origin: string, ctx: ToolPageContext = {}, 
     mx: () => mailUi(lt),
     propagation: () => propagationUi(lt),
     download: () => downloadUi(lt, lp),
+    asn: () => asnUi(lt),
+    redirects: () => redirectsUi(lt),
+    "email-headers": () => emailHeadersUi(lt),
   };
 
   // Guides whose main tool is this page come first, then the others that use it.

@@ -1,42 +1,57 @@
 /** Article bodies (trusted, hand-written HTML). Kept apart from metadata so the Worker bundle stays small. */
 export const BODIES: Record<string, string> = {
   "what-is-an-ip-address": `
-<p>An IP address (Internet Protocol address) is a number that identifies a device or network on the internet, so data knows where to go and where it came from. Think of it as the return address on a letter. Without one, a website would have nowhere to send the page you asked for.</p>
+<p>An <strong>IP address</strong> (Internet Protocol address) is the number that identifies a device or network on the internet, so data knows where to go and where it came from. It works like the address on an envelope: a website sends the page you asked for to your IP address, and routers along the way read it to pass the data in the right direction. You can see yours on our <a href="/">IP checker</a>.</p>
+
+<h2>IP address meaning</h2>
+<p>An IP address is a numeric label for a network connection. Every packet of data on the internet carries two of them: the address it came from and the address it is going to. RFC 791, the 1981 specification of the Internet Protocol, describes the job as carrying blocks of data called datagrams from sources to destinations identified by fixed-length addresses. Names such as example.com are for people; the <a href="/learn/what-is-a-dns-server">DNS</a> turns them into IP addresses for computers.</p>
 
 <h2>What does IP stand for?</h2>
-<p>IP stands for Internet Protocol, the set of rules that splits data into packets and addresses each one so it can cross the internet. An IP address is simply the address that protocol uses. The first widely used version, IPv4, was defined in 1981, and its successor, IPv6, in 1998.</p>
+<p>IP stands for Internet Protocol, the set of rules that splits data into packets and addresses each one so it can cross many networks. An IP address is the address that protocol uses. IPv4 was specified in RFC 791 in September 1981, and IPv6 in 1998, with its current specification in RFC 8200.</p>
 
 <h2>What does an IP address look like?</h2>
-<p>There are two formats in use today. An IPv4 address is four numbers separated by dots, such as <code>203.0.113.42</code>. An IPv6 address is longer and written in hexadecimal, such as <code>2001:db8:85a3::8a2e:370:7334</code>. Both do the same job. If you want the details, read <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
+<div class="tw"><table><tbody>
+<tr><th>Version</th><th>Example</th><th>Size</th><th>Possible addresses</th></tr>
+<tr><td>IPv4</td><td class="mono">203.0.113.42</td><td>32 bits, four numbers from 0 to 255</td><td>About 4.3 billion</td></tr>
+<tr><td>IPv6</td><td class="mono">2001:db8:85a3::8a2e:370:7334</td><td>128 bits, hexadecimal groups</td><td>2 to the power 128</td></tr>
+</tbody></table></div>
+<p>Both versions do the same job, and most connections now use both. Read <a href="/learn/what-is-ipv6">what IPv6 is</a> or the side-by-side <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a> comparison.</p>
 
-<h2>What is an IP address used for?</h2>
+<h2>Types of IP addresses</h2>
 <ul>
-<li><strong>Routing.</strong> Routers read the destination address on every packet and pass it along until it arrives.</li>
-<li><strong>Identifying a network.</strong> Servers see the address your traffic comes from and send the reply back to it.</li>
-<li><strong>Rough location.</strong> Services use IP databases to guess your country or city, for language, currency or content licensing.</li>
-<li><strong>Security.</strong> Sites use addresses to rate-limit abuse, block bad actors and allow-list trusted ones.</li>
+<li>Public and private. Your router has one public address that the internet sees, and gives each device inside a private address from the ranges in RFC 1918 (10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16). It translates between them with <a href="/learn/what-is-nat">NAT</a>. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</li>
+<li>Dynamic and static. Most home connections get a dynamic address that can change; businesses often pay for a static one. See <a href="/learn/static-vs-dynamic-ip-address">static vs dynamic IP addresses</a>.</li>
+<li>Special ranges. 127.0.0.1 always means the device itself, 169.254.x.x means a device <a href="/learn/what-is-a-169-254-ip-address">could not get an address</a>, and 100.64.0.0/10 is used by providers for <a href="/learn/what-is-cgnat">carrier-grade NAT</a>.</li>
 </ul>
 
-<h2>Public and private addresses</h2>
-<p>Your home has one public IP address that the rest of the internet sees, and every device inside it has a private address that only works on your local network. Your router translates between the two. We explain this in <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
+<h2>Who assigns IP addresses?</h2>
+<p>Addresses are handed down in blocks. IANA allocates pools of addresses to five regional internet registries: AFRINIC for Africa, APNIC for Asia and the Pacific, ARIN for Canada, the USA and some Caribbean islands, LACNIC for Latin America and some Caribbean islands, and RIPE NCC for Europe, the Middle East and Central Asia. The registries assign blocks to internet providers and large organizations, and your provider gives your router its public address, usually automatically. Our <a href="/asn-lookup">ASN lookup</a> shows which network announces any address.</p>
 
-<h2>How do you get an IP address?</h2>
-<p>Your internet service provider assigns the public address, usually automatically through a system called DHCP. Most home connections receive a <em>dynamic</em> address that can change over time, while businesses often pay for a <em>static</em> one that never does. See <a href="/learn/why-does-my-ip-address-change">why your IP address keeps changing</a>.</p>
-
-<h2>What does your IP address reveal about you?</h2>
-<p>A public IP address typically reveals your internet provider, your country and often your city or region. It does not reveal your name, your street address or what you do online. Anyone who wants to connect an address to a person normally needs your provider's records, which are released only through legal process. For a fuller answer, read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
+<h2>What does your IP address reveal?</h2>
+<p>A public IP address usually reveals your internet provider, your country and often your city or region. It does not reveal your name, your street address or what you do online. Linking an address to a person normally needs your provider's records, which are released only through legal process. Our <a href="/lookup">IP lookup</a> shows exactly what anyone can see for an address, and <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a> goes further.</p>
 
 <h2>How to find your IP address</h2>
-<p>Your public IP address is the one at the top of our <a href="/">home page</a>. For every device and operating system, see <a href="/learn/how-to-find-your-ip-address">how to find your IP address</a>. To find the private address of a device on your network:</p>
+<p>Your public address is at the top of our <a href="/">home page</a>, with your IPv6 address underneath if you have one. To find the private address of a device:</p>
 <ul>
-<li><strong>Windows:</strong> open Command Prompt and run <code>ipconfig</code>.</li>
-<li><strong>macOS:</strong> open System Settings, choose Network and select your connection.</li>
-<li><strong>Linux:</strong> run <code>ip addr</code> in a terminal.</li>
-<li><strong>iPhone or Android:</strong> open the Wi-Fi settings and tap your network.</li>
+<li>Windows: open Command Prompt and run <code>ipconfig</code>.</li>
+<li>Mac: open System Settings, choose Network, then your connection and Details.</li>
+<li>Linux: run <code>ip addr</code> in a terminal.</li>
+<li>iPhone or Android: open the Wi-Fi settings and tap your network.</li>
 </ul>
+<p>For every device and operating system, see <a href="/learn/how-to-find-your-ip-address">how to find your IP address</a>.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>What is an IP address in simple words?</h3>
+<p>It is your internet connection's address. Websites use it to send data back to you, the same way a letter needs a return address.</p>
+<h3>Can two devices have the same IP address?</h3>
+<p>Two devices on different home networks can have the same private address, such as 192.168.1.10, because private addresses only matter inside each network. On the internet, all the devices behind one router share its single public address.</p>
+<h3>Does my IP address change?</h3>
+<p>Often, yes. Most home connections have a dynamic address that the provider can change, and your address also changes when you switch networks. You can also <a href="/learn/how-to-change-your-ip-address">change it yourself</a>.</p>
+<h3>Is my IP address the same on my phone and computer?</h3>
+<p>On the same Wi-Fi, yes: both share your router's public address. On mobile data, your phone uses the carrier's address instead.</p>
 
 <h2>Sources and further reading</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.xhtml" rel="noopener">IANA IPv4 Address Space Registry</a></li></ul>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol (IETF, September 1981)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.iana.org/numbers" rel="noopener">IANA: Number resources and the regional internet registries</a></li></ul>
 `,
 
   "ipv4-vs-ipv6": `
@@ -106,34 +121,69 @@ export const BODIES: Record<string, string> = {
 `,
 
   "how-to-change-your-ip-address": `
-<p>Most home internet connections use a dynamic IP address, so you can change it if you need to. Here are five methods, from simplest to most reliable, and what each really does.</p>
+<p>To <strong>change your IP address</strong>, restart your router, switch to a different network, use a VPN, or ask your internet provider for a new one. Which one works depends on what you mean: the public address websites see belongs to your router and provider, while the private address on your computer comes from your router. This guide covers both, and you can check the result on our <a href="/">IP checker</a>.</p>
+
+<h2>Quick comparison</h2>
+<div class="tw"><table><tbody>
+<tr><th>Method</th><th>Changes what websites see?</th><th>Time</th><th>Cost</th></tr>
+<tr><td>Restart the router</td><td>Sometimes</td><td>Minutes</td><td>Free</td></tr>
+<tr><td>Switch network (mobile data, other Wi-Fi)</td><td>Yes, while connected</td><td>Seconds</td><td>Free</td></tr>
+<tr><td>Turn airplane mode on and off (mobile data)</td><td>Often</td><td>Seconds</td><td>Free</td></tr>
+<tr><td>VPN</td><td>Yes</td><td>Seconds</td><td>Usually paid</td></tr>
+<tr><td>Proxy or Tor</td><td>Yes, for that browser or app</td><td>Seconds</td><td>Free to paid</td></tr>
+<tr><td>Ask your provider</td><td>Yes</td><td>Hours to days</td><td>Varies</td></tr>
+<tr><td>Change the local IP in device settings</td><td>No</td><td>Minutes</td><td>Free</td></tr>
+</tbody></table></div>
 
 <h2>1. Restart your router</h2>
-<p>Unplug your modem and router, wait a few minutes, then plug them back in. Your provider may assign a new address when the router reconnects. It does not always work, because many providers reserve the same address for your connection for days or weeks. Leaving the equipment off for longer, or overnight, improves your odds.</p>
+<p>Most home connections get a dynamic public address from the provider. RFC 2131 calls this dynamic allocation: the address is handed out for a limited time, a lease. A router that reconnects often asks for its previous address again, which is why a quick restart frequently gives you the same one. Unplug the modem and router and leave them off for longer, an hour or overnight, so the lease can expire, then plug them back in and check our <a href="/">IP checker</a>. Our guide to <a href="/learn/why-does-my-ip-address-change">why IP addresses change</a> explains leases in more detail.</p>
 
-<h2>2. Ask your internet provider</h2>
-<p>If you have a dynamic address, support staff can often reset it. If you have a static address, they can issue a different one. This is the cleanest option when you need a genuinely new address, for example after being targeted by an attack.</p>
+<h2>2. Switch to a different network</h2>
+<p>Every network has its own public address. Turning off Wi-Fi on your phone and using mobile data, joining a friend's Wi-Fi or a hotspot gives you a different address straight away, for as long as you stay connected.</p>
 
-<h2>3. Use a VPN</h2>
-<p>A VPN routes your traffic through a server run by the VPN provider, so websites see the server's address instead of yours. You can switch locations in seconds. Choose a provider you trust, because it can see your traffic instead of your internet provider.</p>
+<h2>3. Change your IP on a phone</h2>
+<p>On mobile data, turning airplane mode on for a few seconds and off again makes the phone reconnect to the carrier, which often hands out a new address. Many carriers share addresses between customers through <a href="/learn/what-is-cgnat">carrier-grade NAT</a>, so the address you see may also be used by others. On Wi-Fi, the public address belongs to the router, so the phone's settings cannot change it.</p>
 
-<h2>4. Use a proxy or Tor</h2>
-<p>A proxy forwards your requests through another machine, and Tor sends them through several volunteer relays. Both hide your real address from the sites you visit. They are slower than a VPN and some websites block them.</p>
+<h2>4. Use a VPN</h2>
+<p>A VPN sends your traffic through the VPN company's server, so websites see the server's address instead of yours, and you can choose another country in seconds. This is also how you change your IP to another country. The VPN provider can see the traffic your internet provider used to see, so choose one you trust. After connecting, test it with our <a href="/learn/is-my-vpn-working">VPN check guide</a> and the <a href="/webrtc">WebRTC leak test</a>.</p>
 
-<h2>5. Switch networks</h2>
-<p>Connecting through a mobile hotspot, a coffee shop or a friend's Wi-Fi gives you a different public address for as long as you are connected. It is simple, but obviously only temporary.</p>
+<h2>5. Use a proxy or Tor</h2>
+<p>A proxy forwards requests from one browser or app through another server, and the Tor Browser sends them through several volunteer relays. Both change the address websites see, but only for the traffic you send through them. Some websites block Tor and many free proxies. If you use a proxy, our <a href="/proxy-checker">proxy checker</a> shows which address and location it gives you.</p>
 
-<h2>What does not work</h2>
-<p>Running <code>ipconfig /release</code> and <code>ipconfig /renew</code> on your computer only changes the private address your router gave to that device. Websites will not notice, because they see your router's public address.</p>
+<h2>6. Ask your internet provider</h2>
+<p>Support can often assign a new dynamic address, and if you have a static address they can issue a different one. This is the cleanest fix when you need a genuinely new address, for example after an attack on your old one or when it has landed on a blocklist. Our <a href="/learn/is-my-ip-address-blacklisted">blocklist guide</a> shows how to check.</p>
+
+<h2>7. Change your local IP address</h2>
+<p>Sometimes the address you need to change is the private one your router gave your computer, for example to give a printer or game console a fixed address for port forwarding. This does not change what websites see.</p>
+<ul>
+<li>Windows 11: open Settings, then Network and internet, choose Wi-Fi or Ethernet and your network, select Edit next to IP assignment, and switch from Automatic (DHCP) to Manual. Our <a href="/learn/change-ip-address-windows-11">Windows 11 guide</a> has every step.</li>
+<li>Mac: open System Settings, then Network, choose your connection, click Details and then TCP/IP. Click Renew DHCP Lease to get a new address from the router, or set one manually.</li>
+<li>Any device: a DHCP reservation in your router gives the device the same address every time, which is usually better than a manual setting.</li>
+</ul>
+<p>Running <code>ipconfig /release</code> and <code>ipconfig /renew</code> on Windows also only renews this private address.</p>
+
+<h2>Can you change your IP address online?</h2>
+<p>No website can change your IP address for you. Pages that promise to change it online are either a web proxy, which changes the address only for pages loaded through it, or an advert for a VPN. To see what any website sees right now, use our <a href="/">IP checker</a>.</p>
 
 <h2>Check that it worked</h2>
-<p>Open our <a href="/">IP checker</a> before and after the change and compare the two addresses. If you use a VPN, also run the <a href="/webrtc">WebRTC leak test</a>, because a browser can sometimes still reveal your real address. Read <a href="/learn/webrtc-leak-explained">how WebRTC leaks work</a>.</p>
+<ol>
+<li>Note your address on the <a href="/">IP checker</a> before you start.</li>
+<li>Make the change and reload the page. Look at both the IPv4 and IPv6 lines: a VPN that only covers IPv4 can leave your IPv6 address visible.</li>
+<li>Run the <a href="/reputation">IP reputation check</a> on the new address to make sure it is not on a blocklist.</li>
+</ol>
 
-<h2>Is changing your IP a privacy fix?</h2>
-<p>Only partly. A new address stops sites from linking you to the old one, but cookies, logins and browser fingerprints still identify you. If you want websites to see a different address from your provider's, read <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a>. For the full picture, see <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
+<h2>Frequently asked questions</h2>
+<h3>Does restarting the router change your IP address?</h3>
+<p>Sometimes. Your provider may give the router the same address again when it reconnects, because the lease has not expired. Leaving it off for longer improves the chance of a new one.</p>
+<h3>Why does my IP address not change?</h3>
+<p>Either you have a static address, your provider keeps assigning the same dynamic address to your router, or you are behind carrier-grade NAT and share an address that does not change when you reconnect. A VPN or a request to your provider works in all three cases.</p>
+<h3>Does changing your IP address make you anonymous?</h3>
+<p>No. Cookies, logins and browser fingerprints still identify you. A new address only stops sites linking you to the old one. Read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a> for the full picture.</p>
+<h3>How often does an IP address change by itself?</h3>
+<p>It depends on your provider. Some keep the same address for months, others change it every time you reconnect. Our <a href="/learn/static-vs-dynamic-ip-address">static vs dynamic guide</a> shows how to tell which you have.</p>
 
 <h2>Sources and further reading</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc2131" rel="noopener">RFC 2131: Dynamic Host Configuration Protocol (IETF)</a></li><li><a href="https://www.torproject.org/" rel="noopener">The Tor Project</a></li></ul>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc2131" rel="noopener">RFC 2131: Dynamic Host Configuration Protocol, dynamic allocation and leases (IETF)</a></li><li><a href="https://support.microsoft.com/en-us/windows/essential-network-settings-and-tasks-in-windows-f21a9bbc-c582-55cd-35e0-73431160a1b9" rel="noopener">Microsoft Support: Essential network settings and tasks in Windows</a></li><li><a href="https://support.apple.com/guide/mac-help/mchlp1545/mac" rel="noopener">Apple Support: Renew the DHCP lease on Mac</a></li><li><a href="https://www.torproject.org/" rel="noopener">The Tor Project</a></li></ul>
 `,
 
   "can-someone-track-you-by-ip-address": `
@@ -291,7 +341,7 @@ export const BODIES: Record<string, string> = {
 <p>Port forwarding tells your router to send incoming internet traffic on a specific port to a specific device inside your home network. It is what makes game servers, security cameras, Plex and remote desktop reachable from outside.</p>
 
 <h2>Why is port forwarding needed?</h2>
-<p>Your home has one public address shared by every device, and your router uses NAT to keep the devices private. A request arriving from the internet has no idea which device it is for, so the router drops it. A port forwarding rule adds an exception: &ldquo;traffic arriving on port 25565 goes to the gaming PC at 192.168.1.50&rdquo;. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for the background.</p>
+<p>Your home has one public address shared by every device, and your router uses <a href="/learn/what-is-nat">NAT</a> to keep the devices private. A request arriving from the internet has no idea which device it is for, so the router drops it. A port forwarding rule adds an exception: &ldquo;traffic arriving on port 25565 goes to the gaming PC at 192.168.1.50&rdquo;. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for the background.</p>
 
 <h2>How to set it up</h2>
 <ol>
@@ -2148,7 +2198,7 @@ console.log(ip);</code></pre>
 <p><strong>CGNAT</strong>, or carrier-grade NAT, means your internet provider shares one public IPv4 address between many customers. Browsing, streaming and email work as normal, but anything that needs the internet to reach you, such as port forwarding, hosting a game server or remote access to a camera, usually fails. The quickest check is to compare the WAN address in your router with the public IP shown on our <a href="/">IP checker</a>. If they differ, you are probably behind CGNAT.</p>
 
 <h2>What is CGNAT?</h2>
-<p>CGNAT is a second layer of address sharing, run by your provider. At home, your router already uses NAT to put every device behind one address. With CGNAT, that address is not public either: the provider's equipment shares one public IPv4 address among several subscribers, which is how RFC 6888 defines a carrier-grade NAT. Providers do this because they do not have a public IPv4 address for every customer.</p>
+<p>CGNAT is a second layer of address sharing, run by your provider. At home, your router already uses <a href="/learn/what-is-nat">NAT</a> to put every device behind one address. With CGNAT, that address is not public either: the provider's equipment shares one public IPv4 address among several subscribers, which is how RFC 6888 defines a carrier-grade NAT. Providers do this because they do not have a public IPv4 address for every customer.</p>
 <p>Outgoing connections are fine, because the provider's NAT remembers who started each one and sends the replies back. Incoming connections are the problem. When a packet arrives at the shared public address unasked, the provider has no way to know which of its customers it is for, so it is dropped.</p>
 
 <h2>What is 100.64.0.0/10?</h2>
@@ -2246,7 +2296,7 @@ console.log(ip);</code></pre>
 <p>Cloud servers use one special address in the range on purpose. On Amazon EC2, the instance metadata service lives at 169.254.169.254, and AWS documents it as a link-local address that is valid only from inside the instance.</p>
 
 <h2>What about IPv6 fe80 addresses?</h2>
-<p>IPv6 has its own link-local range, fe80::/10, and every IPv6 interface is required to have one, per RFC 4291. Seeing an fe80 address next to a working IPv4 address is normal and is not a fault. Like 169.254, routers never forward it.</p>
+<p><a href="/learn/what-is-ipv6">IPv6</a> has its own link-local range, fe80::/10, and every IPv6 interface is required to have one, per RFC 4291. Seeing an fe80 address next to a working IPv4 address is normal and is not a fault. Like 169.254, routers never forward it.</p>
 
 <h2>Frequently asked questions</h2>
 <h3>Is 169.254 a private IP address?</h3>
@@ -2330,5 +2380,118 @@ console.log(ip);</code></pre>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc3393" rel="noopener">RFC 3393: IP Packet Delay Variation Metric (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3550" rel="noopener">RFC 3550: RTP, interarrival jitter in section 6.4.1 (IETF)</a></li><li><a href="https://www.cisco.com/c/en/us/support/docs/voice/voice-quality/18902-jitter-packet-voice.html" rel="noopener">Cisco: Understanding jitter in packet voice networks</a></li><li><a href="https://learn.microsoft.com/en-us/training/modules/plan-optimize-network-performance-for-teams-phone-system/2-understand-teams-network-requirements" rel="noopener">Microsoft Learn: Understand Teams network requirements (jitter targets)</a></li><li><a href="https://learn.microsoft.com/en-us/microsoftteams/prepare-network" rel="noopener">Microsoft Learn: Prepare your organization's network for Teams (Wi-Fi, QoS and VPN guidance)</a></li></ul>
+`,
+  "what-is-nat": `
+<p><strong>NAT</strong>, or network address translation, lets many devices share one public IP address. Your router keeps a table of which device started each connection, swaps the device's private address for the public one on the way out, and swaps it back when the reply arrives. That is why every phone and laptop in your home shows the same address on our <a href="/">IP checker</a>, even though each has its own address on your network.</p>
+
+<h2>How does NAT work?</h2>
+<p>NAT rewrites the addresses in each packet as it passes through the router. When your laptop at 192.168.1.20 opens a connection from port 51000, the router replaces that pair with its own public address and a port it chooses, and writes the pairing down. When the website answers on that public port, the router looks up the pairing and forwards the reply to the laptop. RFC 3022 calls this Network Address Port Translation (NAPT), and it is what nearly every home router does.</p>
+<div class="tw"><table><tbody>
+<tr><th>Step</th><th>Source address seen</th></tr>
+<tr><td>Laptop sends a request</td><td>192.168.1.20 port 51000 (private)</td></tr>
+<tr><td>Router forwards it to the internet</td><td>Your public IP, port chosen by the router</td></tr>
+<tr><td>Website replies</td><td>To your public IP and that port</td></tr>
+<tr><td>Router hands the reply back</td><td>To 192.168.1.20 port 51000</td></tr>
+</tbody></table></div>
+
+<h2>Why does NAT exist?</h2>
+<p>IPv4 has only 32-bit addresses, about 4.3 billion in total, which is far fewer than the devices now online. NAT lets a home or office use addresses from the private ranges set aside in RFC 1918 (10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16), which anyone can reuse, and present a single public address to the internet. Our guide to <a href="/learn/public-vs-private-ip-address">public and private IP addresses</a> covers those ranges in detail.</p>
+
+<h2>Types of NAT</h2>
+<ul>
+<li>Basic NAT maps private addresses to a pool of public ones, one to one. RFC 3022 describes it, but it needs as many public addresses as active devices, so homes rarely use it.</li>
+<li>NAPT, often called PAT or NAT overload, maps many private addresses to one public address by also translating port numbers. This is the NAT in your router.</li>
+<li>Static NAT, or <a href="/learn/what-is-port-forwarding">port forwarding</a>, is a fixed rule that sends traffic arriving on a public port to one device inside.</li>
+<li><a href="/learn/what-is-cgnat">Carrier-grade NAT (CGNAT)</a> is NAT run by your provider, which shares one public address between many customers. It uses the 100.64.0.0/10 range from RFC 6598 between the provider and your router.</li>
+<li>Double NAT is two layers of NAT in your own home, for example your own router plugged in behind the provider's router.</li>
+</ul>
+
+<h2>Why does NAT block incoming connections?</h2>
+<p>A router only has a mapping for connections that a device inside started. A packet that arrives unasked matches no entry, so the router does not know which device it is for and drops it. RFC 3022 notes that sessions in the other direction are allowed only through static mappings. That is why hosting a game server, a camera or remote desktop at home needs port forwarding, and why it fails entirely behind CGNAT.</p>
+<p>Calls, games and video apps get around this with NAT traversal: each side asks a public STUN server (Session Traversal Utilities for NAT, port 3478 in the <a href="/learn/common-ports-list">port registry</a>) which public address and port it appears to have, then they try to reach each other directly.</p>
+
+<h2>Is NAT a firewall?</h2>
+<p>No, although it acts a little like one. NAT was designed to save addresses, and the fact that it drops unsolicited traffic is a side effect. A port you forward is open to the whole internet, and NAT does nothing to inspect the traffic that is allowed through. Keep the firewall on your router and devices switched on.</p>
+
+<h2>Does IPv6 need NAT?</h2>
+<p>Usually not. IPv6 addresses are 128 bits long, enough for every device to have its own public address, so a home router hands out real IPv6 addresses and uses its firewall to decide what may come in. Read <a href="/learn/what-is-ipv6">what IPv6 is</a> for how those addresses work.</p>
+
+<h2>How to tell whether you are behind NAT</h2>
+<ol>
+<li>Find your device's own address: run <code>ipconfig</code> on Windows or look in the Wi-Fi details on a phone or Mac.</li>
+<li>Compare it with the public address on our <a href="/">IP checker</a>.</li>
+<li>If your device shows a private address such as 192.168.x.x or 10.x.x.x and the checker shows something else, your router is doing NAT. That is normal.</li>
+<li>To see whether your provider adds a second layer, compare your router's WAN address with the public address, as the <a href="/learn/what-is-cgnat">CGNAT guide</a> explains.</li>
+</ol>
+
+<h2>Frequently asked questions</h2>
+<h3>What is NAT in simple terms?</h3>
+<p>It is the job your router does so that all your devices can share one internet address. It changes the address on outgoing traffic to its own, remembers who asked, and passes the replies back to the right device.</p>
+<h3>What is the difference between NAT and PAT?</h3>
+<p>PAT, port address translation, is the common form of NAT that also changes port numbers so many devices can share one public address. RFC 3022 calls it NAPT. When people say NAT about a home router, they almost always mean PAT.</p>
+<h3>What is double NAT and is it a problem?</h3>
+<p>Double NAT is two routers each doing NAT, one behind the other. Browsing works, but port forwarding and some games break unless you forward ports on both routers or put the first one into bridge mode.</p>
+<h3>Does NAT hide my IP address?</h3>
+<p>It hides your device's private address, but websites still see your public address. To change what sites see, read <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a>.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc3022" rel="noopener">RFC 3022: Traditional IP Network Address Translator (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: Shared Address Space for CGN (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol, 32-bit addresses (IETF)</a></li><li><a href="https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml" rel="noopener">IANA port registry (STUN on 3478)</a></li></ul>
+`,
+  "what-is-ipv6": `
+<p><strong>IPv6</strong> is the newer version of the Internet Protocol. Its addresses are 128 bits long and written as groups of hexadecimal digits, such as <code>2001:db8:85a3::8a2e:370:7334</code>, which gives enough addresses for every device to have its own. Most networks now run IPv6 alongside the older IPv4. Our <a href="/">IP checker</a> shows your IPv6 address on the line under your main IP if your connection has one.</p>
+
+<h2>Why was IPv6 created?</h2>
+<p>IPv4 addresses are 32 bits, which allows about 4.3 billion of them, and that is not enough for every phone, computer and device online. IPv4 networks cope by sharing addresses through <a href="/learn/what-is-nat">NAT</a> and <a href="/learn/what-is-cgnat">carrier-grade NAT</a>. IPv6 uses 128-bit addresses, as defined in RFC 4291, so the address space is 2 to the power 128: large enough that address shortage is no longer the limit. The protocol itself is specified in RFC 8200.</p>
+
+<h2>What does an IPv6 address look like?</h2>
+<p>An IPv6 address is eight groups of four hexadecimal digits separated by colons. RFC 5952 sets the rules for writing it short:</p>
+<ul>
+<li>Leading zeros in each group are dropped, so <code>0db8</code> becomes <code>db8</code>.</li>
+<li>The longest run of all-zero groups is replaced once by <code>::</code>, but never a single zero group.</li>
+<li>Letters are written in lowercase.</li>
+</ul>
+<div class="tw"><table><tbody>
+<tr><th>Full form</th><th>Short form</th></tr>
+<tr><td class="mono">2001:0db8:0000:0000:0000:0000:0002:0001</td><td class="mono">2001:db8::2:1</td></tr>
+<tr><td class="mono">0000:0000:0000:0000:0000:0000:0000:0001</td><td class="mono">::1</td></tr>
+</tbody></table></div>
+<p>The first part of an address (usually the first 64 bits) is the network prefix your provider gives you, and the rest identifies the device. Prefixes are written in CIDR notation, such as <code>2001:db8::/32</code>; our <a href="/subnet">subnet calculator</a> works them out.</p>
+
+<h2>Types of IPv6 addresses</h2>
+<div class="tw"><table><tbody>
+<tr><th>Type</th><th>Looks like</th><th>Used for</th></tr>
+<tr><td>Global unicast</td><td>Your public address, from your provider's prefix</td><td>Talking to the internet</td></tr>
+<tr><td>Link-local</td><td>fe80::/10</td><td>The local network only; every interface has one</td></tr>
+<tr><td>Loopback</td><td>::1</td><td>The device talking to itself, like 127.0.0.1</td></tr>
+<tr><td>Multicast</td><td>ff00::/8</td><td>Sending to a group of devices at once</td></tr>
+</tbody></table></div>
+<p>RFC 4291 requires every interface to have a link-local address and says routers must not forward packets with link-local source or destination addresses. Seeing an fe80 address next to a working connection is normal, as our guide to <a href="/learn/what-is-a-169-254-ip-address">169.254 and link-local addresses</a> explains.</p>
+
+<h2>Why does my device have several IPv6 addresses?</h2>
+<p>A typical phone or laptop has a link-local address, a stable global address and one or more temporary addresses. Temporary addresses are a privacy feature defined in RFC 8981: the device generates a random address and switches to a new one over time, so websites cannot follow it by a fixed address. RFC 8981 sets the default preferred lifetime of a temporary address at one day.</p>
+
+<h2>IPv6 and NAT</h2>
+<p>IPv6 normally works without NAT. Each device gets a public address, and your router's firewall decides which incoming connections are allowed. That makes hosting and peer-to-peer connections simpler, and it means port forwarding is replaced by firewall rules. Keep the router firewall on.</p>
+
+<h2>How to check if you have IPv6</h2>
+<ol>
+<li>Open the <a href="/">ipcomet home page</a>. If the IPv6 line shows an address, your connection supports IPv6; "Not detected" means it does not.</li>
+<li>On Windows, run <code>ipconfig</code> and look for an IPv6 address that does not start with fe80. On a Mac or Linux, run <code>ifconfig</code> or <code>ip -6 addr</code>.</li>
+<li>If you use a VPN, check that your real IPv6 address does not show up, using our guide to <a href="/learn/is-my-vpn-working">testing a VPN</a>.</li>
+</ol>
+<p>For how the two versions compare side by side, read <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is IPv6 better than IPv4?</h3>
+<p>It solves the address shortage and removes the need for NAT, which simplifies many things. Speed depends on the network path more than the protocol version, so most people will not notice a difference in everyday browsing.</p>
+<h3>Should I turn off IPv6?</h3>
+<p>Usually not. Modern systems prefer IPv6 when it works and fall back to IPv4 when it does not. Turning it off can break some services and rarely fixes anything. If a VPN leaks your IPv6 address, use a VPN that handles IPv6 instead.</p>
+<h3>Can websites see my IPv6 address?</h3>
+<p>Yes, when you connect over IPv6 that address is what the website sees, just as with IPv4. Temporary addresses limit how long one address follows you.</p>
+<h3>What is my IPv6 address?</h3>
+<p>Our <a href="/">IP checker</a> shows it under your main address. Your device may also list a link-local fe80 address, which is local only and not what websites see.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc5952" rel="noopener">RFC 5952: A Recommendation for IPv6 Address Text Representation (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8981" rel="noopener">RFC 8981: Temporary Address Extensions for IPv6 (IETF)</a></li></ul>
 `,
 };

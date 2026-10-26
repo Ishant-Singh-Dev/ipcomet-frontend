@@ -369,6 +369,60 @@ export const TOOL_FAQ: Record<string, Faq[]> = {
       a: "The calculator assumes your full line speed for the whole transfer. Real downloads lose some of it to protocol overhead and other devices on the network, and the server may send more slowly than your line can receive. Run our speed test to measure what your connection actually delivers.",
     },
   ],
+  asn: [
+    {
+      q: "What is an ASN?",
+      a: "An autonomous system number identifies a network that makes its own routing decisions on the internet, such as an internet provider, a cloud company or a large university. Networks use these numbers in BGP to tell each other which IP prefixes they can deliver traffic to.",
+    },
+    {
+      q: "How do I find the ASN of an IP address?",
+      a: "Enter the IP address above. The lookup finds the prefix that contains it in live routing data, names the AS that announces that prefix, and shows the network's other prefixes. Our IP lookup also shows the ASN next to location and provider.",
+    },
+    {
+      q: "What are private AS numbers?",
+      a: "RFC 6996 reserves 64512 to 65534 and 4200000000 to 4294967294 for private use inside a network, the way 192.168.x.x addresses are used at home. They never identify a public network, and the lookup labels them instead of searching for an owner.",
+    },
+    {
+      q: "Who assigns AS numbers?",
+      a: "IANA hands out blocks of numbers to the five regional internet registries (AFRINIC, APNIC, ARIN, LACNIC and RIPE NCC), and they assign individual numbers to networks in their region. The lookup shows which registry the number came from.",
+    },
+  ],
+  redirects: [
+    {
+      q: "What is the difference between a 301 and a 302 redirect?",
+      a: "A 301 says the page has moved permanently and a 302 says it is somewhere else for now, as defined in RFC 9110. Google treats 301 and 308 as a strong sign that the new address should replace the old one in search, and 302, 303 and 307 as temporary.",
+    },
+    {
+      q: "How many redirects is too many?",
+      a: "Every hop adds a round trip before the page starts loading, so one redirect is best. This checker follows up to 10 and flags chains of more than one hop, loops, and switches between HTTP and HTTPS along the way.",
+    },
+    {
+      q: "Does it check meta refresh redirects?",
+      a: "Yes. When the final page is HTML, the checker reads its start and reports a meta refresh tag with its delay and destination. Google treats an instant meta refresh as permanent and a delayed one as temporary.",
+    },
+    {
+      q: "What is a 307 or 308 redirect?",
+      a: "They are the method-preserving versions of 302 and 301. A browser must repeat a POST as a POST after a 307 or 308, while after a 301 or 302 it may switch to GET.",
+    },
+  ],
+  "email-headers": [
+    {
+      q: "How do I get the full headers of an email?",
+      a: "In Gmail, open the message, click More (the three dots) and choose Show original. In Outlook on the web, open the message, choose More actions, then View, then View message source. In Apple Mail, choose View, Message, All Headers. Copy everything above the message body and paste it here.",
+    },
+    {
+      q: "How do I find the sender's IP address from email headers?",
+      a: "Read the Received lines from the bottom up. The lowest one added by the recipient's server names the server that handed over the message, usually with its IP in brackets. The analyzer lists every hop in order and marks the first public IP it finds.",
+    },
+    {
+      q: "What do spf=pass, dkim=pass and dmarc=pass mean?",
+      a: "They are the receiving server's verdicts, recorded in the Authentication-Results header defined in RFC 8601. SPF checks that the sending server was allowed to send for the envelope domain, DKIM checks the message's signature, and DMARC checks that one of them matches the From domain.",
+    },
+    {
+      q: "Is it safe to paste email headers here?",
+      a: "Yes. The analysis runs in your browser and the headers are not sent to our server. Headers can contain your email address and internal server names, so avoid pasting them into tools that upload them.",
+    },
+  ],
 };
 
 export const TOOL_ABOUT: Record<string, string> = {
@@ -412,6 +466,12 @@ export const TOOL_ABOUT: Record<string, string> = {
     "A DNS propagation checker shows whether a DNS change has reached the resolvers people actually use. After you edit a record, each resolver keeps serving its cached copy until the record's TTL runs out, so for a while different networks see different answers. This tool asks 12 large public resolvers, including Cloudflare, Google, Cisco OpenDNS, AdGuard, NextDNS and Alibaba, for the same record at once over DNS over HTTPS, and shows each answer with the seconds it has left in that resolver's cache. Add the value you expect and it tells you which resolvers already have it and when the rest should catch up.",
   download:
     "A download time calculator works out how long a file takes to transfer at a given internet speed. Enter the file size and your speed, and it shows the time at once, plus a table for common sizes and the speed you would need to finish within a minute, ten minutes or an hour. It handles both decimal units (MB, GB, TB) and the binary units Windows uses (MiB, GiB), and megabits or megabytes per second. Run our speed test first and it hands its result to this page, so the answer uses your real speed.",
+  asn:
+    "An ASN lookup shows the autonomous system behind a network: the number that internet providers, cloud companies and other large networks use to exchange routes with BGP. Enter an AS number to see who holds it, which regional registry assigned it, whether it currently announces routes, and every IPv4 and IPv6 prefix it announces. Enter an IP address instead to find the prefix and ASN that cover it. The data comes from RIPEstat, which combines registry records with live routing tables from the RIPE RIS collectors.",
+  redirects:
+    "A redirect checker follows a URL the way a browser or search engine does, one hop at a time, and shows every step: the status code, where it points, how long it took and whether it set HSTS. Use it to confirm that HTTP goes to HTTPS in one hop, that an old page has a permanent 301 or 308 to its new address, that www and non-www settle on one version, and that a shortened or tracking link ends where you expect. It also catches loops, long chains and meta refresh redirects on the final page.",
+  "email-headers":
+    "An email header analyzer turns the raw headers of a message into something readable. It lists every Received line in the order the message travelled, with the time each server added and the delay between hops, finds the first public IP address so you can look up where the message came from, and reads the SPF, DKIM and DMARC verdicts that the receiving server recorded. It also flags common signs of phishing, such as a Reply-To that differs from the sender. Everything runs in your browser.",
 };
 
 /**
@@ -575,4 +635,48 @@ export const TOOL_MORE: Record<string, string> = {
 <h3>Speeds: Mbps and MB/s</h3>
 <p>Internet plans and our <a href="/speed-test">speed test</a> use megabits per second. Browsers and game launchers often show megabytes per second, which is eight times smaller for the same connection. Our guide to <a href="/learn/what-is-a-good-internet-speed">what a good internet speed is</a> explains how much speed different households need.</p>
 <p class="note">Source: <a href="https://physics.nist.gov/cuu/Units/binary.html" rel="noopener">NIST, prefixes for binary multiples</a>.</p>`,
+  asn: `<h3>What the results mean</h3>
+<ul>
+<li>Holder: the organization name registered for the number.</li>
+<li>Registry: the regional internet registry, or IANA block, the number came from.</li>
+<li>Announced: whether the network currently originates routes seen by the RIPE RIS collectors. Transit-only networks can show no prefixes of their own.</li>
+<li>Prefixes: the IPv4 and IPv6 blocks the network announces, with the total number of IPv4 addresses they cover.</li>
+</ul>
+<h3>Special AS numbers</h3>
+<div class="tw"><table><tbody>
+<tr><th>Range</th><th>Use</th></tr>
+<tr><td>64512 to 65534</td><td>Private use, 16-bit (RFC 6996)</td></tr>
+<tr><td>4200000000 to 4294967294</td><td>Private use, 32-bit (RFC 6996)</td></tr>
+<tr><td>64496 to 64511, 65536 to 65551</td><td>Documentation (RFC 5398)</td></tr>
+</tbody></table></div>
+<p>To see where an address is and which provider uses it, try the <a href="/lookup">IP lookup</a>. The <a href="/whois">WHOIS lookup</a> shows the registration record for an IP range.</p>
+<p class="note">Sources: <a href="https://stat.ripe.net/docs/data-api/api-endpoints/as-overview" rel="noopener">RIPEstat data API</a>, <a href="https://www.iana.org/numbers" rel="noopener">IANA number resources</a>, <a href="https://www.rfc-editor.org/rfc/rfc6996" rel="noopener">RFC 6996</a>, <a href="https://www.rfc-editor.org/rfc/rfc5398" rel="noopener">RFC 5398</a>.</p>`,
+  redirects: `<h3>Redirect status codes</h3>
+<div class="tw"><table><tbody>
+<tr><th>Code</th><th>Meaning (RFC 9110)</th><th>How Google treats it</th></tr>
+<tr><td>301 Moved Permanently</td><td>New permanent address; a POST may become GET</td><td>Permanent: the target becomes canonical</td></tr>
+<tr><td>302 Found</td><td>Temporarily at another address; a POST may become GET</td><td>Temporary</td></tr>
+<tr><td>303 See Other</td><td>Go to a different resource with GET</td><td>Temporary</td></tr>
+<tr><td>307 Temporary Redirect</td><td>Temporary; the method must not change</td><td>Temporary</td></tr>
+<tr><td>308 Permanent Redirect</td><td>Permanent; the method stays the same</td><td>Permanent</td></tr>
+</tbody></table></div>
+<h3>A clean redirect setup</h3>
+<ol>
+<li>Send http:// and www (or non-www) to your one preferred HTTPS address in a single permanent redirect.</li>
+<li>When a page moves, point the old address straight at the new one instead of through intermediate hops.</li>
+<li>Set an HSTS header on HTTPS so returning browsers skip the HTTP hop entirely.</li>
+</ol>
+<p>The checker identifies itself as ipcomet-redirect-checker, so some sites that treat bots differently may redirect it to a different place than a browser. Our <a href="/dns-propagation">DNS propagation checker</a> helps when a redirect depends on a recent DNS change.</p>
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110 (HTTP Semantics), section 15.4</a>, <a href="https://developers.google.com/search/docs/crawling-indexing/301-redirects" rel="noopener">Google Search Central: redirects and Google Search</a>.</p>`,
+  "email-headers": `<h3>How to read email headers</h3>
+<p>Each mail server that handles a message adds a Received line at the top, so the newest hop is first and the original sender is at the bottom. The analyzer reverses them into travel order and works out the delay between hops from their timestamps. A long delay usually means a server queued the message, often because of spam filtering or a busy relay.</p>
+<h3>Signs of a spoofed or phishing email</h3>
+<ul>
+<li>dmarc=fail, or spf=fail together with a DKIM failure, in Authentication-Results.</li>
+<li>A Reply-To address on a different domain from the From address.</li>
+<li>A Return-Path domain that has nothing to do with the brand in the From name.</li>
+<li>An originating IP on a residential or hosting network for mail that claims to come from a large company. Check it with our <a href="/reputation">IP reputation check</a>.</li>
+</ul>
+<p>To check the sending domain's own setup, run the <a href="/dmarc-checker">DMARC checker</a>.</p>
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc8601" rel="noopener">RFC 8601 (Authentication-Results)</a>, <a href="https://www.rfc-editor.org/rfc/rfc5322" rel="noopener">RFC 5322 (Internet Message Format, trace fields)</a>.</p>`,
 };

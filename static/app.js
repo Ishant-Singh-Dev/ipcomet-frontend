@@ -1343,6 +1343,123 @@
     calc();
   }
 
+  /* ---------- ASN lookup ---------- */
+
+  function asn() {
+    const run = async (q) => {
+      if (!q) return;
+      pushQuery(q);
+      loading("Reading routing data…");
+      try {
+        const d = await api("/api/asn?q=" + encodeURIComponent(q));
+        if (d.special) { out.innerHTML = note(d.special, "warn") + kv([["AS number", `AS${d.asn}`, { mono: true }]]); return; }
+        const list = (items) => items.map((p) => `<code>${esc(p)}</code>`).join(" ");
+        const more = (n, shown) => (n > shown ? `<p class="note">${esc(tr("Showing {shown} of {n}.", { shown, n }))}</p>` : "");
+        out.innerHTML =
+          `<p style="margin:0 0 12px"><span class="badge ${d.announced ? "ok" : "warn"}">${esc(tr(d.announced ? "Announcing routes" : "No routes announced"))}</span></p>` +
+          kv([
+            ["AS number", `AS${d.asn}`, { mono: true, copy: true }],
+            ["Holder", d.holder || tr("Not registered")],
+            ["Registry", d.registry],
+            ["IP address", d.ip, { mono: true }],
+            ["Covering prefix", d.ipPrefix, { mono: true }],
+            ["IPv4 prefixes", d.counts.v4 ? tr("{n} prefixes, {a} addresses", { n: d.counts.v4.toLocaleString(), a: d.counts.v4Addresses.toLocaleString() }) : "0"],
+            ["IPv6 prefixes", String(d.counts.v6)],
+          ]) +
+          (d.prefixes.v4.length ? `<h3>${esc(tr("IPv4 prefixes"))}</h3><p class="mono" style="line-height:2">${list(d.prefixes.v4)}</p>${more(d.counts.v4, d.prefixes.v4.length)}` : "") +
+          (d.prefixes.v6.length ? `<h3>${esc(tr("IPv6 prefixes"))}</h3><p class="mono" style="line-height:2">${list(d.prefixes.v6)}</p>${more(d.counts.v6, d.prefixes.v6.length)}` : "") +
+          (d.prefixes.v4.length + d.prefixes.v6.length ? `<p><button class="btn sm" type="button" data-copy="${esc([...d.prefixes.v4, ...d.prefixes.v6].join("\n"))}">${esc(tr("Copy all prefixes"))}</button></p>` : "");
+      } catch (err) { out.innerHTML = note(err.message, "bad"); }
+    };
+    const input = wireForm(run);
+    const mine = $("#mine");
+    if (mine) mine.addEventListener("click", async () => { const me = await api("/api/me").catch(() => null); if (me) { input.value = me.ip; run(me.ip); } });
+  }
+
+  /* ---------- Redirect checker ---------- */
+
+  function redirects() {
+    const run = async (q) => {
+      if (!q) return;
+      pushQuery(q);
+      loading("Following redirects…");
+      try {
+        const d = await api("/api/redirects?url=" + encodeURIComponent(q));
+        const hops = d.hops;
+        const redirectsOnly = hops.filter((h) => h.status >= 300 && h.status < 400);
+        const last = hops[hops.length - 1] || {};
+        const tone = (s) => (s >= 200 && s < 300 ? "ok" : s >= 300 && s < 400 ? "warn" : "bad");
+        const kind = (s) => ({ 301: "Permanent", 308: "Permanent", 302: "Temporary", 303: "Temporary", 307: "Temporary" })[s] || "";
+        const notes = [];
+        if (last.error) notes.push(note(last.error, "bad"));
+        if (redirectsOnly.length > 1) notes.push(note(tr("{n} redirects in a row. Point the first address straight at the final one to save round trips.", { n: redirectsOnly.length }), "warn"));
+        if (redirectsOnly.some((h) => [302, 303, 307].includes(h.status))) notes.push(note("At least one hop is a temporary redirect. If the move is permanent, use 301 or 308 so search engines move their ranking signals to the new address.", "warn"));
+        if (hops.some((h, i) => i > 0 && h.url && h.url.startsWith("http://") && hops[i - 1].url.startsWith("https://"))) notes.push(note("The chain drops from HTTPS back to HTTP.", "bad"));
+        if (last.metaRefresh) notes.push(note(tr("The final page also redirects with a meta refresh after {s} seconds to {url}.", { s: last.metaRefresh.seconds, url: last.metaRefresh.url }), "warn"));
+        if (!last.error && last.url && last.url.startsWith("https://") && !last.hsts) notes.push(note("The final HTTPS page sends no Strict-Transport-Security header, so browsers will keep trying HTTP first."));
+        const summary = last.error ? "" : note(tr(redirectsOnly.length === 1 ? "1 redirect, ending with HTTP {status} at {url}" : "{n} redirects, ending with HTTP {status} at {url}", { n: redirectsOnly.length, status: last.status, url: last.url }), tone(last.status));
+        out.innerHTML = summary + notes.join("") + table(["#", "URL", "Status", "Time"], hops.map((h, i) => `<tr><td>${i + 1}</td><td class="mono" style="word-break:break-all">${esc(h.url)}${h.location ? `<br><small>→ ${esc(h.location)}</small>` : ""}</td><td>${h.status ? badge(tone(h.status), `${h.status}${kind(h.status) ? " " + tr(kind(h.status)) : ""}`) : badge("bad", "Error")}</td><td>${h.ms !== undefined ? `${h.ms} ms` : "–"}</td></tr>`));
+      } catch (err) { out.innerHTML = note(err.message, "bad"); }
+    };
+    wireForm(run);
+  }
+
+  /* ---------- Email header analyzer ---------- */
+
+  function parseHeaders(raw) {
+    // Folded header lines start with whitespace and continue the previous field (RFC 5322).
+    const lines = raw.replace(/\r\n/g, "\n").split("\n");
+    const fields = [];
+    for (const line of lines) {
+      if (/^\s/.test(line) && fields.length) fields[fields.length - 1][1] += " " + line.trim();
+      else { const m = line.match(/^([!-9;-~]+):\s*(.*)$/); if (m) fields.push([m[1].toLowerCase(), m[2]]); else if (fields.length && !line.trim()) break; }
+    }
+    return fields;
+  }
+
+  function emailHeaders() {
+    const isPublicV4 = (ip) => !/^(10\.|127\.|169\.254\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\.)/.test(ip);
+    const domainOf = (v) => ((v || "").match(/@([a-z0-9.-]+\.[a-z]{2,})/i) || [])[1]?.toLowerCase();
+    const run = (text) => {
+      const fields = parseHeaders(text || "");
+      if (!fields.length) { out.innerHTML = note("No headers found. Paste the full header block, starting with lines such as Received: or Delivered-To:.", "bad"); return; }
+      const get = (name) => fields.filter(([k]) => k === name).map(([, v]) => v);
+      const received = get("received").reverse();
+      const hops = received.map((r) => {
+        const date = Date.parse((r.split(";").pop() || "").trim());
+        const from = (r.match(/from\s+(\S+)/i) || [])[1];
+        const by = (r.match(/by\s+(\S+)/i) || [])[1];
+        const ip = (r.match(/\[(\d{1,3}(?:\.\d{1,3}){3})\]/) || r.match(/\b(\d{1,3}(?:\.\d{1,3}){3})\b/) || r.match(/\[(?:IPv6:)?([0-9a-f:]{6,})\]/i) || [])[1];
+        return { from, by, ip, date: Number.isFinite(date) ? date : null };
+      });
+      const origin = hops.find((h) => h.ip && (h.ip.includes(":") || isPublicV4(h.ip)));
+      const auth = get("authentication-results").join("; ");
+      const result = (method) => ((auth.match(new RegExp(`\\b${method}=([a-z]+)`, "i")) || [])[1] || "").toLowerCase();
+      const spf = result("spf"), dkim = result("dkim"), dmarc = result("dmarc");
+      const from = get("from")[0], replyTo = get("reply-to")[0], returnPath = get("return-path")[0];
+      const total = hops.length > 1 && hops[0].date && hops[hops.length - 1].date ? (hops[hops.length - 1].date - hops[0].date) / 1000 : null;
+      const warnings = [];
+      if (dmarc === "fail") warnings.push(note("DMARC failed: the From domain did not pass SPF or DKIM in a way that matches it. Treat this message with suspicion.", "bad"));
+      if (spf === "fail" || spf === "softfail") warnings.push(note(tr("SPF result: {r}. The sending server was not authorized by the envelope domain.", { r: spf }), "warn"));
+      if (dkim === "fail") warnings.push(note("The DKIM signature failed: the message changed in transit or the signature is forged.", "warn"));
+      if (replyTo && domainOf(replyTo) && domainOf(replyTo) !== domainOf(from)) warnings.push(note(tr("Replies go to {r}, a different domain from the sender. This is common in phishing.", { r: domainOf(replyTo) }), "warn"));
+      const tone = (v) => (v === "pass" ? "ok" : !v || v === "none" || v === "neutral" ? "" : "bad");
+      out.innerHTML = warnings.join("") +
+        table(["Check", "Result"], [["SPF", spf], ["DKIM", dkim], ["DMARC", dmarc]].map(([k, v]) => `<tr><td>${k}</td><td>${badge(tone(v), v || "Not recorded")}</td></tr>`)) +
+        kv([
+          ["From", from], ["Reply-To", replyTo], ["Return-Path", returnPath], ["Subject", get("subject")[0]], ["Date", get("date")[0]],
+          ["Message-ID", get("message-id")[0], { mono: true }],
+          ["Originating IP", origin ? `<a href="/lookup?q=${encodeURIComponent(origin.ip)}" class="mono">${esc(origin.ip)}</a>` : "", { html: true }],
+          ["Total delivery time", total !== null ? durationText(Math.max(0, total)) : ""],
+        ]) +
+        (hops.length ? `<h3>${esc(tr("Route ({n} hops)", { n: hops.length }))}</h3>` + table(["#", "From", "By", "Delay"], hops.map((h, i) => {
+          const delay = i && h.date && hops[i - 1].date ? (h.date - hops[i - 1].date) / 1000 : null;
+          return `<tr><td>${i + 1}</td><td class="mono" style="word-break:break-all">${esc(h.from || "–")}${h.ip ? `<br><small>${esc(h.ip)}</small>` : ""}</td><td class="mono" style="word-break:break-all">${esc(h.by || "–")}</td><td>${delay === null ? "–" : esc(durationText(Math.max(0, delay)) || "0 s")}</td></tr>`;
+        })) : "");
+    };
+    $("#f").addEventListener("submit", (e) => { e.preventDefault(); run($("#q").value); });
+  }
+
   /* ---------- MAC address lookup ---------- */
 
   // Vendor data comes from the IEEE registries, cut into small files by prefix (scripts/gen-oui.ts), so a lookup
@@ -1662,7 +1779,7 @@
 
   /* ---------- boot ---------- */
   const pages = { ip: home, lookup, dns, "reverse-dns": reverseDns, reputation, "proxy-checker": proxyChecker, ping, whois, browser: browserInfo, port, speed, webrtc, subnet, mac,
-    dmarc: () => mailCheck("dmarc"), spf: () => mailCheck("spf"), dkim: () => mailCheck("dkim"), mx: () => mailCheck("mx"), propagation, download };
+    dmarc: () => mailCheck("dmarc"), spf: () => mailCheck("spf"), dkim: () => mailCheck("dkim"), mx: () => mailCheck("mx"), propagation, download, asn, redirects, "email-headers": emailHeaders };
   const start = () => { initConsent(); if (pages[page]) pages[page](); };
   if (LANG === "en") start();
   else {

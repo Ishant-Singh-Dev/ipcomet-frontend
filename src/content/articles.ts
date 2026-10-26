@@ -22,12 +22,12 @@ export const ARTICLES: ArticleMeta[] = [
   },
   {
     slug: "what-is-an-ip-address",
-    title: "What Is an IP Address? A Plain-English Guide",
-    description: "An IP address is how devices find each other on the internet. Learn what it is, what it reveals about you, and how to see yours.",
+    title: "What Is an IP Address? Meaning, Types and Examples",
+    description: "IP address meaning in plain English: what IP stands for, what an address looks like, public vs private, IPv4 vs IPv6, who assigns it and how to find yours.",
     published: "2026-10-07",
-    readMin: 5,
-    tools: ["ip", "lookup"],
-    related: ["public-vs-private-ip-address", "ipv4-vs-ipv6", "what-is-a-mac-address"],
+    readMin: 7,
+    tools: ["ip", "lookup", "asn"],
+    related: ["public-vs-private-ip-address", "what-is-ipv6", "what-is-nat", "what-is-a-mac-address"],
   },
   {
     slug: "how-to-hide-your-ip-address",
@@ -58,11 +58,11 @@ export const ARTICLES: ArticleMeta[] = [
   },
   {
     slug: "how-to-change-your-ip-address",
-    title: "How to Change Your IP Address: 5 Methods That Work",
-    description: "Need a new IP address? Here are five practical ways to change it, from restarting your router to using a VPN, and what each one really does.",
+    title: "How to Change Your IP Address: 7 Ways That Work",
+    description: "Change your IP address on any device: restart the router, switch networks, use a VPN, or ask your ISP. What each method changes and how to check it worked.",
     published: "2026-10-07",
-    readMin: 6,
-    tools: ["ip", "webrtc"],
+    readMin: 8,
+    tools: ["ip", "webrtc", "reputation"],
     related: ["change-ip-address-windows-11", "static-vs-dynamic-ip-address", "why-does-my-ip-address-change", "is-my-ip-address-blacklisted"],
   },
   {
@@ -451,6 +451,24 @@ export const ARTICLES: ArticleMeta[] = [
     readMin: 7,
     tools: ["ping", "speed"],
     related: ["what-is-packet-loss", "what-is-ping", "how-to-lower-ping", "what-is-bufferbloat"],
+  },
+  {
+    slug: "what-is-nat",
+    title: "What Is NAT? Network Address Translation Explained",
+    description: "NAT lets every device in your home share one public IP. Learn how network address translation works, its types, why it blocks incoming traffic, and IPv6.",
+    published: "2026-10-26",
+    readMin: 7,
+    tools: ["ip", "port"],
+    related: ["what-is-cgnat", "what-is-port-forwarding", "public-vs-private-ip-address", "what-is-ipv6"],
+  },
+  {
+    slug: "what-is-ipv6",
+    title: "What Is IPv6? Address Format, Types and How to Check",
+    description: "IPv6 is the newer Internet Protocol with 128-bit addresses. See what an IPv6 address looks like, its types, why you have several, and how to check yours.",
+    published: "2026-10-26",
+    readMin: 7,
+    tools: ["ip", "subnet"],
+    related: ["ipv4-vs-ipv6", "what-is-nat", "what-is-a-169-254-ip-address", "is-my-vpn-working"],
   },
 ];
 
