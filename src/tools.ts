@@ -187,7 +187,6 @@ export const TOOLS: Tool[] = [
     desc: "Owner and IP prefixes of any AS number or IP",
     title: "ASN Lookup: AS Number, Owner and IP Prefixes",
     description: "Free ASN lookup: find who runs any autonomous system, every IPv4 and IPv6 prefix it announces, or the ASN behind an IP address, from live routing data.",
-    enOnly: true,
   },
   {
     id: "redirects",
@@ -196,7 +195,6 @@ export const TOOLS: Tool[] = [
     desc: "Follow every redirect hop of a URL",
     title: "Redirect Checker: Trace 301 and 302 Redirect Chains",
     description: "Free redirect checker: follow every hop of a URL with its 301, 302, 307 or 308 status, timing and HSTS, and catch loops, long chains and meta refresh.",
-    enOnly: true,
   },
   {
     id: "email-headers",
@@ -205,7 +203,6 @@ export const TOOLS: Tool[] = [
     desc: "Trace an email's path and its SPF, DKIM, DMARC",
     title: "Email Header Analyzer: Trace Sender and Delays",
     description: "Free email header analyzer: paste raw headers to see every server hop and delay, the sender's IP, and SPF, DKIM and DMARC results. Runs in your browser.",
-    enOnly: true,
   },
 ];
 

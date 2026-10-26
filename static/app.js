@@ -1363,9 +1363,10 @@
             ["Registry", d.registry],
             ["IP address", d.ip, { mono: true }],
             ["Covering prefix", d.ipPrefix, { mono: true }],
-            ["IPv4 prefixes", d.counts.v4 ? tr("{n} prefixes, {a} addresses", { n: d.counts.v4.toLocaleString(), a: d.counts.v4Addresses.toLocaleString() }) : "0"],
-            ["IPv6 prefixes", String(d.counts.v6)],
+            ["IPv4 prefixes", d.prefixesUnavailable ? "" : d.counts.v4 ? tr("{n} prefixes, {a} addresses", { n: d.counts.v4.toLocaleString(), a: d.counts.v4Addresses.toLocaleString() }) : "0"],
+            ["IPv6 prefixes", d.prefixesUnavailable ? "" : String(d.counts.v6)],
           ]) +
+          (d.prefixesUnavailable ? note("This network announces so many prefixes that the list could not be loaded in time. Try again in a minute.", "warn") : "") +
           (d.prefixes.v4.length ? `<h3>${esc(tr("IPv4 prefixes"))}</h3><p class="mono" style="line-height:2">${list(d.prefixes.v4)}</p>${more(d.counts.v4, d.prefixes.v4.length)}` : "") +
           (d.prefixes.v6.length ? `<h3>${esc(tr("IPv6 prefixes"))}</h3><p class="mono" style="line-height:2">${list(d.prefixes.v6)}</p>${more(d.counts.v6, d.prefixes.v6.length)}` : "") +
           (d.prefixes.v4.length + d.prefixes.v6.length ? `<p><button class="btn sm" type="button" data-copy="${esc([...d.prefixes.v4, ...d.prefixes.v6].join("\n"))}">${esc(tr("Copy all prefixes"))}</button></p>` : "");
@@ -1445,7 +1446,7 @@
       if (replyTo && domainOf(replyTo) && domainOf(replyTo) !== domainOf(from)) warnings.push(note(tr("Replies go to {r}, a different domain from the sender. This is common in phishing.", { r: domainOf(replyTo) }), "warn"));
       const tone = (v) => (v === "pass" ? "ok" : !v || v === "none" || v === "neutral" ? "" : "bad");
       out.innerHTML = warnings.join("") +
-        table(["Check", "Result"], [["SPF", spf], ["DKIM", dkim], ["DMARC", dmarc]].map(([k, v]) => `<tr><td>${k}</td><td>${badge(tone(v), v || "Not recorded")}</td></tr>`)) +
+        table(["Type", "Result"], [["SPF", spf], ["DKIM", dkim], ["DMARC", dmarc]].map(([k, v]) => `<tr><td>${k}</td><td>${badge(tone(v), v || "Not recorded")}</td></tr>`)) +
         kv([
           ["From", from], ["Reply-To", replyTo], ["Return-Path", returnPath], ["Subject", get("subject")[0]], ["Date", get("date")[0]],
           ["Message-ID", get("message-id")[0], { mono: true }],
