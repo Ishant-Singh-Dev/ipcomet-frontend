@@ -233,12 +233,13 @@ export const ARTICLES: ArticleMeta[] = [
   },
   {
     slug: "what-is-my-default-gateway",
-    title: "What Is My Default Gateway? How to Find It",
-    description: "Your default gateway is the router that sends your traffic to the internet. Learn how to find it on any device and how to fix it when it fails.",
+    title: "What Is My Default Gateway Address? How to Find It",
+    description: "Your default gateway is the router address your device sends outside traffic to. Find it on any device, estimate it from your IP, and see your ISP gateway.",
     published: "2026-10-08",
-    readMin: 5,
-    tools: ["ip", "subnet"],
-    related: ["find-router-ip-address", "public-vs-private-ip-address", "cidr-subnet-mask-explained"],
+    updated: "2026-10-29",
+    readMin: 7,
+    tools: ["ip", "subnet", "ping"],
+    related: ["find-router-ip-address", "how-to-find-your-ip-address", "public-vs-private-ip-address", "cidr-subnet-mask-explained"],
   },
   {
     slug: "static-vs-dynamic-ip-address",

@@ -473,7 +473,7 @@ export const BODIES: Record<string, string> = {
 <p>When just one site is slow, the problem may be the site's own nameservers. Look up its NS records with our <a href="/dns">DNS tool</a> and see how fast they answer. If you run the site, use a reputable DNS provider with servers around the world, and keep TTL values sensible. See <a href="/learn/dns-records-explained">DNS records explained</a>.</p>
 
 <h2>Still slow?</h2>
-<p>Run our <a href="/speed-test">speed test</a> to check latency and jitter. A high round-trip time points to a connection problem, not DNS.</p>
+<p>Run our <a href="/speed-test">speed test</a> to check latency and jitter. A high round-trip time points to a connection problem, not DNS. Our guide to <a href="/learn/why-is-my-internet-so-slow">why your internet is slow</a> works through the other causes in order.</p>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc8484" rel="noopener">RFC 8484: DNS Queries over HTTPS (DoH) (IETF)</a></li><li><a href="https://developers.cloudflare.com/1.1.1.1/" rel="noopener">Cloudflare: 1.1.1.1 DNS resolver documentation</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li></ul>
@@ -583,7 +583,7 @@ export const BODIES: Record<string, string> = {
 </ul>
 
 <h2>5. Scan your network</h2>
-<p>Run <code>arp -a</code> in a terminal to list devices your computer has recently talked to, or use a network scanner app. Match the printer's MAC address, which is printed on a label on the device.</p>
+<p>Run <code>arp -a</code> in a terminal to list devices your computer has recently talked to, or use a network scanner app. Match the printer's <a href="/learn/what-is-a-mac-address">MAC address</a>, which is printed on a label on the device.</p>
 
 <h2>Make the address stay put</h2>
 <p>If the address changes and your printer keeps disconnecting, give it a fixed one. Either reserve it in the router's DHCP settings, which is the best approach, or set a static address on the printer. Choose an address inside your network and outside the DHCP pool. Our <a href="/subnet">subnet calculator</a> shows the usable range.</p>
@@ -743,7 +743,7 @@ export const BODIES: Record<string, string> = {
 <p>Run <code>ip addr</code> or <code>hostname -I</code> in a terminal.</p>
 
 <h2>Find the IP address of your router</h2>
-<p>Your router's address, also called the default gateway, is different again. We cover it step by step in <a href="/learn/find-router-ip-address">how to find your router's IP address</a>. To find a printer's address, see <a href="/learn/find-printer-ip-address">how to find a printer's IP address</a>.</p>
+<p>Your router's address, also called the <a href="/learn/what-is-my-default-gateway">default gateway</a>, is different again. We cover it step by step in <a href="/learn/find-router-ip-address">how to find your router's IP address</a>. To find a printer's address, see <a href="/learn/find-printer-ip-address">how to find a printer's IP address</a>.</p>
 
 <h2>Find the IP address of a website</h2>
 <p>Type the domain into our <a href="/lookup">IP lookup</a> and it returns the address of the server behind the site, with its location and owner. For all of a domain's records, use the <a href="/dns">DNS lookup</a>.</p>
@@ -759,7 +759,7 @@ export const BODIES: Record<string, string> = {
 `,
 
   "find-router-ip-address": `
-<p>Your router's IP address, also known as the default gateway, is the address you type into a browser to open the router's settings page. You need it to change the Wi-Fi password, set up port forwarding or fix a connection problem. Here is how to find it on every device.</p>
+<p>Your router's IP address, also known as the <a href="/learn/what-is-my-default-gateway">default gateway</a>, is the address you type into a browser to open the router's settings page. You need it to change the Wi-Fi password, set up port forwarding or fix a connection problem. Here is how to find it on every device.</p>
 
 <h2>The most common router addresses</h2>
 <p>Try these first. One of them works for most home routers:</p>
@@ -886,7 +886,7 @@ export const BODIES: Record<string, string> = {
 <p>Ping is the time, in milliseconds (ms), that it takes for a small message to travel from your device to another computer and back. You will see the word in games, video calls and in the results of every speed test. A lower number means a faster, more responsive connection.</p>
 
 <h2>What does ping mean in a speed test?</h2>
-<p>In a speed test, ping, also called latency, is separate from download and upload speed. Speed is how much data you can move per second. Ping is how quickly the first byte gets there and back. A connection can be very fast and still feel laggy if its ping is high.</p>
+<p>In a speed test, ping, also called latency, is separate from download and upload speed. Speed is how much data you can move per second. Ping is how quickly the first byte gets there and back. A connection can be very fast and still feel laggy if its ping is high. For the download and upload side, see <a href="/learn/what-is-a-good-internet-speed">what counts as a good internet speed</a>.</p>
 
 <h2>What is a good ping?</h2>
 <div class="tw"><table><tbody>
@@ -1093,29 +1093,53 @@ export const BODIES: Record<string, string> = {
 `,
 
   "what-is-my-default-gateway": `
-<p>Your default gateway is the device that forwards traffic from your network to everywhere else. On a home network it is almost always your router. When your computer wants to reach a server it cannot see locally, it hands the packet to the gateway, and the gateway sends it on.</p>
+<p>Your <strong>default gateway</strong> is the device that forwards traffic from your network to everywhere else. On a home network it is almost always your router. When your computer wants to reach a server it cannot see locally, it hands the packet to the gateway, and the gateway sends it on.</p>
+<p>In brief: your default gateway address is your router's private address on your own network, for example 192.168.1.1. Windows lists it as Default Gateway, Macs and iPhones call it Router, and Android calls it Gateway. It is not your public IP address, and it is not your provider's gateway, which sits one step further out.</p>
 
 <h2>Why is it called a default gateway?</h2>
-<p>Your device keeps a small routing table. Addresses on your own network it delivers directly. For anything else there is one catch-all entry, the <em>default</em> route, pointing at the gateway. Without it, your device can reach your printer but not the internet.</p>
+<p>Your device keeps a small routing table. Addresses on your own network it delivers directly. For anything else there is one catch-all entry, the <em>default</em> route, pointing at the gateway. Without it, your device can reach your printer but not the internet. The host requirements in <a href="https://www.rfc-editor.org/rfc/rfc1122" rel="noopener">RFC 1122</a> describe this choice of a first-hop router for any destination that is not on the local network.</p>
+<p>Your device usually learns the gateway automatically. When it joins the network, the router's DHCP server hands out an address, a subnet mask and a Router option that names the gateway (<a href="https://www.rfc-editor.org/rfc/rfc2132" rel="noopener">RFC 2132</a>, option 3).</p>
 
-<h2>Typical gateway addresses</h2>
-<p>It is a private address on your own network, most often one of these:</p>
-<ul>
-<li><code>192.168.1.1</code> and <code>192.168.0.1</code></li>
-<li><code>10.0.0.1</code> and <code>10.0.0.138</code></li>
-<li><code>192.168.1.254</code> or <code>192.168.100.1</code> on some provider modems</li>
-</ul>
+<h2>Common default gateway addresses</h2>
+<p>There is no single standard gateway address. The router maker or your provider picks it, and it is always a private address from the ranges set aside in <a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918</a>: 10.0.0.0 to 10.255.255.255, 172.16.0.0 to 172.31.255.255 and 192.168.0.0 to 192.168.255.255. These are defaults their makers publish:</p>
+<div class="tw"><table><tbody>
+<tr><th>Equipment</th><th>Published default address</th><th>Also reachable as</th></tr>
+<tr><td>TP-Link routers</td><td>192.168.0.1 (some models 192.168.1.1)</td><td>tplinkwifi.net</td></tr>
+<tr><td>Netgear routers</td><td>192.168.1.1</td><td>routerlogin.net</td></tr>
+<tr><td>Linksys routers</td><td>192.168.1.1</td><td>myrouter.local</td></tr>
+<tr><td>Xfinity gateways</td><td>10.0.0.1</td><td>Xfinity Admin Tool at that address</td></tr>
+<tr><td>Netgear cable modems</td><td>192.168.100.1</td><td>Modem status page only</td></tr>
+</tbody></table></div>
+<p>If you changed the router's network range yourself, or your provider's engineer did, none of these will apply. Look the address up on a device instead.</p>
 
-<h2>How to find yours</h2>
+<h2>How to find your default gateway address</h2>
 <ul>
-<li><strong>Windows:</strong> run <code>ipconfig</code> in Command Prompt and read the <strong>Default Gateway</strong> line.</li>
-<li><strong>macOS:</strong> System Settings, then Network, then Details, then TCP/IP, and read the <strong>Router</strong> field.</li>
-<li><strong>Linux:</strong> run <code>ip route | grep default</code>. The address after <code>via</code> is the gateway.</li>
-<li><strong>iPhone:</strong> Settings, then Wi-Fi, tap the (i) next to your network, and read <strong>Router</strong>.</li>
-<li><strong>Android:</strong> Settings, then Wi-Fi, tap your network and read <strong>Gateway</strong>.</li>
-<li><strong>PlayStation 5:</strong> Settings, then Network, then Connection Status, then View Connection Status.</li>
+<li><strong>Windows:</strong> run <code>ipconfig</code> in Command Prompt and read the Default Gateway line under your active adapter. <code>route print</code> shows the full routing table, where the gateway sits on the line whose network destination is 0.0.0.0. In PowerShell, <code>Get-NetRoute -DestinationPrefix 0.0.0.0/0</code> shows it as the NextHop.</li>
+<li><strong>macOS:</strong> System Settings, then Network, then Details, then TCP/IP, and read the Router field. In Terminal, <code>route -n get default</code> prints it on the gateway line.</li>
+<li><strong>Linux:</strong> run <code>ip route show default</code>. The address after <code>via</code> is the gateway.</li>
+<li><strong>iPhone:</strong> Settings, then Wi-Fi, tap the (i) next to your network, and read Router.</li>
+<li><strong>Android:</strong> Settings, then Wi-Fi, tap your network and read Gateway. Some phones hide it under an Advanced or View more section.</li>
 </ul>
-<p>Our step-by-step guide with screenshots of each menu is <a href="/learn/find-router-ip-address">how to find your router's IP address</a>, since on a home network the two are the same number.</p>
+<p>Our step-by-step guide to each menu is <a href="/learn/find-router-ip-address">how to find your router's IP address</a>, since on a home network the two are the same number. For your device's own address, see <a href="/learn/how-to-find-your-ip-address">how to find your IP address on any device</a>.</p>
+
+<h3>What these commands showed on a real network</h3>
+<p>We ran the macOS commands on 29 October 2026 on a Mac with a wired connection to an office network. <code>route -n get default</code> returned the gateway 172.20.64.1 on interface en6. <code>ipconfig getoption en6 router</code>, which reads the Router option from the DHCP lease, returned the same address, and <code>ipconfig getoption en6 subnet_mask</code> returned 255.255.252.0. Three pings to the gateway came back with an average of 2.3 ms and no loss.</p>
+
+<h2>Can you work out the gateway from an IP address?</h2>
+<p>Not with certainty. Your device receives the gateway as a setting, and the address alone does not reveal it. What the address and subnet mask do give you is the range the gateway must sit in, and by convention many networks use the first usable address of that range, and some use the last.</p>
+<p>For example, in the test above the mask 255.255.252.0 is a /22, so the network ran from 172.20.64.0 to 172.20.67.255 and the usable hosts from 172.20.64.1 to 172.20.67.254. The gateway was 172.20.64.1, the first usable address. Our <a href="/subnet">subnet calculator</a> works out that range for any address and mask, and <a href="/learn/cidr-subnet-mask-explained">CIDR and subnet masks explained</a> covers the arithmetic. Treat the result as a guess to test with <code>ping</code>, then confirm it with one of the commands above.</p>
+
+<h2>What is my ISP gateway address?</h2>
+<p>Your <strong>ISP gateway</strong> is the provider's router on the far side of your own router. Your devices never talk to it directly. Your router uses it as the default gateway for its own internet link, the same way your laptop uses your router.</p>
+<p>There are two ways to see it:</p>
+<ul>
+<li><strong>Router status page.</strong> Log in to the router and open the Internet, WAN or Status page. The gateway listed there, next to the router's WAN address, is normally the provider's.</li>
+<li><strong>Traceroute.</strong> Run <code>tracert /d 1.1.1.1</code> on Windows or <code>traceroute -n 1.1.1.1</code> on a Mac or Linux. Hop 1 is your own gateway. The next hop is usually the provider. The /d and -n options skip name lookups so the trace finishes faster (<a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tracert" rel="noopener">Microsoft tracert reference</a>).</li>
+</ul>
+<p>On larger networks the second hop can still be yours. In our office trace, hops 2 and 3 were also private addresses (192.168.40.2 and 172.16.2.1), and the first public address appeared at hop 4. If your router's WAN address falls between 100.64.0.0 and 100.127.255.255, your provider uses carrier-grade NAT from the shared range in <a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598</a>, and the provider's gateway is inside that range too. Our guide to <a href="/learn/what-is-cgnat">CGNAT</a> explains what that changes.</p>
+
+<h2>Why does my default gateway start with fe80?</h2>
+<p>That is the IPv6 gateway. A <strong>link-local address</strong> is an IPv6 address that only works on your own network segment. Link-local addresses start with fe80, and routers must not forward packets sent to them to other links (<a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291</a>, section 2.5.6; <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-119.pdf" rel="noopener">NIST SP 800-119</a>). IPv6 routers announce themselves in Router Advertisements sent from their link-local address, so your device records that address as its IPv6 default gateway (<a href="https://www.rfc-editor.org/rfc/rfc4861" rel="noopener">RFC 4861</a>). Windows can list it in ipconfig next to the IPv4 gateway, and on a home network both point at the same router. On our test Mac, <code>netstat -nr -f inet6</code> also listed fe80 default routes on its utun tunnel interfaces. Our guide to <a href="/learn/what-is-ipv6">IPv6</a> explains link-local addresses.</p>
 
 <h2>Gateway, subnet mask and DNS: how they fit together</h2>
 <div class="tw"><table><tbody>
@@ -1125,22 +1149,31 @@ export const BODIES: Record<string, string> = {
 <tr><td>Default gateway</td><td>Where everything else is sent</td><td>192.168.1.1</td></tr>
 <tr><td>DNS server</td><td>Who turns names into addresses</td><td>1.1.1.1</td></tr>
 </tbody></table></div>
-<p>The gateway must sit inside the range your subnet mask defines, or your device cannot reach it. Our <a href="/subnet">subnet calculator</a> shows that range for any address and prefix, and <a href="/learn/cidr-subnet-mask-explained">CIDR and subnet masks explained</a> covers the arithmetic.</p>
+<p>The gateway must sit inside the range your subnet mask defines, or your device cannot reach it.</p>
 
 <h2>Your gateway is not your public IP address</h2>
-<p>The gateway is a private address that only exists inside your home. The address the internet sees belongs to the router's outside interface, and you can check it on our <a href="/">IP checker</a>. If the address on your router's status page differs from the one we show, your provider is sharing one public address between several customers, which also blocks inbound connections. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
+<p>The gateway is a private address that only exists inside your network. The address the internet sees belongs to the router's outside interface, and you can check it on our <a href="/">IP checker</a>. If the WAN address on your router's status page differs from the one we show, your router may sit behind another router, or your provider may use carrier-grade NAT, which blocks unsolicited inbound connections. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
 
 <h2>Troubleshooting</h2>
 <ul>
-<li><strong>No gateway listed.</strong> Your device did not get a DHCP lease. Reconnect to the network or restart the router.</li>
+<li><strong>No gateway listed.</strong> Your device did not get a DHCP lease, or a manual configuration left the gateway blank. Reconnect to the network or restart the router.</li>
 <li><strong>Gateway shows 0.0.0.0.</strong> Same cause: no working configuration was received.</li>
-<li><strong>An address starting 169.254.</strong> Windows assigned itself a fallback address because DHCP failed entirely.</li>
-<li><strong>Gateway responds but nothing loads.</strong> Local networking is fine and the fault is upstream, either DNS or your provider. Try our <a href="/ping">ping test</a> and <a href="/learn/what-is-a-dns-server">what is a DNS server</a>.</li>
-<li><strong>Two gateways.</strong> A second router behind the first creates double NAT, which breaks port forwarding until one is put into bridge mode.</li>
+<li><strong>An address starting 169.254.</strong> The device gave itself a fallback address because DHCP failed entirely. See <a href="/learn/what-is-a-169-254-ip-address">what a 169.254 address means</a>.</li>
+<li><strong>Gateway does not answer a ping.</strong> Check the cable or Wi-Fi link first. Some routers ignore pings, so also try opening the gateway address in a browser.</li>
+<li><strong>Gateway responds but nothing loads.</strong> Local networking is fine and the fault is upstream, either DNS or your provider. Try our <a href="/ping">ping test</a>, or read <a href="/learn/what-is-a-dns-server">what is a DNS server</a>.</li>
+<li><strong>Two gateways.</strong> A second router behind the first creates double NAT, which breaks port forwarding until one is put into bridge mode. <a href="/learn/what-is-nat">What is NAT</a> explains why.</li>
 </ul>
 
+<h2>Frequently asked questions</h2>
+<h3>Is the default gateway the same as my router's IP address?</h3>
+<p>On a home network, yes. The router's LAN address is the gateway every device uses. On office and campus networks the gateway may be a separate router or firewall that you cannot log in to.</p>
+<h3>Can I change my default gateway?</h3>
+<p>Yes, by setting a manual (static) IP configuration on the device, or for every device at once in the router's DHCP settings. Enter a wrong address and that device loses internet access while local devices still work, so note the old value first.</p>
+<h3>Why does my computer show two default gateways?</h3>
+<p>Usually one is IPv4 and one is IPv6, and both belong to the same router. A VPN or a second network adapter, such as Wi-Fi and Ethernet at once, can also add a gateway.</p>
+
 <h2>Sources and further reading</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1122" rel="noopener">RFC 1122: Requirements for Internet Hosts: Communication Layers (IETF)</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li></ul>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1122" rel="noopener">RFC 1122: Requirements for Internet Hosts: Communication Layers (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc2132" rel="noopener">RFC 2132: DHCP Options and BOOTP Vendor Extensions (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4861" rel="noopener">RFC 4861: Neighbor Discovery for IP version 6 (IETF)</a></li><li><a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-119.pdf" rel="noopener">NIST SP 800-119: Guidelines for the Secure Deployment of IPv6</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft: ipconfig command reference</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/route_ws2008" rel="noopener">Microsoft: route command reference</a></li><li><a href="https://learn.microsoft.com/en-us/powershell/module/nettcpip/get-netroute" rel="noopener">Microsoft: Get-NetRoute cmdlet reference</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tracert" rel="noopener">Microsoft: tracert command reference</a></li><li><a href="https://support.apple.com/guide/mac-help/mh141292/mac" rel="noopener">Apple: Use TCP/IP settings on Mac</a></li><li><a href="https://man7.org/linux/man-pages/man8/ip-route.8.html" rel="noopener">ip-route(8) Linux manual page</a></li><li><a href="https://www.tp-link.com/us/support/faq/87/" rel="noopener">TP-Link: How to log in to the web-based interface of a TP-Link router</a></li><li><a href="https://kb.netgear.com/980/How-do-I-log-in-to-my-NETGEAR-router" rel="noopener">Netgear: How do I log in to my NETGEAR router?</a></li><li><a href="https://kb.netgear.com/000059644/How-do-I-log-in-to-my-NETGEAR-cable-modem" rel="noopener">Netgear: How do I log in to my NETGEAR cable modem?</a></li><li><a href="https://support.linksys.com/kb/article/73" rel="noopener">Linksys: Accessing the router's web-based setup page</a></li><li><a href="https://www.xfinity.com/support/articles/wifi-change-admin-tool" rel="noopener">Xfinity: Change WiFi settings with the Admin Tool</a></li></ul>
 `,
 
   "static-vs-dynamic-ip-address": `

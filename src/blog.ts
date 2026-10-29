@@ -68,7 +68,7 @@ const TOPICS: Array<{ title: string; blurb: string; slugs: string[] }> = [
   {
     title: "IP address basics",
     blurb: "What IP addresses are, how the kinds differ and why yours changes.",
-    slugs: ["what-is-an-ip-address", "what-is-an-ip-checker", "why-is-my-ip-location-wrong", "ipv4-vs-ipv6", "public-vs-private-ip-address", "static-vs-dynamic-ip-address", "why-does-my-ip-address-change", "what-is-my-isp", "what-is-a-mac-address"],
+    slugs: ["what-is-an-ip-address", "what-is-an-ip-checker", "how-to-choose-an-ip-checker", "why-is-my-ip-location-wrong", "ipv4-vs-ipv6", "what-is-ipv6", "public-vs-private-ip-address", "static-vs-dynamic-ip-address", "why-does-my-ip-address-change", "what-is-a-169-254-ip-address", "what-is-my-isp", "what-is-a-mac-address"],
   },
   {
     title: "Find and change your IP address",
@@ -77,8 +77,8 @@ const TOPICS: Array<{ title: string; blurb: string; slugs: string[] }> = [
   },
   {
     title: "Privacy, VPNs and tracking",
-    blurb: "What your IP address reveals, how to hide it and how to check that it worked.",
-    slugs: ["how-to-hide-your-ip-address", "can-someone-track-you-by-ip-address", "is-my-vpn-working", "webrtc-leak-explained", "is-my-ip-address-blacklisted"],
+    blurb: "What your IP address and browser reveal, how to hide it and how to check that it worked.",
+    slugs: ["how-to-hide-your-ip-address", "can-someone-track-you-by-ip-address", "what-your-browser-reveals", "is-my-vpn-working", "webrtc-leak-explained", "is-my-ip-address-blacklisted"],
   },
   {
     title: "Proxies",
@@ -86,14 +86,19 @@ const TOPICS: Array<{ title: string; blurb: string; slugs: string[] }> = [
     slugs: ["how-to-check-if-a-proxy-is-working", "how-to-test-proxy-speed", "http-vs-socks5-proxy", "residential-vs-datacenter-proxies", "rotating-vs-sticky-proxies", "proxy-anonymity-levels", "proxy-error-407-403-502"],
   },
   {
-    title: "DNS",
-    blurb: "How names turn into addresses, and how to fix it when they do not.",
-    slugs: ["what-is-a-dns-server", "dns-records-explained", "how-to-flush-dns-cache", "fix-slow-dns-lookup"],
+    title: "DNS and domains",
+    blurb: "How names turn into addresses, who owns a domain, and how to fix lookups that fail.",
+    slugs: ["what-is-a-dns-server", "dns-records-explained", "what-is-reverse-dns", "what-is-whois", "how-to-flush-dns-cache", "fix-slow-dns-lookup"],
   },
   {
-    title: "Ports, subnets and speed",
-    blurb: "Port forwarding, CIDR ranges, and getting a lower ping.",
-    slugs: ["what-is-port-forwarding", "how-to-check-if-a-port-is-open", "cidr-subnet-mask-explained", "what-is-ping", "how-to-lower-ping"],
+    title: "Ports, NAT and subnets",
+    blurb: "Port numbers and forwarding, how NAT and CGNAT share one address, and CIDR ranges.",
+    slugs: ["what-is-port-forwarding", "how-to-check-if-a-port-is-open", "common-ports-list", "what-is-nat", "what-is-cgnat", "cidr-subnet-mask-explained"],
+  },
+  {
+    title: "Speed, ping and latency",
+    blurb: "What a good speed is, why a connection feels slow, and how to read ping, jitter, packet loss and bufferbloat.",
+    slugs: ["what-is-a-good-internet-speed", "why-is-my-internet-so-slow", "what-is-ping", "how-to-lower-ping", "what-is-jitter", "what-is-packet-loss", "what-is-bufferbloat"],
   },
 ];
 
