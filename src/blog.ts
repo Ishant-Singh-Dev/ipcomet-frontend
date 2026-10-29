@@ -174,7 +174,7 @@ export function articlePage(slug: string, origin: string): Rendered {
   const tools = toolCards(a.tools);
   const page = `<article>
 <section class="phead"><p class="crumbs"><a href="/">Home</a> / <a href="/learn">Learn</a></p><h1>${esc(a.title)}</h1>
-<p class="meta">Published by <a href="/about">${esc(AUTHOR)}</a> · Updated ${fmt(a.published)} · ${a.readMin} min read</p></section>
+<p class="meta">Published by <a href="/about">${esc(AUTHOR)}</a> · Updated ${fmt(a.updated ?? a.published)} · ${a.readMin} min read</p></section>
 <div class="prose">${toc}${body}
 <div class="cta"><h3>Try it yourself</h3><p>See the real numbers for your own connection with our free tools.</p></div></div>
 <div style="margin-top:-20px;max-width:720px">${tools}</div>
@@ -195,7 +195,7 @@ export function articlePage(slug: string, origin: string): Rendered {
         headline: a.title,
         description: a.description,
         datePublished: a.published,
-        dateModified: a.published,
+        dateModified: a.updated ?? a.published,
         author: { "@type": "Person", name: AUTHOR, ...(origin ? { "@id": origin + AUTHOR_ID, url: origin + "/about" } : {}) },
         publisher: {
           "@type": "Organization",

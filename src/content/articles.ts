@@ -3,6 +3,8 @@ export interface ArticleMeta {
   title: string;
   description: string;
   published: string;
+  /** Date of the last substantive rewrite (new sections, tables, rewritten text). Leave unset for link or typo fixes. */
+  updated?: string;
   readMin: number;
   /** Tool ids shown in the "try it yourself" box. */
   tools: string[];
@@ -25,6 +27,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "What Is an IP Address? Meaning, Types and Examples",
     description: "IP address meaning in plain English: what IP stands for, what an address looks like, public vs private, IPv4 vs IPv6, who assigns it and how to find yours.",
     published: "2026-10-07",
+    updated: "2026-10-26",
     readMin: 7,
     tools: ["ip", "lookup", "asn"],
     related: ["public-vs-private-ip-address", "what-is-ipv6", "what-is-nat", "what-is-a-mac-address"],
@@ -61,6 +64,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "How to Change Your IP Address: 7 Ways That Work",
     description: "Change your IP address on any device: restart the router, switch networks, use a VPN, or ask your ISP. What each method changes and how to check it worked.",
     published: "2026-10-07",
+    updated: "2026-10-26",
     readMin: 8,
     tools: ["ip", "webrtc", "reputation"],
     related: ["change-ip-address-windows-11", "static-vs-dynamic-ip-address", "why-does-my-ip-address-change", "is-my-ip-address-blacklisted"],
@@ -241,6 +245,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "Static vs Dynamic IP Address: How to Tell Which You Have",
     description: "Is your IP static or dynamic? Four ways to check, plus how the two differ in cost, setup and hosting, and the free alternative most people should use.",
     published: "2026-10-08",
+    updated: "2026-10-18",
     readMin: 6,
     tools: ["ip", "port"],
     related: ["why-does-my-ip-address-change", "how-to-change-your-ip-address", "what-is-my-isp"],
@@ -277,6 +282,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "HTTP vs SOCKS5 Proxies: Which One Should You Use?",
     description: "HTTP, HTTPS and SOCKS5 proxies differ in what they carry, how they handle DNS and what they can see. Learn which fits your task.",
     published: "2026-10-10",
+    updated: "2026-10-14",
     readMin: 6,
     tools: ["proxy-checker", "webrtc"],
     related: ["residential-vs-datacenter-proxies", "proxy-anonymity-levels", "how-to-check-if-a-proxy-is-working", "proxy-error-407-403-502"],
@@ -286,6 +292,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "Residential vs Datacenter Proxies: Which Should You Buy?",
     description: "Residential and datacenter proxies differ in price, speed, trust and block rate. See how they compare and how to tell which kind you have.",
     published: "2026-10-10",
+    updated: "2026-10-14",
     readMin: 6,
     tools: ["proxy-checker", "reputation", "lookup"],
     related: ["rotating-vs-sticky-proxies", "http-vs-socks5-proxy", "how-to-test-proxy-speed"],
@@ -295,6 +302,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "Rotating vs Sticky Proxies: How IP Sessions Work",
     description: "Rotating proxies change IP on every request, sticky ones keep it for a set time. Learn how each works and how to test which you have.",
     published: "2026-10-10",
+    updated: "2026-10-14",
     readMin: 5,
     tools: ["proxy-checker", "lookup"],
     related: ["residential-vs-datacenter-proxies", "how-to-check-if-a-proxy-is-working", "proxy-anonymity-levels"],
@@ -304,6 +312,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "Transparent, Anonymous and Elite Proxies Explained",
     description: "Transparent, anonymous and elite proxies reveal different things about you. Learn how to tell them apart and when the label stops mattering.",
     published: "2026-10-10",
+    updated: "2026-10-14",
     readMin: 5,
     tools: ["proxy-checker", "headers", "webrtc"],
     related: ["http-vs-socks5-proxy", "how-to-check-if-a-proxy-is-working", "residential-vs-datacenter-proxies", "rotating-vs-sticky-proxies"],
@@ -322,6 +331,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "Get Your Public IP From the Command Line (CMD, PowerShell, Terminal)",
     description: "Get your public IP address from Windows CMD, PowerShell, or a Mac or Linux terminal with one command: curl, nslookup, Python or Node, plus a free JSON API.",
     published: "2026-10-13",
+    updated: "2026-10-23",
     readMin: 5,
     tools: ["ip", "lookup"],
     related: ["how-to-find-your-ip-address", "what-is-an-ip-checker", "what-is-an-ip-address"],
@@ -376,6 +386,7 @@ export const ARTICLES: ArticleMeta[] = [
     title: "Why Does My IP Address Show the Wrong Location?",
     description: "IP locations are estimates, not GPS. Learn why your IP address can show the wrong city or country, and what you can and cannot do about it.",
     published: "2026-10-13",
+    updated: "2026-10-23",
     readMin: 5,
     tools: ["ip", "lookup"],
     related: ["what-is-my-isp", "what-is-an-ip-checker", "can-someone-track-you-by-ip-address", "how-to-choose-an-ip-checker", "what-is-whois"],
