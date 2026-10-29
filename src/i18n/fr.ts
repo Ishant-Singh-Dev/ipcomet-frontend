@@ -928,10 +928,10 @@ export const fr: LocaleData = {
     ping: {
       name: "Test de ping",
       desc: "Vérifiez votre latence et votre gigue",
-      title: "Test de ping : vérifiez votre latence et votre gigue",
-      description: "Test de ping en ligne gratuit. Mesurez votre latence, votre gigue et votre perte de paquets vers le serveur Cloudflare le plus proche en 10 secondes environ.",
+      title: "Test de ping : mesurer la latence et le jitter (gigue)",
+      description: "Test de ping gratuit. Mesurez votre latence, votre jitter (gigue) et votre perte de paquets vers le serveur Cloudflare le plus proche en 10 secondes environ.",
       h1: "Test de ping",
-      lead: "Mesurez votre latence, votre gigue et votre perte de paquets vers le serveur Cloudflare le plus proche en dix secondes environ.",
+      lead: "Mesurez votre latence, votre jitter (gigue) et votre perte de paquets vers le serveur Cloudflare le plus proche en dix secondes environ.",
       about:
         "Le ping est le temps, en millisecondes, qu’un tout petit message met pour aller de votre appareil à un serveur et revenir. C’est le chiffre qui décide si un jeu paraît instantané ou saccadé et si un appel vidéo se met à bégayer. Ce test envoie 25 vérifications rapides au centre de données Cloudflare le plus proche et indique votre ping moyen, meilleur et pire, votre gigue (de combien il varie) et toute perte de paquets. Comme le serveur de test est proche de vous, le résultat reflète l’état de votre propre connexion : Wi-Fi, routeur et fournisseur d’accès.",
       faq: [
