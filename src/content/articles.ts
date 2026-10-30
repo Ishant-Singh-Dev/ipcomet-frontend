@@ -482,6 +482,24 @@ export const ARTICLES: ArticleMeta[] = [
     tools: ["ip", "subnet"],
     related: ["ipv4-vs-ipv6", "what-is-nat", "what-is-a-169-254-ip-address", "is-my-vpn-working"],
   },
+  {
+    slug: "what-is-my-ip-address",
+    title: "What Is My IP Address? Public, Local, IPv4 and IPv6",
+    description: "Your IP address is the public number every website sees when you connect. Learn which address is yours, why you may have two, and how to check each one.",
+    published: "2026-10-30",
+    readMin: 8,
+    tools: ["ip", "lookup", "webrtc"],
+    related: ["how-to-find-your-ip-address", "public-vs-private-ip-address", "what-is-ipv6", "my-ip"],
+  },
+  {
+    slug: "my-ip",
+    title: "My IP Address Explained: Location, ISP, ASN and More",
+    description: "My IP shows more than a number. See what each line of your IP result means, from location and ISP to ASN and hostname, and how accurate each one is.",
+    published: "2026-10-30",
+    readMin: 7,
+    tools: ["ip", "lookup", "asn"],
+    related: ["what-is-my-ip-address", "why-is-my-ip-location-wrong", "what-is-my-isp", "what-is-reverse-dns"],
+  },
 ];
 
 export const articleBySlug = (slug: string) => ARTICLES.find((a) => a.slug === slug);

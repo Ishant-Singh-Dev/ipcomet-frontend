@@ -68,7 +68,7 @@ const TOPICS: Array<{ title: string; blurb: string; slugs: string[] }> = [
   {
     title: "IP address basics",
     blurb: "What IP addresses are, how the kinds differ and why yours changes.",
-    slugs: ["what-is-an-ip-address", "what-is-an-ip-checker", "how-to-choose-an-ip-checker", "why-is-my-ip-location-wrong", "ipv4-vs-ipv6", "what-is-ipv6", "public-vs-private-ip-address", "static-vs-dynamic-ip-address", "why-does-my-ip-address-change", "what-is-a-169-254-ip-address", "what-is-my-isp", "what-is-a-mac-address"],
+    slugs: ["what-is-my-ip-address", "my-ip", "what-is-an-ip-address", "what-is-an-ip-checker", "how-to-choose-an-ip-checker", "why-is-my-ip-location-wrong", "ipv4-vs-ipv6", "what-is-ipv6", "public-vs-private-ip-address", "static-vs-dynamic-ip-address", "why-does-my-ip-address-change", "what-is-a-169-254-ip-address", "what-is-my-isp", "what-is-a-mac-address"],
   },
   {
     title: "Find and change your IP address",
@@ -365,7 +365,7 @@ export function developersPage(origin: string): Rendered {
 <div class="prose" style="padding-bottom:30px">
 <h2>The one-line answer</h2>
 <p>Ask for the home page from a terminal and you get your public IP address, and nothing else:</p>
-${snip("curl ipcomet.com")}
+${snip("curl https://ipcomet.com")}
 <p>The output is a single line, such as <code>203.0.113.7</code>. The home page returns plain text when it recognises a command-line client (curl, wget, PowerShell, Python, Node and the like) by its User-Agent, and the full web page to everyone else. In a script, prefer <code>/api/ip</code>: it always returns plain text, whatever asks for it.</p>
 
 <h2>Endpoints</h2>

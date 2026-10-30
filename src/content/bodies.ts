@@ -31,7 +31,7 @@ export const BODIES: Record<string, string> = {
 <p>A public IP address usually reveals your internet provider, your country and often your city or region. It does not reveal your name, your street address or what you do online. Linking an address to a person normally needs your provider's records, which are released only through legal process. Our <a href="/lookup">IP lookup</a> shows exactly what anyone can see for an address, and <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a> goes further.</p>
 
 <h2>How to find your IP address</h2>
-<p>Your public address is at the top of our <a href="/">home page</a>, with your IPv6 address underneath if you have one. To find the private address of a device:</p>
+<p>Your public address is at the top of our <a href="/">home page</a>, with your IPv6 address underneath if you have one. Our guide to <a href="/learn/my-ip">what each line of your IP result means</a> explains the location, ISP and network details shown with it. To find the private address of a device:</p>
 <ul>
 <li>Windows: open Command Prompt and run <code>ipconfig</code>.</li>
 <li>Mac: open System Settings, choose Network, then your connection and Details.</li>
@@ -91,7 +91,7 @@ export const BODIES: Record<string, string> = {
 <p>Every home network uses two kinds of IP address. A <strong>public</strong> address identifies your whole connection to the internet, and <strong>private</strong> addresses identify each device inside your home. Understanding the split explains why you cannot simply connect to a laptop from across the world, and why port forwarding exists.</p>
 
 <h2>Public IP address</h2>
-<p>This is the address websites see when you visit them. Your internet provider assigns it to your router, and every device on your network shares it. It is unique on the internet at any moment, and it is what our <a href="/">IP checker</a> displays.</p>
+<p>This is the address websites see when you visit them. Your internet provider assigns it to your router, and every device on your network shares it. It is unique on the internet at any moment, and it is what our <a href="/">IP checker</a> displays. For which of your addresses counts as yours, see <a href="/learn/what-is-my-ip-address">what is my IP address</a>.</p>
 
 <h2>Private IP address</h2>
 <p>Private addresses are used only inside local networks, so they can be reused by millions of homes without clashing. Your router hands them out to your phone, laptop and TV. Three IPv4 ranges are reserved for this:</p>
@@ -749,7 +749,7 @@ export const BODIES: Record<string, string> = {
 <p>Type the domain into our <a href="/lookup">IP lookup</a> and it returns the address of the server behind the site, with its location and owner. For all of a domain's records, use the <a href="/dns">DNS lookup</a>.</p>
 
 <h2>Why you might see two addresses</h2>
-<p>Your public address may show as IPv4 (like <code>203.0.113.7</code>) or IPv6 (like <code>2001:db8::1</code>), or both. Our home page shows each on its own line. Read <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a> to understand the difference, and <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for why your phone and your public address never match.</p>
+<p>Your public address may show as IPv4 (like <code>203.0.113.7</code>) or IPv6 (like <code>2001:db8::1</code>), or both. Our home page shows each on its own line. Read <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a> to understand the difference, and <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for why your phone and your public address never match. If two checkers disagree, <a href="/learn/what-is-my-ip-address">what is my IP address</a> walks through the usual reasons.</p>
 
 <h2>Is it safe to share my IP address?</h2>
 <p>Generally yes. An address shows roughly where you are and who your provider is, not your name or home address. See <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
@@ -813,7 +813,7 @@ export const BODIES: Record<string, string> = {
 `,
 
   "what-is-my-isp": `
-<p>Your ISP, or internet service provider, is the company that connects you to the internet. Most of the time you already know who it is, because they send the bill. But sometimes you need to confirm it: after moving, when a VPN is on, or when a support agent asks. Here is how to find it in seconds.</p>
+<p>Your ISP, or internet service provider, is the company that connects you to the internet. Most of the time you already know who it is, because they send the bill. But sometimes you need to confirm it: after moving, when a VPN is on, or when a support agent asks. Here is how to find it in seconds. Your ISP is also one line of every <a href="/learn/my-ip">my IP result</a>, next to your ASN.</p>
 
 <h2>The fastest way</h2>
 <p>Open our <a href="/">IP checker</a>. The <strong>ISP</strong> line in the Network box shows who owns the network your connection comes from, and the <strong>ASN</strong> beside it is that network's identification number. For a lookup of any other address, use the <a href="/lookup">IP lookup</a>.</p>
@@ -1799,6 +1799,7 @@ console.log(ip);</code></pre>
 </ul>
 
 <h2>What do the results mean?</h2>
+<p>Our guide to <a href="/learn/my-ip">my IP results</a> goes through every field on the ipcomet result in more depth. In short:</p>
 <ul>
 <li><strong>IP version.</strong> IPv4 looks like <code>203.0.113.7</code> and IPv6 like <code>2001:db8::1</code>. Many connections have both.</li>
 <li><strong>Location.</strong> Country, region and city. It is an estimate made from network records, not GPS, so it can be wrong. See <a href="/learn/why-is-my-ip-location-wrong">why an IP address can show the wrong location</a>.</li>
@@ -2526,5 +2527,154 @@ console.log(ip);</code></pre>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc5952" rel="noopener">RFC 5952: A Recommendation for IPv6 Address Text Representation (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8981" rel="noopener">RFC 8981: Temporary Address Extensions for IPv6 (IETF)</a></li></ul>
+`,
+  "what-is-my-ip-address": `
+<p><strong>Your IP address</strong> is the public number your internet connection uses when it talks to websites and apps. It is assigned by your internet provider, every site you visit sees it, and you can <a href="/">check what your IP address is</a> at the top of the ipcomet home page in about a second.</p>
+<p>The short answer gets more interesting once you notice that most people have more than one address. Your router has a public one, your phone or laptop has a private one inside your home network, and many connections now have an IPv6 address as well as an IPv4 one. This guide explains which of them counts as "my IP", why different tools can disagree, and how to check each one.</p>
+
+<h2>Which IP address is "my IP"?</h2>
+<p>When people ask "what is my IP address", they almost always mean the public address that websites see. The other addresses matter for setting up a home network or fixing a problem, but they never leave your local network.</p>
+<div class="tw"><table><tbody>
+<tr><th>Address</th><th>Example</th><th>Who sees it</th><th>Where to find it</th></tr>
+<tr><td>Public IPv4</td><td class="mono">203.0.113.42</td><td>Every website and app you use</td><td>The big number on the <a href="/">ipcomet home page</a></td></tr>
+<tr><td>Public IPv6</td><td class="mono">2001:db8:4f2a::1c</td><td>Websites you reach over IPv6</td><td>The IPv6 line under it on the same page</td></tr>
+<tr><td>Private (local) IPv4</td><td class="mono">192.168.1.23</td><td>Only devices on your home or office network</td><td>Your device's network settings</td></tr>
+<tr><td>Link-local IPv6</td><td class="mono">fe80::1c</td><td>Only the local network segment</td><td>Your device's network settings</td></tr>
+</tbody></table></div>
+<p>The example addresses in this guide come from ranges set aside for documentation (<a href="https://www.rfc-editor.org/rfc/rfc5737" rel="noopener">RFC 5737</a> for IPv4 and <a href="https://www.rfc-editor.org/rfc/rfc3849" rel="noopener">RFC 3849</a> for IPv6), so they do not belong to anyone. For a deeper look at the split between the first and third rows, read <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
+
+<h2>What is my public IP address?</h2>
+<p>Your public IP address is the one your internet provider gives to your connection. At home it belongs to your router, and every phone, laptop and TV behind that router shares it. The router keeps track of which device asked for what, a job called <a href="/learn/what-is-nat">network address translation (NAT)</a>, so a website only ever sees the router's public address.</p>
+<p>On mobile data the public address belongs to your provider's network rather than your phone alone, and it usually changes when you move between Wi-Fi and mobile data. That is why your IP on a phone can look completely different from the one on your home computer, even when both are in the same room.</p>
+<p>Some providers go one step further and share one public IPv4 address between many customers. If your router's own WAN address falls between 100.64.0.0 and 100.127.255.255, the 100.64.0.0/10 block that <a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598</a> reserves for carrier-grade NAT, the address websites see is not yours alone. Our guide to <a href="/learn/what-is-cgnat">CGNAT</a> shows how to tell and what it breaks.</p>
+
+<h2>What is my IPv4 address?</h2>
+<p>Your IPv4 address is the familiar four numbers separated by dots, each between 0 and 255. IPv4 addresses are 32 bits long, as defined in <a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791</a>, the original Internet Protocol specification from 1981, which allows about 4.3 billion addresses in total. That limit is the reason home networks share one public address and why providers use carrier-grade NAT.</p>
+<p>ipcomet shows your public IPv4 address as the main number, even when your browser happened to connect over IPv6. IPv4 is still the address most people are asked for by games, remote-access tools and support teams. Your IPv6 address appears on the line below it.</p>
+
+<h2>What is my IPv6 address?</h2>
+<p>Your IPv6 address is the longer one written in groups of letters and numbers separated by colons. IPv6 addresses are 128 bits long under <a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200</a>, enough for every device to have its own public address without sharing. If the IPv6 line on the home page says it was not detected, your provider or network does not offer IPv6 yet, which is still common and nothing to fix.</p>
+<p>Two things make IPv6 addresses look unstable:</p>
+<ul>
+<li><strong>Temporary addresses.</strong> Most phones and computers create random temporary IPv6 addresses for outgoing connections and replace them over time, so sites cannot follow one address for long. <a href="https://www.rfc-editor.org/rfc/rfc8981" rel="noopener">RFC 8981</a> sets a default of one day before a new one is preferred and two days before the old one stops working.</li>
+<li><strong>IPv6 is tried first.</strong> When a site supports both versions, browsers and operating systems usually prefer IPv6 and fall back to IPv4 if it is slow. <a href="https://www.rfc-editor.org/rfc/rfc8305" rel="noopener">RFC 8305</a>, the "Happy Eyeballs" method, assumes this preference and recommends waiting about 250 milliseconds before trying the other version.</li>
+</ul>
+<p>So a site that shows only one address may show your IPv6 address on one visit and your IPv4 address on another. Our guide to <a href="/learn/what-is-ipv6">IPv6</a> covers the address format and types in detail.</p>
+
+<h2>What is my private IP address?</h2>
+<p>Your private IP address identifies your device inside your own network, and websites never see it. <a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918</a> reserves three blocks for this use: 10.0.0.0 to 10.255.255.255, 172.16.0.0 to 172.31.255.255 and 192.168.0.0 to 192.168.255.255. Most home routers hand out addresses that start with 192.168 or 10.</p>
+<p>You need the private address when you set up port forwarding, connect to a printer or reach another computer at home. The quickest ways to see it:</p>
+<ul>
+<li>Windows: open Command Prompt and run <code>ipconfig</code>, then read the IPv4 Address line.</li>
+<li>Mac: run <code>ipconfig getifaddr en0</code> in Terminal for Wi-Fi.</li>
+<li>Linux: run <code>ip addr</code> and look at the <code>inet</code> line of your active connection.</li>
+</ul>
+<p>Phones show it under the details of the Wi-Fi network you are connected to. Our guide on <a href="/learn/how-to-find-your-ip-address">how to find your IP address</a> has the steps for every device, and <a href="/learn/find-router-ip-address">finding your router's IP address</a> covers the gateway address.</p>
+
+<h2>Why do different sites show a different IP address?</h2>
+<p>Two IP checkers can both be right and still disagree. The usual reasons, in the order we would check them:</p>
+<div class="tw"><table><tbody>
+<tr><th>What you see</th><th>Likely reason</th><th>What to do</th></tr>
+<tr><td>One site shows IPv4, another shows IPv6</td><td>Your connection has both, and each site connected over a different one</td><td>Compare the IPv4 and IPv6 lines on the <a href="/">home page</a></td></tr>
+<tr><td>The address changed since yesterday</td><td>Your provider assigns a dynamic address, or your IPv6 temporary address rotated</td><td>Read <a href="/learn/why-does-my-ip-address-change">why your IP address changes</a></td></tr>
+<tr><td>A VPN's address on one site, your real one on another</td><td>The VPN is off in one browser, or a browser extension proxies only some tabs</td><td>Run a <a href="/webrtc">WebRTC leak test</a> and see <a href="/learn/is-my-vpn-working">is my VPN working</a></td></tr>
+<tr><td>Phone and laptop show different addresses</td><td>One is on mobile data and the other on Wi-Fi</td><td>Switch both to the same network and check again</td></tr>
+<tr><td>Your router's WAN address differs from the website's answer</td><td>Your provider uses carrier-grade NAT</td><td>Read <a href="/learn/what-is-cgnat">what CGNAT is</a></td></tr>
+</tbody></table></div>
+<p>The location next to your address can also look wrong, because it comes from a database of address blocks rather than GPS. Our guide to <a href="/learn/why-is-my-ip-location-wrong">why your IP location is wrong</a> explains why it often points to your provider's nearest hub.</p>
+
+<h2>How do I check my IP address from a terminal?</h2>
+<p>Request the ipcomet home page with curl over HTTPS and it replies with your public address as a single line of text:</p>
+<pre><code>curl https://ipcomet.com</code></pre>
+<p>We ran this on 30 October 2026 and got back the address and nothing else. Add <code>-4</code> or <code>-6</code> after <code>curl</code> to ask for a specific version. Include <code>https://</code>: a plain <code>http://</code> request is redirected, and curl prints the redirect page unless you add <code>-L</code>. For scripts, <code>https://ipcomet.com/api/ip</code> always returns plain text. The <a href="/developers">free IP API page</a> lists every endpoint, and our guide to <a href="/learn/get-public-ip-address-command-line">getting your public IP from the command line</a> covers CMD, PowerShell and Terminal.</p>
+
+<h2>Is it a problem that websites can see my IP address?</h2>
+<p>For most people, no. Your public address shows roughly where your provider connects you, often your city or region, and which provider you use. It does not show your name, your street address or your browsing history. Only your provider can match an address to a customer account, and it normally does so only for legal requests.</p>
+<p>If you want to keep your address from the sites you visit, a VPN or a proxy replaces it with theirs. Read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address</a> for the limits, and <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a> for the options.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is my IP address the same as my Wi-Fi address?</h3>
+<p>Not quite. Your device has a private address on your Wi-Fi network, such as 192.168.1.23, and the router has the public address websites see. "My IP" usually means the public one.</p>
+<h3>Do all devices in my house have the same IP address?</h3>
+<p>They share one public IPv4 address through the router, so websites see the same address for all of them. Each device still has its own private address, and over IPv6 each device usually has its own public address too.</p>
+<h3>Can two people have the same IP address?</h3>
+<p>Yes. Everyone on the same home network shares one public IPv4 address, and providers that use carrier-grade NAT share one address between many customers at the same time.</p>
+<h3>What is my IP address on my phone?</h3>
+<p>Open the <a href="/">ipcomet home page</a> in your phone's browser. On Wi-Fi you will see your router's public address, and on mobile data you will see your carrier's.</p>
+<h3>Does my IP address change?</h3>
+<p>Most home and mobile connections get dynamic addresses that can change after a router restart, a reconnect or a set lease time. IPv6 temporary addresses also rotate on their own. A fixed address is usually a paid option from your provider.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol (IETF, 1981)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8981" rel="noopener">RFC 8981: Temporary Address Extensions for Stateless Address Autoconfiguration in IPv6 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8305" rel="noopener">RFC 8305: Happy Eyeballs Version 2 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc5737" rel="noopener">RFC 5737: IPv4 Address Blocks Reserved for Documentation (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3849" rel="noopener">RFC 3849: IPv6 Address Prefix Reserved for Documentation (IETF)</a></li></ul>
+`,
+  "my-ip": `
+<p><strong>My IP</strong> is the quickest way to see what your internet connection tells every website you visit. That includes your public IP address, the area it appears to come from, the provider and network that own it, and how your browser connected. Open the <a href="/">ipcomet IP checker</a> and you get all of it on one page. This guide goes through each line of that result, what it means, where it comes from and how far you can trust it.</p>
+<p>If you only want to know which of your addresses is "the" IP address, start with <a href="/learn/what-is-my-ip-address">what is my IP address</a>. This page is about everything that comes with it.</p>
+
+<h2>What does a "my IP" result show?</h2>
+<p>The ipcomet home page groups your result into four parts. Every value is worked out from the request your browser just made, and nothing is stored.</p>
+<div class="tw"><table><tbody>
+<tr><th>Group</th><th>Fields</th><th>How reliable</th></tr>
+<tr><td>Address</td><td>IPv4, IPv6, IP version</td><td>Exact: this is the address our server saw</td></tr>
+<tr><td>Location</td><td>City, country, postal code, timezone, coordinates</td><td>Approximate: country is usually right, city often is not</td></tr>
+<tr><td>Network</td><td>ISP, ASN, network type, hostname</td><td>ISP and ASN are reliable; network type is a best guess</td></tr>
+<tr><td>Connection</td><td>Protocol, encryption, edge location, latency to edge</td><td>Exact for this one request</td></tr>
+</tbody></table></div>
+
+<h2>My IP address: the IPv4 and IPv6 lines</h2>
+<p>The big number at the top is your public IPv4 address, such as <code>203.0.113.42</code>, and the line below it shows your IPv6 address if your connection has one. "IP version" says which of the two your browser used to reach us. Both are exact: they are the addresses the request arrived from, not a lookup.</p>
+<p>If you see an address you do not recognise, the usual reasons are a VPN or proxy, mobile data instead of Wi-Fi, or a provider that shares one address between customers. <a href="/learn/what-is-my-ip-address">What is my IP address</a> explains each case.</p>
+
+<h2>My IP location: city, postal code and coordinates</h2>
+<p>The location is an estimate. It does not come from GPS or your device. It comes from geolocation databases that map blocks of IP addresses to places, and ipcomet reads it from Cloudflare's own geolocation data for the address you connected from. That is why the result page says the location "often points to your ISP's nearest hub instead of your home".</p>
+<ul>
+<li><strong>Country</strong> is usually right, because address blocks are registered to organisations in a specific country.</li>
+<li><strong>City and region</strong> are often the city where your provider routes traffic, which can be a neighbouring town or, on mobile data, a city hundreds of kilometres away.</li>
+<li><strong>Postal code and coordinates</strong> describe a point for the whole area. They are not your house, and two neighbours on the same provider can see the same coordinates.</li>
+</ul>
+<p>Networks can publish where their addresses are used in a "geofeed", a format defined in <a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805</a>, and database providers can use it to correct their data. If your location is wrong, our guide to <a href="/learn/why-is-my-ip-location-wrong">why your IP location is wrong</a> explains how to report it. To check any other address, use the <a href="/lookup">IP lookup</a>.</p>
+
+<h2>Timezone</h2>
+<p>The timezone is shown as a name from the <a href="https://www.iana.org/time-zones" rel="noopener">IANA Time Zone Database</a>, such as <code>Asia/Kolkata</code> or <code>Europe/Berlin</code>. That database records the history of local time, including offsets and daylight saving rules, for representative locations worldwide. Websites use it to show times in your local zone. It is derived from the estimated location, so it is right whenever the country and region are.</p>
+
+<h2>My ISP and ASN</h2>
+<p>The ISP line names the organisation that holds the block your address belongs to. For a home connection that is your internet provider. For a VPN, a company network or a cloud server it is the operator of that network, which is why a VPN user often sees a hosting company here.</p>
+<p>The ASN is that network's autonomous system number. <a href="https://www.rfc-editor.org/rfc/rfc1930" rel="noopener">RFC 1930</a> defines an autonomous system as a connected group of IP prefixes run by one or more network operators under a single routing policy. <a href="https://www.iana.org/numbers" rel="noopener">IANA</a> hands out pools of addresses and AS numbers to the five regional internet registries (AFRINIC, APNIC, ARIN, LACNIC and RIPE NCC), which assign them to networks in their regions. One ASN can cover millions of customers, so it identifies your provider, not you. The <a href="/asn-lookup">ASN lookup</a> shows who holds any AS number and which prefixes it announces, and <a href="/learn/what-is-my-isp">what is my ISP</a> covers the provider side in more detail.</p>
+
+<h2>Network type</h2>
+<p>Network type is ipcomet's best guess at what kind of network owns the address: a residential or mobile provider, a hosting company or data center, or a VPN service. It is based on who owns the address block and on hints in its hostname, so treat it as a strong clue rather than proof.</p>
+<p>Some sites score visitors by the kind of network their address comes from, so this line can explain why a VPN triggers extra checks. The <a href="/reputation">IP reputation check</a> goes further and tests whether your address is a known Tor exit or appears on public blocklists, and <a href="/learn/is-my-vpn-working">is my VPN working</a> shows how to use these signals to test a VPN.</p>
+
+<h2>Hostname</h2>
+<p>The hostname is the reverse DNS name of your address, also called a PTR record. Your provider sets it, and it often contains clues such as a city code, the word "dynamic" or part of your address. Many home connections have none, so an empty hostname is normal. Our guide to <a href="/learn/what-is-reverse-dns">reverse DNS</a> explains why mail servers check it, and the <a href="/reverse-dns">reverse DNS tool</a> looks up the hostname for any address.</p>
+
+<h2>Connection: protocol, encryption, edge location and latency</h2>
+<p>These four lines describe how your browser reached ipcomet, not your IP address itself.</p>
+<ul>
+<li><strong>Protocol</strong> is the HTTP version your browser used, usually HTTP/2 (<a href="https://www.rfc-editor.org/rfc/rfc9113" rel="noopener">RFC 9113</a>) or HTTP/3 (<a href="https://www.rfc-editor.org/rfc/rfc9114" rel="noopener">RFC 9114</a>). HTTP/3 runs over QUIC, which recovers lost data per stream, so one lost packet does not hold up every other request the way it can with HTTP/2 over TCP.</li>
+<li><strong>Encryption</strong> shows the TLS version and cipher, such as TLS 1.3, the current version defined in <a href="https://www.rfc-editor.org/rfc/rfc8446" rel="noopener">RFC 8446</a>.</li>
+<li><strong>Edge location</strong> is the Cloudflare data center that answered. Cloudflare <a href="https://developers.cloudflare.com/support/troubleshooting/general-troubleshooting/geographic-traffic-routing/" rel="noopener">names data centers</a> after the IATA code of a nearby major airport, so <code>FRA</code> is Frankfurt and <code>MRS</code> is Marseille.</li>
+<li><strong>Latency to edge</strong> is the round-trip time between you and that data center, in milliseconds.</li>
+</ul>
+<p>The edge is not always the nearest one. Cloudflare announces the same addresses from many data centers, and your provider's routing and peering decide which one receives your request. In a test from India on 30 October 2026 our request was answered by MRS, Marseille, at 131 to 174 milliseconds, a data center in France. If your latency looks high, the <a href="/ping">ping test</a> measures it properly over many samples, and <a href="/learn/what-is-ping">what is ping</a> explains what counts as good.</p>
+
+<h2>What my IP does not reveal</h2>
+<p>Your IP result does not show your name, your street address, your email or what you browse. A website sees the same public address for everyone behind your router. Only your provider can link an address to a customer account, and it normally does so only when the law requires it.</p>
+<p>What websites can add on top of your IP is everything your browser sends with each request. <a href="/learn/what-your-browser-reveals">What your browser reveals</a> covers that side, and <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address</a> covers the realistic risks.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Why does my IP show a different city?</h3>
+<p>The city comes from a database of address blocks, and it often names the city where your provider connects you to the internet. On mobile data that can be far away. The address itself is still correct.</p>
+<h3>Is my IP location my real location?</h3>
+<p>No. It is an estimate for the area your address belongs to. The postal code and coordinates are a point for that area, not your home.</p>
+<h3>What does the AS number on my IP mean?</h3>
+<p>It identifies the network that owns your address, usually your internet provider. Millions of customers can share one AS number.</p>
+<h3>Why is my hostname empty?</h3>
+<p>Your provider has not set a reverse DNS name for your address. That is common on home connections and does not affect browsing.</p>
+<h3>Does ipcomet keep a record of my IP?</h3>
+<p>No. The result is worked out for your request and shown back to you, and ipcomet's own code does not store or log the addresses it sees. The <a href="/privacy">privacy policy</a> and the <a href="/about">About page</a> list where each piece of data comes from.</p>
+
+<h2>Sources and further reading</h2>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF)</a></li><li><a href="https://www.iana.org/time-zones" rel="noopener">IANA: Time Zone Database</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1930" rel="noopener">RFC 1930: Guidelines for creation, selection, and registration of an Autonomous System (IETF)</a></li><li><a href="https://www.iana.org/numbers" rel="noopener">IANA: Number Resources</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9113" rel="noopener">RFC 9113: HTTP/2 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9114" rel="noopener">RFC 9114: HTTP/3 (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8446" rel="noopener">RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3 (IETF)</a></li><li><a href="https://developers.cloudflare.com/support/troubleshooting/general-troubleshooting/geographic-traffic-routing/" rel="noopener">Cloudflare: traffic not being sent to the geographically closest data center</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc5737" rel="noopener">RFC 5737: IPv4 Address Blocks Reserved for Documentation (IETF)</a></li></ul>
 `,
 };
