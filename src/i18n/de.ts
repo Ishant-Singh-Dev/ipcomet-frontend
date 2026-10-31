@@ -953,7 +953,7 @@ export const de: LocaleData = {
       name: "WebRTC-Leak-Test",
       desc: "Verrät Ihr Browser Ihre echte IP?",
       title: "WebRTC-Leak-Test: Verrät Ihr VPN Ihre IP?",
-      description: "Prüfen Sie, ob Ihr Browser über WebRTC Ihre echte IP-Adresse preisgibt, auch mit VPN oder Proxy.",
+      description: "Prüfen Sie, ob Ihr Browser über WebRTC Ihre echte IP-Adresse preisgibt, auch mit VPN oder Proxy. Der Test fragt dazu einen öffentlichen STUN-Server ab.",
       h1: "WebRTC-Leak-Test",
       lead: "Browser können über WebRTC Ihre echte IP verraten, selbst hinter einem VPN. Führen Sie den Test aus, um zu sehen, was preisgegeben wird.",
       about:

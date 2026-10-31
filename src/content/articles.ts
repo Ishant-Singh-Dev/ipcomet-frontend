@@ -16,7 +16,7 @@ export const ARTICLES: ArticleMeta[] = [
   {
     slug: "how-to-find-your-ip-address",
     title: "How to Find Your IP Address on Any Device",
-    description: "Find your public and private IP address on Windows, Mac, iPhone, Android and Linux, with the exact steps for each.",
+    description: "Find your public and private IP address on Windows, Mac, iPhone, Android and Linux, with exact steps for each, plus your router's and a website's IP.",
     published: "2026-10-08",
     readMin: 6,
     tools: ["ip", "lookup"],
@@ -153,7 +153,7 @@ export const ARTICLES: ArticleMeta[] = [
   {
     slug: "find-printer-ip-address",
     title: "How to Find a Printer's IP Address (Windows, Mac and Router)",
-    description: "Need your printer's IP address? Five quick ways to find it, from the printer's own screen to your router's device list.",
+    description: "Need your printer's IP address? Five quick ways to find it on Windows or Mac, from the printer's screen to your router's list, and how to keep it fixed.",
     published: "2026-10-07",
     readMin: 4,
     tools: ["lookup", "ip"],
@@ -189,7 +189,7 @@ export const ARTICLES: ArticleMeta[] = [
   {
     slug: "is-my-vpn-working",
     title: "Is My VPN Working? How to Test It in 5 Minutes",
-    description: "Six quick tests to check that your VPN is really working: IP, IPv6, WebRTC, DNS, time zone and kill switch.",
+    description: "Six quick tests to check that your VPN is really working: IP, IPv6, WebRTC, DNS, time zone and kill switch. See what each result means and what to do next.",
     published: "2026-10-08",
     readMin: 6,
     tools: ["reputation", "webrtc", "ip"],
@@ -198,7 +198,7 @@ export const ARTICLES: ArticleMeta[] = [
   {
     slug: "what-is-ping",
     title: "What Is Ping? How to Test It and Lower It",
-    description: "Ping is the delay between your device and a server. Learn what a good ping is, how to test it and how to lower it.",
+    description: "Ping is the delay between your device and a server, in milliseconds. Learn what a good ping is for games and calls, how to test it and how to lower it.",
     published: "2026-10-08",
     readMin: 5,
     tools: ["ping", "speed"],

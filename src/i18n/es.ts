@@ -663,7 +663,7 @@ export const es: LocaleData = {
       name: "Mi IP",
       desc: "Tu dirección IP pública, ubicación e ISP",
       title: "¿Cuál es mi IP? Consulta tu dirección IP pública",
-      description: "Consulta al instante tu dirección IP pública, tu ubicación, tu ISP y los detalles de tu conexión. Gratis y rápido, sin anuncios ni registro.",
+      description: "Mi IP pública al instante: tu dirección IP, tu ubicación aproximada, tu proveedor (ISP) y los detalles de tu conexión. Gratis, sin anuncios ni registro.",
       h1: "¿Cuál es mi dirección IP?",
       lead: "Tu dirección IP pública, tu ubicación aproximada y tu ISP, al instante.",
       about: "",
@@ -901,7 +901,7 @@ export const es: LocaleData = {
       name: "Test de velocidad",
       desc: "Latencia, velocidad de descarga y de subida",
       title: "Test de velocidad de internet: descarga, subida y ping",
-      description: "Test de velocidad gratuito: descarga, subida, ping, jitter y latencia con carga con nota de bufferbloat, medidos contra el centro de datos de Cloudflare más cercano.",
+      description: "Test de velocidad gratuito: descarga, subida, ping, jitter y latencia con carga (bufferbloat), medidos contra el centro de datos de Cloudflare más cercano.",
       h1: "Test de velocidad de internet",
       lead: "Mide la descarga, la subida y la latencia en reposo y con carga (bufferbloat) entre tu dispositivo y el servidor de Cloudflare más cercano.",
       about:
@@ -953,7 +953,7 @@ export const es: LocaleData = {
       name: "Test de fugas WebRTC",
       desc: "¿Tu navegador filtra tu IP real?",
       title: "Test de fugas WebRTC: ¿tu VPN filtra tu IP?",
-      description: "Comprueba si tu navegador expone tu dirección IP real a través de WebRTC, incluso con una VPN o un proxy.",
+      description: "Comprueba si tu navegador expone tu dirección IP real a través de WebRTC, incluso con una VPN o un proxy. La prueba consulta un servidor STUN público.",
       h1: "Test de fugas WebRTC",
       lead: "Los navegadores pueden revelar tu IP real mediante WebRTC, incluso detrás de una VPN. Ejecuta la prueba para ver qué se expone.",
       about:
@@ -1001,7 +1001,7 @@ export const es: LocaleData = {
       name: "Buscar MAC",
       desc: "Encuentra el fabricante de una dirección MAC",
       title: "Buscar dirección MAC: encuentra el fabricante",
-      description: "Búsqueda de direcciones MAC gratis: encuentra el fabricante de cualquier MAC u OUI en el registro IEEE, revisa cientos a la vez y detecta direcciones aleatorias.",
+      description: "Búsqueda de direcciones MAC gratis: encuentra el fabricante de cualquier MAC u OUI en el registro IEEE, revisa cientos a la vez y detecta MAC aleatorias.",
       h1: "Buscar dirección MAC",
       lead: "Encuentra el fabricante de cualquier dirección MAC u OUI, revisa una lista entera a la vez y comprueba si una dirección es privada y aleatoria.",
       about:

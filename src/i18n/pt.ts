@@ -663,7 +663,7 @@ export const pt: LocaleData = {
       name: "Meu IP",
       desc: "Seu endereço IP público, localização e ISP",
       title: "Qual é o meu IP? Veja seu endereço IP público",
-      description: "Veja na hora seu endereço IP público, sua localização, seu ISP e os detalhes da conexão. Grátis e rápido, sem anúncios nem cadastro.",
+      description: "Meu IP público: veja na hora seu endereço IP, sua localização aproximada, seu provedor (ISP) e os detalhes da conexão. Grátis, sem anúncios e sem cadastro.",
       h1: "Qual é o meu endereço IP?",
       lead: "Seu endereço IP público, sua localização aproximada e seu ISP, na hora.",
       about: "",
@@ -953,7 +953,7 @@ export const pt: LocaleData = {
       name: "Teste de vazamento WebRTC",
       desc: "Seu navegador vaza seu IP real?",
       title: "Teste de vazamento WebRTC: sua VPN vaza seu IP?",
-      description: "Teste se seu navegador expõe seu endereço IP real pelo WebRTC, mesmo com VPN ou proxy ativos.",
+      description: "Teste se o seu navegador expõe o seu endereço IP real pelo WebRTC, mesmo com VPN ou proxy ativos. O teste consulta um servidor STUN público.",
       h1: "Teste de vazamento WebRTC",
       lead: "Os navegadores podem revelar seu IP real pelo WebRTC, mesmo atrás de uma VPN. Execute o teste para ver o que está exposto.",
       about:
@@ -1001,7 +1001,7 @@ export const pt: LocaleData = {
       name: "Consulta MAC",
       desc: "Descubra o fabricante de um endereço MAC",
       title: "Consulta de endereço MAC: descubra o fabricante",
-      description: "Consulta de endereço MAC grátis: descubra o fabricante de qualquer MAC ou OUI no registro IEEE, verifique centenas de uma vez e identifique endereços aleatórios.",
+      description: "Consulta de endereço MAC grátis: descubra o fabricante de qualquer MAC ou OUI no registro IEEE, verifique centenas de uma vez e identifique MAC aleatórios.",
       h1: "Consulta de endereço MAC",
       lead: "Descubra o fabricante de qualquer endereço MAC ou OUI, verifique uma lista inteira de uma vez e veja se um endereço é privado e aleatório.",
       about:

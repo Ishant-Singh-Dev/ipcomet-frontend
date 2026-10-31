@@ -901,7 +901,7 @@ export const fr: LocaleData = {
       name: "Test de débit",
       desc: "Latence, débit descendant et montant",
       title: "Test de débit Internet : téléchargement, envoi et ping",
-      description: "Test de débit gratuit : téléchargement, envoi, ping, gigue et latence sous charge avec une note de bufferbloat, mesurés vers le centre de données Cloudflare le plus proche.",
+      description: "Test de débit gratuit : téléchargement, envoi, ping, gigue et latence sous charge (bufferbloat) vers le centre de données Cloudflare le plus proche.",
       h1: "Test de débit Internet",
       lead: "Mesurez le débit descendant et montant, la latence au repos et sous charge (bufferbloat) entre votre appareil et le serveur Cloudflare le plus proche.",
       about:
@@ -953,7 +953,7 @@ export const fr: LocaleData = {
       name: "Test de fuite WebRTC",
       desc: "Votre navigateur révèle-t-il votre vraie IP ?",
       title: "Test de fuite WebRTC : votre VPN fuit-il votre IP ?",
-      description: "Testez si votre navigateur expose votre vraie adresse IP via WebRTC, même connecté à un VPN ou à un proxy.",
+      description: "Testez si votre navigateur expose votre vraie adresse IP via WebRTC, même connecté à un VPN ou à un proxy. Le test interroge un serveur STUN public.",
       h1: "Test de fuite WebRTC",
       lead: "Les navigateurs peuvent révéler votre vraie IP via WebRTC, même derrière un VPN. Lancez le test pour voir ce qui est exposé.",
       about:
@@ -1097,7 +1097,7 @@ export const fr: LocaleData = {
       name: "Recherche MX",
       desc: "Serveurs de messagerie et fournisseur d’un domaine",
       title: "Recherche MX : enregistrements MX et fournisseur",
-      description: "Recherche MX gratuite : voyez les serveurs de messagerie d’un domaine par priorité, le fournisseur qui les gère et si SPF, DKIM, DMARC et MTA-STS sont configurés.",
+      description: "Recherche MX gratuite : voyez les serveurs de messagerie d’un domaine par priorité, leur fournisseur et si SPF, DKIM, DMARC et MTA-STS sont configurés.",
       h1: "Recherche MX",
       lead: "Voyez quels serveurs reçoivent les e-mails d’un domaine, par ordre de priorité, et quel fournisseur les gère.",
       about:
@@ -1145,7 +1145,7 @@ export const fr: LocaleData = {
       name: "Temps de téléchargement",
       desc: "Durée d’un téléchargement selon votre débit",
       title: "Calculateur de temps de téléchargement",
-      description: "Calculateur gratuit : combien de temps prend un fichier à votre débit Internet, quel débit il faut pour finir à temps, avec le résultat de votre test de vitesse.",
+      description: "Calculateur gratuit : combien de temps prend un fichier à votre débit Internet et quel débit il faut pour finir à temps, avec votre test de vitesse.",
       h1: "Calculateur de temps de téléchargement",
       lead: "Calculez la durée d’un téléchargement à votre débit Internet, ou le débit nécessaire pour le terminer à temps.",
       about:

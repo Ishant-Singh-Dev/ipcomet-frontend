@@ -114,7 +114,7 @@ export const TOOLS: Tool[] = [
     name: "WebRTC Leak Test",
     desc: "See if your browser leaks your real IP",
     title: "WebRTC Leak Test: Is Your VPN Leaking Your IP?",
-    description: "Test whether your browser exposes your real IP address through WebRTC, even when you are connected to a VPN or proxy.",
+    description: "Test whether your browser exposes your real IP address through WebRTC, even on a VPN or proxy. The check asks a public STUN server, like a video call does.",
   },
   {
     id: "subnet",
