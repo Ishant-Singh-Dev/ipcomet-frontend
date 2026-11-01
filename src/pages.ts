@@ -160,7 +160,7 @@ export function homeJsonLd(origin: string, loc: Locale = "en"): unknown[] {
       inLanguage: LOCALE_META[loc].htmlLang,
     },
     organizationJsonLd(origin),
-    appJsonLd(origin, loc === "en" ? "ipcomet: What is my IP address" : home.title, home.description, "/", loc),
+    appJsonLd(origin, home.title, home.description, "/", loc),
     faqJsonLd(faq),
   ];
 }

@@ -493,8 +493,8 @@ export const ARTICLES: ArticleMeta[] = [
   },
   {
     slug: "my-ip",
-    title: "My IP Address Explained: Location, ISP, ASN and More",
-    description: "My IP shows more than a number. See what each line of your IP result means, from location and ISP to ASN and hostname, and how accurate each one is.",
+    title: "What Is My IP? Location, ISP and Every Detail Explained",
+    description: "What is my IP? It is the public address every site sees, with its location, ISP and ASN. See what each part of your IP result means and how accurate it is.",
     published: "2026-10-30",
     readMin: 7,
     tools: ["ip", "lookup", "asn"],
