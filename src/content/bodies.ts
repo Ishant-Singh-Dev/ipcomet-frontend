@@ -331,7 +331,7 @@ export const BODIES: Record<string, string> = {
 <p>A separate problem is a <strong>DNS leak</strong>, where your lookups go to your internet provider's resolver instead of the VPN's, revealing the sites you visit. A WebRTC test does not check for this. Use a dedicated DNS leak test that generates unique test hostnames, and make sure your VPN app's DNS protection is enabled. Also confirm your VPN covers IPv6, as explained in <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
 
 <h2>Is WebRTC bad?</h2>
-<p>No. It makes video calls and voice chat in the browser possible. The risk only matters if you rely on a VPN or proxy to hide your address. See <a href="/learn/how-to-change-your-ip-address">how to change your IP address</a> for your options.</p>
+<p>No. It makes video calls and voice chat in the browser possible. The risk only matters if you rely on a VPN or proxy to hide your address. See <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a> for the options and how to test them, or <a href="/learn/how-to-change-your-ip-address">how to change your IP address</a> if you only need a new one.</p>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc8445" rel="noopener">RFC 8445: Interactive Connectivity Establishment (ICE) (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8489" rel="noopener">RFC 8489: Session Traversal Utilities for NAT (STUN) (IETF)</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API" rel="noopener">MDN: WebRTC API</a></li></ul>
@@ -628,10 +628,16 @@ export const BODIES: Record<string, string> = {
 `,
 
   "how-to-hide-your-ip-address": `
-<p>Hiding your IP address means websites and online services see a different address from the one your internet provider gave you. There are several ways to do it, and they are not equal. Some hide your address and encrypt your traffic, some only swap the address, and some do not hide anything at all. This guide compares the five that matter and shows you how to test that yours works.</p>
+<p>To hide your IP address, send your traffic through another computer so that websites see that computer's address instead of yours. A VPN does this for every app on a device. Tor Browser and iCloud Private Relay do it for browsing, a proxy does it for one app, and another network gives you a different address for as long as you stay on it. Incognito mode, clearing cookies and restarting your router do not hide it.</p>
+<ul>
+<li>For the whole device, use a VPN you trust, and turn on its kill switch or always-on setting so apps cannot slip out when the tunnel drops.</li>
+<li>For browsing only, use Tor Browser, or Private Relay in Safari if you pay for iCloud+.</li>
+<li>For one app or one test, set a proxy in that app.</li>
+<li>You cannot block or encrypt the address itself. Every packet needs a return address, so hiding yours means borrowing someone else's.</li>
+</ul>
 
 <h2>Hiding vs changing your IP address</h2>
-<p>These are different things. <strong>Changing</strong> your IP means your provider assigns you a new address, which is still tied to your provider and your region. <strong>Hiding</strong> it means your traffic leaves the internet from someone else's address, so sites never see yours. If you only want a new address from your provider, read <a href="/learn/how-to-change-your-ip-address">how to change your IP address</a>. If you want websites to see a different one, keep reading.</p>
+<p>These are different things. <strong>Changing your IP</strong> means your provider assigns you a new address, which is still tied to your provider and your region. <strong>Hiding your IP</strong> means your traffic leaves the internet from someone else's address, so sites never see yours. If you only want a new address from your provider, read <a href="/learn/how-to-change-your-ip-address">how to change your IP address</a>. If you want the opposite, an address that stops changing, you need a static IP from your provider, explained in <a href="/learn/static-vs-dynamic-ip-address">static vs dynamic IP addresses</a>.</p>
 
 <h2>The five methods at a glance</h2>
 <div class="tw"><table><tbody>
@@ -639,80 +645,110 @@ export const BODIES: Record<string, string> = {
 <tr><td><strong>VPN</strong></td><td>Yes</td><td>Yes</td><td>Every app on the device</td></tr>
 <tr><td><strong>Tor Browser</strong></td><td>Yes</td><td>Yes, in layers</td><td>Tor Browser only</td></tr>
 <tr><td><strong>Proxy</strong></td><td>Yes</td><td>Usually not</td><td>One app or browser</td></tr>
-<tr><td><strong>iCloud Private Relay</strong></td><td>Yes</td><td>Yes</td><td>Safari and some apps</td></tr>
-<tr><td><strong>Another network</strong></td><td>Yes, temporarily</td><td>No</td><td>The whole device</td></tr>
+<tr><td><strong>iCloud Private Relay</strong></td><td>Yes</td><td>Yes</td><td>Safari, DNS lookups and some app traffic</td></tr>
+<tr><td><strong>Another network</strong></td><td>Swaps it for that network&rsquo;s address</td><td>No</td><td>The whole device</td></tr>
 </tbody></table></div>
 
+<h2>Can you block or encrypt your IP address?</h2>
+<p>No. Your address sits in the source address field of every packet you send. <a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200</a> defines that field for IPv6 as the address of the originator of the packet, and the IPv4 header in <a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791</a> has the same field. The server sends its reply to that address. A request with no usable source address gets no answer, so there is nothing on your side to block.</p>
+<p>What people call encrypting an IP address is tunnelling. A VPN encrypts your whole original packet, the original addresses included, and puts it inside a new packet that travels from you to the VPN server. The IPsec standard, <a href="https://www.rfc-editor.org/rfc/rfc4301" rel="noopener">RFC 4301</a>, describes this tunnel mode as an outer IP header with the tunnel's source and destination, and an inner header with the real source and destination. The website only sees packets leaving the VPN server, with the server's address on them. Your internet provider still sees your real address talking to the VPN server, because the outer packet has to get there.</p>
+
 <h2>1. Use a VPN</h2>
-<p>A virtual private network sends all of your traffic through an encrypted tunnel to a server run by the VPN company. Websites see the server's address, and your internet provider sees only that you are connected to a VPN. For most people this is the most practical option, because it covers every app and works with any browser.</p>
-<p>The catch is trust. A VPN does not remove the middleman, it swaps your provider for the VPN company, which can see your traffic. Choose carefully:</p>
+<p>A virtual private network sends all of your traffic through an encrypted tunnel to a server run by the VPN company. Websites see the server's address, and your internet provider sees your connection to the VPN server but not the sites inside it. For most people this is the most practical option, because it covers every app and works with any browser.</p>
+<p>The catch is trust. The US Federal Trade Commission <a href="https://www.ftc.gov/business-guidance/blog/2018/02/market-vpn-app" rel="noopener">notes</a> that a VPN app gets permission to intercept all of your internet traffic, and that it shifts trust from your network to the VPN provider. Choose carefully:</p>
 <ul>
 <li>Look for an independent security audit and a clear no-logs policy.</li>
 <li>Make sure it has a kill switch, which cuts your connection if the tunnel drops, and leak protection for WebRTC, DNS and IPv6.</li>
-<li>Be wary of free VPNs. Running servers costs money, and free services often pay for it with ads or by selling data.</li>
+<li>Read the privacy policy, free or paid, to see what the company keeps and who it shares it with.</li>
 </ul>
 
 <h2>2. Use the Tor Browser</h2>
-<p>Tor sends your browser traffic through three volunteer relays, so no single relay knows both who you are and where you are going. It is free and gives the strongest anonymity of the five, but only for traffic inside Tor Browser. It is slow, it is not suited to streaming or large downloads, and some websites block Tor exit nodes. You can see how a Tor address looks to the world with our <a href="/reputation">IP reputation check</a>.</p>
+<p>Tor sends your browser traffic through three relays run by volunteers: a guard, a middle relay and an exit (<a href="https://community.torproject.org/relay/types-of-relays/" rel="noopener">Tor Project: types of relays</a>). No single relay knows both who you are and where you are going, and the website sees the exit relay's address instead of yours. Tor is free and gives the most anonymity of the five for browsing, but only for traffic inside Tor Browser. It is slow, it is not suited to streaming or large downloads, and <a href="https://support.torproject.org/tor-browser/general/website-blocking-tor-exits/" rel="noopener">some websites block Tor users</a> because they cannot tell them apart from automated traffic. You can see how a Tor address looks to the world with our <a href="/reputation">IP reputation check</a>.</p>
 
 <h2>3. Use a proxy</h2>
-<p>A proxy forwards requests from one app or browser through another server. It is simple and cheap, and useful for specific jobs such as testing how a site looks from another country. But a proxy usually does not encrypt your traffic, it only covers the app you configure, and it is easy to misconfigure. A browser can also bypass it with WebRTC and reveal your real address, so run the <a href="/webrtc">WebRTC leak test</a>. You are trusting the proxy operator completely.</p>
+<p>A proxy forwards requests from one app or browser through another server. It is simple and cheap, and useful for specific jobs such as testing how a site looks from another country. But a proxy usually does not encrypt your traffic, it only covers the app you configure, and it is easy to misconfigure. A browser can also go around it with WebRTC and reveal your real address, so run the <a href="/webrtc">WebRTC leak test</a>. You are trusting the proxy operator completely. Our guide to <a href="/learn/proxy-anonymity-levels">proxy anonymity levels</a> explains which proxies pass your real address on to the site anyway.</p>
 
 <h2>4. Use iCloud Private Relay (Apple devices)</h2>
-<p>If you pay for iCloud+, Private Relay routes Safari traffic through two separate relays so that neither Apple nor the relay operator can see both who you are and which sites you visit. Websites see an address near your region rather than your real one. It covers Safari and some app traffic, not other browsers, and it is not a replacement for a full VPN.</p>
+<p>If you pay for iCloud+, Private Relay sends Safari traffic through two separate relays. Apple runs the first and another company runs the second, so no single party can see both who you are and which sites you visit. The second relay gives you a temporary address, and <a href="https://www.apple.com/icloud/docs/iCloud_Private_Relay_Overview_Dec2021.pdf" rel="noopener">Apple's overview</a> says these addresses map to your country or region. It covers browsing in Safari, DNS lookups and unencrypted traffic in apps, so encrypted traffic from other apps still uses your real address. It is not available in every country or region.</p>
 
 <h2>5. Switch to another network</h2>
-<p>Connecting through a mobile hotspot or a public Wi-Fi network gives you a different public address for as long as you stay on it. It is free and instant, but it protects nothing else. The network owner can see your activity, and open public Wi-Fi is risky without a VPN.</p>
+<p>Connecting through a mobile hotspot or a public Wi-Fi network gives you a different public address for as long as you stay on it. It is free and instant, but it protects nothing else. The network owner can see which sites you connect to, though not the contents of HTTPS pages.</p>
+
+<h2>How to hide your IP address in one browser</h2>
+<p>To hide your address only while browsing, use a browser with a relay built in, or point one browser at a proxy. Everything else on the device keeps using your normal address.</p>
+<ul>
+<li>Tor Browser, on a computer or on Android, sends its own traffic through Tor and nothing else.</li>
+<li>Safari on a Mac, iPhone or iPad uses iCloud Private Relay once you turn it on.</li>
+<li>A browser that has its own proxy setting can use a proxy that the rest of the device ignores. Our guide to <a href="/learn/how-to-check-if-a-proxy-is-working">checking that a proxy is working</a> shows how to confirm it.</li>
+</ul>
+<p>Safari with Private Relay and a browser set to use a proxy share one weak point. WebRTC, the browser feature behind video calls, can find addresses outside the proxy. <a href="https://www.rfc-editor.org/rfc/rfc8828" rel="noopener">RFC 8828</a>, which sets WebRTC's address rules, notes that a web page can learn addresses that are not exposed to the internet, and that with some VPN setups it can find your provider's public address as well as the VPN's. After setting up any browser-only method, run the <a href="/webrtc">WebRTC leak test</a>, and read <a href="/learn/webrtc-leak-explained">how WebRTC leaks work</a> if it shows your real address.</p>
+
+<h2>How to hide your IP address on iPhone</h2>
+<p>An iPhone has two built-in settings that hide your address from some sites, and it works with any VPN app for the rest.</p>
+<ol>
+<li>Turn on iCloud Private Relay (iCloud+ only): open Settings, tap your name, then iCloud, then Private Relay.</li>
+<li>Check that Limit IP Address Tracking is on: open Settings, then Wi-Fi, and tap the More Info button next to your network. For mobile data it sits under Settings, then Cellular, under your phone number (in iOS 18 or earlier, under Cellular Data Options). <a href="https://support.apple.com/guide/mac-help/wi-fi-settings-on-mac-mh11935/mac" rel="noopener">Apple describes the same setting on a Mac</a> as hiding your address from known trackers in Mail and Safari, so it is not a full hider. Turning it off also turns off Private Relay on that network.</li>
+<li>Install a reputable VPN app, allow it to add a VPN configuration and connect. This covers every app on the phone.</li>
+<li>For Tor, the Tor Project recommends Onion Browser on iOS, for browsing only.</li>
+</ol>
+
+<h2>How to hide your IP address on Android</h2>
+<ol>
+<li>Install a VPN app and connect, or add a VPN under Settings, then Network &amp; internet, then VPN (the labels vary by phone maker). Tap the settings icon next to the VPN and turn on Always-on VPN if it is offered. <a href="https://support.google.com/android/answer/9089766?hl=en" rel="noopener">Google notes</a> that a VPN set up through an app may not offer it there, so also look for an always-on or kill switch setting in the app.</li>
+<li>Install Tor Browser for Android from Google Play, F-Droid or the Tor Project website. It needs Android 8.0 or newer and hides your address for browsing in that app.</li>
+<li>Switch from Wi-Fi to mobile data. You get a different address, though it does not hide it from your carrier.</li>
+</ol>
+<p>Android&rsquo;s Private DNS setting is not an IP hider. Google says it secures only DNS questions and answers and cannot protect anything else, so websites still see your address.</p>
 
 <h2>What does not hide your IP address?</h2>
 <ul>
-<li><strong>Private or incognito mode.</strong> It only stops your browser saving history. Websites still see your address.</li>
-<li><strong>Clearing cookies or switching browsers.</strong> Neither changes your IP.</li>
-<li><strong>Restarting your modem or asking your provider for a new address.</strong> This changes the address but does not hide it. It is still your provider's address in your region.</li>
-<li><strong>Your router's NAT.</strong> NAT hides your devices' private addresses from the internet, but your public address stays visible. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</li>
+<li>Private or incognito mode only stops your browser keeping the sites you visited once you close the window. <a href="https://support.google.com/chrome/answer/9845881?hl=en" rel="noopener">Chrome&rsquo;s help page</a> says the sites you visit and whoever runs your network may still see your activity. Websites still see your IP address.</li>
+<li>Clearing cookies or switching browsers changes nothing about your IP.</li>
+<li>Restarting your modem or asking your provider for a new address may change the address but does not hide it. It is still your provider's address in your region.</li>
+<li>Your router's NAT hides your devices' private IPv4 addresses from the internet, but your public address stays visible. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</li>
 </ul>
 
 <h2>How to check that it worked</h2>
 <ol>
 <li>Open our <a href="/">IP checker</a> without the method turned on and note your address, location and network.</li>
-<li>Turn the method on and reload the page. The address, location and network should all be different.</li>
+<li>Turn the method on and reload the page. The address, location and network should all be different, although with Private Relay the location may stay close to yours. For example, if the network line named your home provider and your city before, with a VPN on it should name the VPN company&rsquo;s hosting network and the city of the server you picked.</li>
 <li>Look at the IPv4 and IPv6 lines. If one still shows your real address, that part of your traffic is leaking around the tunnel.</li>
-<li>Run the <a href="/webrtc">WebRTC leak test</a>. Read <a href="/learn/webrtc-leak-explained">how WebRTC leaks work</a> if it reports a different address.</li>
+<li>Run the <a href="/webrtc">WebRTC leak test</a>.</li>
 <li>Use the <a href="/reputation">IP reputation check</a> to see how your new address looks. A VPN address normally shows as a hosting network, and that is expected.</li>
 </ol>
 
+<h3>Check IPv4 and IPv6 separately from a terminal</h3>
+<p>A VPN that only handles IPv4 can send your IPv6 traffic straight past the tunnel. <a href="https://www.rfc-editor.org/rfc/rfc7359" rel="noopener">RFC 7359</a> describes this leak: on a connection with both IPv4 and IPv6, packets for IPv6 destinations go out unencrypted through your normal router. Ask for each address type on its own:</p>
+<pre><code>curl -4 https://ipcomet.com/api/ip
+curl -6 https://ipcomet.com/api/ip</code></pre>
+<p>With the VPN on, both lines should show addresses that belong to the VPN. If the second line shows an address from your own provider, IPv6 is leaking. Turn on the VPN's IPv6 leak protection, or try another provider.</p>
+<p>This check is for a VPN, which covers the whole device. Tor Browser, Private Relay and a proxy set in one browser do not carry curl&rsquo;s traffic, so for those use the IP checker and the WebRTC test inside that browser.</p>
+<p>We tested both commands on 2 November 2026 on a Mac (curl 8.7.1) with a wired connection, no VPN and no public IPv6 address. Both returned the same IPv4 address. Adding <code>-v</code> showed why: macOS answered the IPv6 lookup with an IPv4-mapped address starting <code>::ffff:</code>, so the <code>-6</code> request still went out over IPv4. On a Mac, an IPv4 address on the second line means the connection has no working IPv6, not that IPv6 is leaking. With real IPv6, the second line shows an address written with colons.</p>
+
 <h2>What does hiding your IP not do?</h2>
-<p>It does not make you anonymous. Sites can still recognize you through logins, cookies and your browser fingerprint, which our <a href="/browser">browser info page</a> lets you inspect. It also does not protect you from malware or phishing. Finally, using a VPN or similar tool is legal in most countries but restricted in some, and it never makes illegal activity legal, so check the rules where you live.</p>
-
-<h2>How to hide your IP address on iPhone</h2>
-<ol>
-<li><strong>iCloud Private Relay.</strong> With iCloud+, open <strong>Settings</strong>, tap your name, then <strong>iCloud</strong>, then <strong>Private Relay</strong> and turn it on. It covers Safari and some app traffic.</li>
-<li><strong>A VPN app.</strong> Install a reputable VPN app, allow it to add a VPN configuration and connect. This covers every app on the phone.</li>
-<li><strong>Tor.</strong> Use a Tor-based browser such as Onion Browser for private browsing only.</li>
-</ol>
-
-<h2>How to hide your IP address on Android</h2>
-<ol>
-<li><strong>A VPN app.</strong> Install one, accept the VPN permission and connect. This covers the whole phone.</li>
-<li><strong>Tor Browser for Android.</strong> The official Tor Project browser hides your address for browsing in that app.</li>
-<li><strong>Mobile data.</strong> Switching from Wi-Fi to mobile data gives you a different address, though it does not hide it from the carrier.</li>
-</ol>
-<p>Android&rsquo;s &ldquo;Private DNS&rdquo; setting is not an IP hider. It only encrypts your DNS lookups, and websites still see your address.</p>
-
-<h2>Does a VPN hide your IP address?</h2>
-<p>Yes, from the websites and services you visit, which see the VPN server&rsquo;s address instead. It does not hide your address from the VPN company, which sees your real one, and your internet provider can still see that you are connected to a VPN. To confirm it works on your connection, follow <a href="/learn/is-my-vpn-working">is my VPN working?</a></p>
+<p>It does not make you anonymous. Sites can still recognize you through logins, cookies and your browser fingerprint, which our <a href="/browser">browser info page</a> lets you inspect. It also does not protect you from malware or phishing. Laws on VPNs and Tor differ from country to country, and none of these tools makes an illegal act legal, so check the rules where you live.</p>
 
 <h2>Which method should you choose?</h2>
 <ul>
-<li><strong>Everyday privacy on all your devices:</strong> a reputable paid VPN.</li>
-<li><strong>Maximum anonymity for browsing:</strong> Tor Browser.</li>
-<li><strong>A quick one-off address change:</strong> a mobile hotspot.</li>
-<li><strong>Apple users who mainly use Safari:</strong> iCloud Private Relay.</li>
+<li>Everyday privacy on all your devices: a VPN that passes the checklist above.</li>
+<li>Maximum anonymity for browsing: Tor Browser.</li>
+<li>A quick one-off address change: a mobile hotspot.</li>
+<li>Apple users who mainly use Safari: iCloud Private Relay.</li>
 </ul>
 <p>For the bigger picture of what an address reveals about you, read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
 
+<h2>Frequently asked questions</h2>
+<h3>Does a VPN hide your IP address?</h3>
+<p>Yes, from the websites and services you visit, which see the VPN server&rsquo;s address instead. It does not hide your address from the VPN company, which sees your real one, and your internet provider can still see that you are connected to a VPN. To confirm it works on your connection, follow <a href="/learn/is-my-vpn-working">is my VPN working?</a></p>
+<h3>Can my internet provider see my IP address when I use a VPN?</h3>
+<p>Yes. Your provider assigned the address and carries every packet, including the tunnel to the VPN server. With the VPN on, it sees which VPN server you connect to and how much data you send, but not the sites inside the tunnel.</p>
+<h3>How do I hide my IP address on my phone?</h3>
+<p>Install a VPN app and turn on its always-on or kill switch setting. On an iPhone you can also use Private Relay with iCloud+ and Limit IP Address Tracking, and on Android Tor Browser hides your address for browsing. The iPhone and Android sections above list the steps.</p>
+<h3>Will hiding my IP address stop it from changing?</h3>
+<p>No. Your provider still assigns your real address and can change it whether or not you hide it. For an address that stays the same, ask your provider for a static IP.</p>
+
 <h2>Sources and further reading</h2>
-<ul><li><a href="https://www.torproject.org/" rel="noopener">The Tor Project</a></li><li><a href="https://support.apple.com/en-us/102602" rel="noopener">Apple: About iCloud Private Relay</a></li></ul>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol (IETF, September 1981)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4301" rel="noopener">RFC 4301: Security Architecture for the Internet Protocol (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc7359" rel="noopener">RFC 7359: Layer 3 VPN Tunnel Traffic Leakages in Dual-Stack Hosts/Networks (IETF, August 2014)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8828" rel="noopener">RFC 8828: WebRTC IP Address Handling Requirements (IETF)</a></li><li><a href="https://www.ftc.gov/business-guidance/blog/2018/02/market-vpn-app" rel="noopener">Federal Trade Commission: In the market for a VPN app? (February 2018)</a></li><li><a href="https://support.torproject.org/tor-browser/getting-started/about-tor-browser/" rel="noopener">Tor Project: About Tor Browser</a></li><li><a href="https://community.torproject.org/relay/types-of-relays/" rel="noopener">Tor Project: Types of relays on the Tor network</a></li><li><a href="https://support.torproject.org/tor-browser/getting-started/installing/" rel="noopener">Tor Project: Installing Tor Browser (Android and iOS)</a></li><li><a href="https://support.apple.com/en-us/102602" rel="noopener">Apple: About iCloud Private Relay</a></li><li><a href="https://support.apple.com/guide/icloud/mm7dc25cb68f" rel="noopener">Apple: Set up iCloud Private Relay on all your devices</a></li><li><a href="https://www.apple.com/icloud/docs/iCloud_Private_Relay_Overview_Dec2021.pdf" rel="noopener">Apple: iCloud Private Relay Overview (December 2021, PDF)</a></li><li><a href="https://support.apple.com/en-us/102022" rel="noopener">Apple: Manage iCloud Private Relay for specific websites, networks or system settings</a></li><li><a href="https://support.apple.com/guide/mac-help/wi-fi-settings-on-mac-mh11935/mac" rel="noopener">Apple: Wi-Fi settings on Mac (Limit IP Address Tracking)</a></li><li><a href="https://support.google.com/android/answer/9089766?hl=en" rel="noopener">Android Help: Connect to a virtual private network (VPN) on Android</a></li><li><a href="https://support.google.com/android/answer/9654714?hl=en" rel="noopener">Android Help: Manage advanced network settings (Private DNS)</a></li><li><a href="https://support.google.com/chrome/answer/9845881?hl=en" rel="noopener">Google Chrome Help: Browse in Incognito mode</a></li><li><a href="https://support.torproject.org/tor-browser/general/website-blocking-tor-exits/" rel="noopener">Tor Project: Website blocking access over Tor</a></li></ul>
 `,
 
   "how-to-find-your-ip-address": `
@@ -1494,7 +1530,7 @@ export const BODIES: Record<string, string> = {
 
 <h2>What actually gives you away</h2>
 <ul>
-<li><strong>WebRTC.</strong> A browser can reveal your real IP through WebRTC even when traffic goes through a proxy or VPN. Test it with the <a href="/webrtc">WebRTC leak test</a>.</li>
+<li><strong>WebRTC.</strong> A browser can reveal your real IP through WebRTC even when traffic goes through a proxy or VPN. Test it with the <a href="/webrtc">WebRTC leak test</a>, and see <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a> for how proxies compare with a VPN and Tor.</li>
 <li><strong>DNS.</strong> If your device looks up website names itself, your resolver sees where you browse. See the DNS note in <a href="/learn/http-vs-socks5-proxy">HTTP vs SOCKS5</a>.</li>
 <li><strong>The IP's reputation.</strong> A clean header does not help if the address belongs to a data center or is on a blocklist. Check the exit IP with the <a href="/reputation">IP reputation tool</a>.</li>
 <li><strong>Browser fingerprint and cookies.</strong> Sites can recognise you from your browser details and from cookies, whatever proxy you use. Our <a href="/browser">browser info page</a> shows what you expose.</li>
@@ -1770,7 +1806,7 @@ console.log(ip);</code></pre>
 <p>There is an uncomfortable twist here. Many anti-fingerprinting extensions make you more identifiable rather than less, because a browser reporting implausible or contradictory values stands out sharply against the crowd. Blending in beats hiding.</p>
 
 <h2>What does a VPN actually hide?</h2>
-<p>Your IP address, and the contents of your traffic from anyone on the local network. That is the list.</p>
+<p>Your IP address, and the contents of your traffic from anyone on the local network. That is the list. Our guide to <a href="/learn/how-to-hide-your-ip-address">hiding your IP address</a> compares a VPN with Tor, proxies and Private Relay.</p>
 <p>It does not change your user agent, your language preferences, your screen size, your fonts or your time zone. A connection claiming to originate in Frankfurt while the browser reports Asia/Kolkata and prefers Hindi is a contradiction that any site bothering to look will notice. Worse, your browser may leak the real address directly through WebRTC regardless of the tunnel, which is a specific enough problem to deserve <a href="/learn/webrtc-leak-explained">its own explanation</a> and <a href="/webrtc">its own test</a>.</p>
 
 <h2>What can you reasonably do?</h2>

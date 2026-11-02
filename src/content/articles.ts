@@ -35,9 +35,10 @@ export const ARTICLES: ArticleMeta[] = [
   {
     slug: "how-to-hide-your-ip-address",
     title: "How to Hide Your IP Address on Any Device: 5 Methods",
-    description: "Learn how to hide your IP address on PC, iPhone and Android with a VPN, Tor, a proxy or Private Relay. Compare each method and test that it worked.",
+    description: "Hide your IP address on a PC, iPhone, Android or in one browser with a VPN, Tor, a proxy or Private Relay. See why it cannot be blocked and how to test it.",
     published: "2026-10-08",
-    readMin: 7,
+    updated: "2026-11-02",
+    readMin: 9,
     tools: ["ip", "webrtc", "reputation"],
     related: ["can-someone-track-you-by-ip-address", "is-my-vpn-working", "webrtc-leak-explained", "what-your-browser-reveals"],
   },
