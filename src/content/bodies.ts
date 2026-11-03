@@ -1,61 +1,131 @@
 /** Article bodies (trusted, hand-written HTML). Kept apart from metadata so the Worker bundle stays small. */
 export const BODIES: Record<string, string> = {
   "what-is-an-ip-address": `
-<p>An <strong>IP address</strong> (Internet Protocol address) is the number that identifies a device or network on the internet, so data knows where to go and where it came from. It works like the address on an envelope: a website sends the page you asked for to your IP address, and routers along the way read it to pass the data in the right direction. You can see yours on our <a href="/">IP checker</a>.</p>
+<p>An <strong>IP address</strong> is the number that identifies a device or network on the internet, so data knows where to go and where it came from. The letters stand for Internet Protocol. It works like the address on an envelope: a website sends the page you asked for to your IP address, and routers along the way read it to pass the data in the right direction. You can see yours on our <a href="/">IP checker</a>.</p>
+<p>In brief:</p>
+<ul>
+<li>IP stands for Internet Protocol, the rules that carry data across networks in addressed packets.</li>
+<li>An IPv4 address is 32 bits written as four numbers from 0 to 255, such as 192.168.1.10. An IPv6 address is 128 bits written in hexadecimal, such as 2001:db8::1.</li>
+<li>Every address has a network part and a device part. The prefix length, such as /24, says where one ends and the other begins.</li>
+<li>With IPv4, your router usually shares one public address among all the devices at home, and each device has a private one.</li>
+</ul>
 
 <h2>IP address meaning</h2>
-<p>An IP address is a numeric label for a network connection. Every packet of data on the internet carries two of them: the address it came from and the address it is going to. RFC 791, the 1981 specification of the Internet Protocol, describes the job as carrying blocks of data called datagrams from sources to destinations identified by fixed-length addresses. Names such as example.com are for people; the <a href="/learn/what-is-a-dns-server">DNS</a> turns them into IP addresses for computers.</p>
+<p>An IP address is a numeric label for a network connection. Every packet of data on the internet carries two of them: the address it came from and the address it is going to. <a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791</a>, the 1981 specification of the Internet Protocol, describes the job as carrying blocks of data called datagrams from sources to destinations identified by fixed-length addresses. Names such as example.com are for people; the <a href="/learn/what-is-a-dns-server">DNS</a> turns them into IP addresses for computers.</p>
+<p>The address belongs to a connection, not to the device for life. A laptop gets one address on your home Wi-Fi and a different one at a café, and its hardware identifier is a separate thing called a <a href="/learn/what-is-a-mac-address">MAC address</a>.</p>
 
 <h2>What does IP stand for?</h2>
-<p>IP stands for Internet Protocol, the set of rules that splits data into packets and addresses each one so it can cross many networks. An IP address is the address that protocol uses. IPv4 was specified in RFC 791 in September 1981, and IPv6 in 1998, with its current specification in RFC 8200.</p>
+<p>IP stands for Internet Protocol, the set of rules that splits data into packets and addresses each one so it can cross many networks. <a href="https://www.rfc-editor.org/rfc/rfc1122" rel="noopener">RFC 1122</a> calls it a connectionless datagram service with no end-to-end delivery guarantee: IP moves each packet toward its address, and the layers above it handle reliable delivery when it is required. TCP is the transport that adds that reliability, and the two names together, TCP/IP, are often used for the whole family of protocols. IPv4 was specified in RFC 791 in September 1981. IPv6 is defined by RFC 8200, published in July 2017, which replaced the earlier RFC 2460.</p>
 
 <h2>What does an IP address look like?</h2>
 <div class="tw"><table><tbody>
 <tr><th>Version</th><th>Example</th><th>Size</th><th>Possible addresses</th></tr>
 <tr><td>IPv4</td><td class="mono">203.0.113.42</td><td>32 bits, four numbers from 0 to 255</td><td>About 4.3 billion</td></tr>
-<tr><td>IPv6</td><td class="mono">2001:db8:85a3::8a2e:370:7334</td><td>128 bits, hexadecimal groups</td><td>2 to the power 128</td></tr>
+<tr><td>IPv6</td><td class="mono">2001:db8:85a3::8a2e:370:7334</td><td>128 bits, eight groups of hexadecimal</td><td>2 to the power 128</td></tr>
 </tbody></table></div>
-<p>Both versions do the same job, and most connections now use both. Read <a href="/learn/what-is-ipv6">what IPv6 is</a> or the side-by-side <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a> comparison.</p>
+<p>An IPv4 address is four bytes. Each byte holds 8 bits, which is 256 possible values, so each of the four numbers runs from 0 to 255 and something like 192.168.1.300 is not a valid address. An IPv6 address is eight groups of 16 bits, each written as up to four hexadecimal digits. <a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291</a> lets you drop leading zeros in a group and replace one run of all-zero groups with a double colon, so 2001:0db8:0000:0000:0000:0000:0000:0001 and 2001:db8::1 are the same address.</p>
+<p>Both versions do the same job, and a device can have one of each at the same time. Read <a href="/learn/what-is-ipv6">what IPv6 is</a> or the side-by-side <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a> comparison.</p>
+
+<h2>How to read an IP address: network part and device part</h2>
+<p>An IP address has two parts. The first bits name the network, and the rest name one device on that network. Routers on the internet only look at the network part to decide where to send a packet; the last router uses the device part to deliver it.</p>
+<p>The <strong>prefix length</strong> is the number after the slash, and it counts how many bits belong to the network. <a href="https://www.rfc-editor.org/rfc/rfc4632" rel="noopener">RFC 4632</a>, which describes this notation, gives 192.168.99.0/24 as an example in which the most significant 24 bits are ones in the mask and the last 8 are zeros. A <strong>subnet mask</strong> is the same split written like an address, so /24 becomes 255.255.255.0. For a home network like 192.168.1.0/24:</p>
+<div class="tw"><table><tbody>
+<tr><th>Piece</th><th>Value</th><th>What it means</th></tr>
+<tr><td>Address</td><td class="mono">192.168.1.10/24</td><td>One device on the network</td></tr>
+<tr><td>Network part</td><td class="mono">192.168.1</td><td>The first 24 bits, shared by every device at home</td></tr>
+<tr><td>Device part</td><td class="mono">.10</td><td>The last 8 bits, unique to this device</td></tr>
+<tr><td>Subnet mask</td><td class="mono">255.255.255.0</td><td>The same /24 split written as an address</td></tr>
+<tr><td>Usable addresses</td><td>254</td><td>8 bits give 256 values; the all-zeros and all-ones values are reserved</td></tr>
+</tbody></table></div>
+<p>RFC 1122 does not allow a device part of all zeros or all ones on an ordinary device, and uses all ones for broadcast, which is why a /24 holds 254 devices rather than 256. Our <a href="/subnet">subnet calculator</a> does this arithmetic for any prefix, and <a href="/learn/cidr-subnet-mask-explained">CIDR and subnet masks explained</a> goes through the bit maths.</p>
+
+<h2>How does an IP address work?</h2>
+<p>When you open a website, four things happen with addresses:</p>
+<ol>
+<li>Your device asks a DNS server for the site's IP address.</li>
+<li>It sends a packet with the site's address as the destination and its own address as the source.</li>
+<li>Your router swaps the private source address for its public one (this is <a href="/learn/what-is-nat">NAT</a>), and routers across the internet pass the packet along by its network part.</li>
+<li>The site replies to the public address, and your router hands the reply back to the device that asked.</li>
+</ol>
+<p>You can watch the first step yourself. On 3 November 2026 I ran <code>dig +short example.com</code> and then <code>dig +short example.com AAAA</code> from a Mac. The first returned two IPv4 addresses, 172.66.147.243 and 104.20.23.154, and the second returned one IPv6 address, 2606:4700:8395:72db:f20c:0:ef6b:ff98. The output looked like this:</p>
+<pre><code>$ dig +short example.com
+172.66.147.243
+104.20.23.154
+$ dig +short example.com AAAA
+2606:4700:8395:72db:f20c:0:ef6b:ff98</code></pre>
+<p>One name can point at several addresses, and the answer can change over time. Our <a href="/dns">DNS lookup</a> shows the same records in a browser.</p>
 
 <h2>Types of IP addresses</h2>
+<p>The first numbers of an address tell you what kind it is. These ranges are set aside in the IANA special-purpose registries and the RFCs listed for each:</p>
+<div class="tw"><table><tbody>
+<tr><th>Starts with</th><th>Type</th><th>Where you see it</th></tr>
+<tr><td class="mono">10., 172.16. to 172.31., 192.168.</td><td>Private (RFC 1918)</td><td>Devices on a home or office network</td></tr>
+<tr><td class="mono">100.64. to 100.127.</td><td>Shared address space (RFC 6598)</td><td>Your router's outside address under <a href="/learn/what-is-cgnat">carrier-grade NAT</a></td></tr>
+<tr><td class="mono">169.254.</td><td>Link-local (RFC 3927)</td><td>A device that <a href="/learn/what-is-a-169-254-ip-address">could not get an address</a> from the router</td></tr>
+<tr><td class="mono">127.</td><td>Loopback (RFC 1122)</td><td>The device talking to itself, usually 127.0.0.1</td></tr>
+<tr><td class="mono">192.0.2., 198.51.100., 203.0.113.</td><td>Documentation (RFC 5737)</td><td>Examples in guides like this one</td></tr>
+<tr><td class="mono">fe80:</td><td>IPv6 link-local (RFC 4291)</td><td>IPv6 on the local link only; routers must not forward it</td></tr>
+<tr><td class="mono">fc or fd</td><td>IPv6 unique local (RFC 4193)</td><td>The IPv6 counterpart of a private address</td></tr>
+<tr><td class="mono">::1</td><td>IPv6 loopback (RFC 4291)</td><td>The device talking to itself over IPv6</td></tr>
+<tr><td class="mono">2001:db8:</td><td>IPv6 documentation (RFC 3849)</td><td>Examples only</td></tr>
+<tr><td>Most other unicast addresses</td><td>Public</td><td>Addresses that are reachable on the internet</td></tr>
+</tbody></table></div>
 <ul>
-<li>Public and private. Your router has one public address that the internet sees, and gives each device inside a private address from the ranges in RFC 1918 (10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16). It translates between them with <a href="/learn/what-is-nat">NAT</a>. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</li>
+<li>Public and private. Your router has one public address that the internet sees, and gives each device inside a private address. <a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918</a> says packets with private source or destination addresses should not be forwarded between organizations, and the <a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml" rel="noopener">IANA special-purpose registry</a> marks these ranges as not globally reachable. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</li>
 <li>Dynamic and static. Most home connections get a dynamic address that can change; businesses often pay for a static one. See <a href="/learn/static-vs-dynamic-ip-address">static vs dynamic IP addresses</a>.</li>
-<li>Special ranges. 127.0.0.1 always means the device itself, 169.254.x.x means a device <a href="/learn/what-is-a-169-254-ip-address">could not get an address</a>, and 100.64.0.0/10 is used by providers for <a href="/learn/what-is-cgnat">carrier-grade NAT</a>.</li>
 </ul>
 
+<h2>Example: one Mac's public, private and link-local addresses</h2>
+<p>To show how these pieces fit, I checked one real connection. Test setup: a Mac running macOS 26.7.1 on a wired network, 3 November 2026, using the built-in Terminal commands below. I have hidden the exact numbers, because a public address points to a provider and an area.</p>
+<ul>
+<li><code>curl -4 https://ipcomet.com/api/ip</code> returned the public IPv4 address, which sits outside every private and special range in the table above. This is the address websites see.</li>
+<li><code>ifconfig en6</code> showed a private address starting 172.20, inside the RFC 1918 block 172.16.0.0/12, with netmask 0xfffffc00. That is 255.255.252.0, or /22: 22 bits for the network and 10 for devices, so 1,024 values and 1,022 usable addresses.</li>
+<li><code>route -n get default</code> showed the gateway, the router's own private address, also starting 172.20.</li>
+<li>The only IPv6 address on the interface started with fe80, the link-local range. This network had no public IPv6, so traffic left over IPv4 only.</li>
+</ul>
+<p>So three addresses were in play: the router's public address, which the Mac shared with everything behind it, the Mac's private address on the local network, and a link-local IPv6 address that stays on the local network. To read your own the same way, see <a href="/learn/get-public-ip-address-command-line">how to get your public IP from the command line</a>.</p>
+
 <h2>Who assigns IP addresses?</h2>
-<p>Addresses are handed down in blocks. IANA allocates pools of addresses to five regional internet registries: AFRINIC for Africa, APNIC for Asia and the Pacific, ARIN for Canada, the USA and some Caribbean islands, LACNIC for Latin America and some Caribbean islands, and RIPE NCC for Europe, the Middle East and Central Asia. The registries assign blocks to internet providers and large organizations, and your provider gives your router its public address, usually automatically. Our <a href="/asn-lookup">ASN lookup</a> shows which network announces any address.</p>
+<p>Addresses are handed down in blocks. IANA (the Internet Assigned Numbers Authority) allocates pools of addresses to five regional internet registries:</p>
+<ul>
+<li>AFRINIC: Africa</li>
+<li>APNIC: Asia Pacific</li>
+<li>ARIN: the United States, Canada and many Caribbean and North Atlantic islands</li>
+<li>LACNIC: Latin America and the Caribbean</li>
+<li>RIPE NCC: Europe, the Middle East and parts of Central Asia</li>
+</ul>
+<p>On 3 February 2011 IANA gave out its last five IPv4 blocks of the /8 size, one to each registry, and <a href="https://www.arin.net/announcements/2011/20110203.html" rel="noopener">ARIN announced</a> that the central free pool was fully depleted. In April 2012 RFC 6598 set aside 100.64.0.0/10 for carrier-grade NAT, which lets a provider share one public IPv4 address between many customers. IPv6 avoids the shortage with its far larger pool. The registries assign blocks to internet providers and large organizations, and your provider gives your router its public address, usually automatically. Our <a href="/asn-lookup">ASN lookup</a> shows which network announces any address.</p>
 
 <h2>What does your IP address reveal?</h2>
-<p>A public IP address usually reveals your internet provider, your country and often your city or region. It does not reveal your name, your street address or what you do online. Linking an address to a person normally needs your provider's records, which are released only through legal process. Our <a href="/lookup">IP lookup</a> shows exactly what anyone can see for an address, and <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a> goes further.</p>
+<p>A public IP address usually reveals your internet provider, your country and often your city or region. It does not reveal your name, your street address or what you do online. Linking an address to a person needs your provider's subscriber records, which websites do not have. Our <a href="/lookup">IP lookup</a> shows exactly what anyone can see for an address, and <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a> goes further.</p>
 
 <h2>How to find your IP address</h2>
 <p>Your public address is at the top of our <a href="/">home page</a>, with your IPv6 address underneath if you have one. Our guide to <a href="/learn/my-ip">what each line of your IP result means</a> explains the location, ISP and network details shown with it. To find the private address of a device:</p>
 <ul>
-<li>Windows: open Command Prompt and run <code>ipconfig</code>.</li>
-<li>Mac: open System Settings, choose Network, then your connection and Details.</li>
-<li>Linux: run <code>ip addr</code> in a terminal.</li>
-<li>iPhone or Android: open the Wi-Fi settings and tap your network.</li>
+<li>Windows: open Command Prompt and run <code>ipconfig</code>. <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft's reference</a> says that without options it shows the IPv4 and IPv6 addresses, subnet mask and default gateway of every adapter.</li>
+<li>Mac: run <code>ipconfig getifaddr en0</code> in Terminal. en0 is often Wi-Fi; on the wired Mac above the right name was en6, which <code>ifconfig</code> lists.</li>
+<li>Linux: run <code>ip address show</code>, the iproute2 command for looking at protocol addresses.</li>
 </ul>
-<p>For every device and operating system, see <a href="/learn/how-to-find-your-ip-address">how to find your IP address</a>.</p>
+<p>Phone steps differ by model and system version. For iPhone, Android and every other device, see <a href="/learn/how-to-find-your-ip-address">how to find your IP address</a>.</p>
 
 <h2>Frequently asked questions</h2>
 <h3>What is an IP address in simple words?</h3>
 <p>It is your internet connection's address. Websites use it to send data back to you, the same way a letter needs a return address.</p>
+<h3>Is 192.168.1.1 an IP address?</h3>
+<p>Yes. It is a private IPv4 address from the 192.168.0.0/16 block, and many home routers use it for themselves. It only works inside your own network; see <a href="/learn/find-router-ip-address">how to find your router's IP address</a>.</p>
 <h3>Can two devices have the same IP address?</h3>
-<p>Two devices on different home networks can have the same private address, such as 192.168.1.10, because private addresses only matter inside each network. On the internet, all the devices behind one router share its single public address.</p>
+<p>Two devices on different home networks can have the same private address, such as 192.168.1.10, because private addresses only matter inside each network. On the same network, two devices should never share an address; that is called an address conflict. On the internet, all the devices behind one router share its single public address.</p>
 <h3>Does my IP address change?</h3>
 <p>Often, yes. Most home connections have a dynamic address that the provider can change, and your address also changes when you switch networks. You can also <a href="/learn/how-to-change-your-ip-address">change it yourself</a>.</p>
 <h3>Is my IP address the same on my phone and computer?</h3>
-<p>On the same Wi-Fi, yes: both share your router's public address. On mobile data, your phone uses the carrier's address instead.</p>
+<p>On the same Wi-Fi they share your router's public IPv4 address. If your network has IPv6, each device usually has its own IPv6 address. On mobile data, your phone uses the carrier's address instead.</p>
 
 <h2>Sources and further reading</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol (IETF, September 1981)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.iana.org/numbers" rel="noopener">IANA: Number resources and the regional internet registries</a></li></ul>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc791" rel="noopener">RFC 791: Internet Protocol (IETF, September 1981)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1122" rel="noopener">RFC 1122: Requirements for Internet Hosts, Communication Layers (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4632" rel="noopener">RFC 4632: Classless Inter-domain Routing (CIDR) (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3927" rel="noopener">RFC 3927: Dynamic Configuration of IPv4 Link-Local Addresses (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc5737" rel="noopener">RFC 5737: IPv4 Address Blocks Reserved for Documentation (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4193" rel="noopener">RFC 4193: Unique Local IPv6 Unicast Addresses (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3849" rel="noopener">RFC 3849: IPv6 Address Prefix Reserved for Documentation (IETF)</a></li><li><a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml" rel="noopener">IANA IPv4 Special-Purpose Address Registry</a></li><li><a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml" rel="noopener">IANA IPv6 Special-Purpose Address Registry</a></li><li><a href="https://www.nro.net/about/rirs/" rel="noopener">Number Resource Organization: the five regional internet registries</a></li><li><a href="https://www.arin.net/announcements/2011/20110203.html" rel="noopener">ARIN: IANA IPv4 free pool depleted (3 February 2011)</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft Learn: ipconfig</a></li><li><a href="https://man7.org/linux/man-pages/man8/ip-address.8.html" rel="noopener">ip-address(8) manual page (iproute2)</a></li></ul>
 `,
 
   "ipv4-vs-ipv6": `
-<p>IPv4 and IPv6 are the two versions of the Internet Protocol. Both give devices an address so they can talk to each other. IPv4 is the original and is running out of space. IPv6 is the newer standard with a far larger pool.</p>
+<p>IPv4 and IPv6 are the two versions of the Internet Protocol. Both give devices an <a href="/learn/what-is-an-ip-address">IP address</a> so they can talk to each other. IPv4 is the original and is running out of space. IPv6 is the newer standard with a far larger pool.</p>
 
 <h2>The key differences</h2>
 <div class="tw"><table><tbody>
@@ -384,7 +454,7 @@ export const BODIES: Record<string, string> = {
 <p>CIDR notation is a compact way to write a network. In <code>192.168.1.0/24</code>, the part after the slash says how many bits of the address identify the network. The rest identify devices on it. Once you can read that number, subnetting becomes simple arithmetic.</p>
 
 <h2>Reading the number after the slash</h2>
-<p>An IPv4 address has 32 bits. A <code>/24</code> uses the first 24 as the network portion, leaving 8 bits for hosts, which gives 2<sup>8</sup> = 256 addresses. The formula is:</p>
+<p>An IPv4 address has 32 bits (if the format itself is new to you, start with <a href="/learn/what-is-an-ip-address">what an IP address is</a>). A <code>/24</code> uses the first 24 as the network portion, leaving 8 bits for hosts, which gives 2<sup>8</sup> = 256 addresses. The formula is:</p>
 <p><code>addresses = 2 ^ (32 − prefix length)</code></p>
 <p>A bigger prefix number means a smaller network.</p>
 
@@ -1075,7 +1145,7 @@ curl -6 https://ipcomet.com/api/ip</code></pre>
 `,
 
   "what-is-a-mac-address": `
-<p>A MAC address is a hardware identifier burned into every network adapter: your laptop's Wi-Fi chip, your phone, your TV, your console. It identifies a device on a local network, while an IP address identifies it on the wider internet. The two are easy to confuse, so here is the difference and how to find yours.</p>
+<p>A MAC address is a hardware identifier burned into every network adapter: your laptop's Wi-Fi chip, your phone, your TV, your console. It identifies a device on a local network, while an <a href="/learn/what-is-an-ip-address">IP address</a> identifies it on the wider internet. The two are easy to confuse, so here is the difference and how to find yours.</p>
 
 <h2>What does a MAC address look like?</h2>
 <p>It is 48 bits, written as six pairs of hexadecimal digits, for example <code>00:1A:2B:3C:4D:5E</code>. Some systems use dashes or dots instead of colons. The first three pairs are the <strong>OUI</strong>, which identifies the manufacturer, so a MAC address can reveal whether a device is an Apple, Samsung or Intel product. Paste any address into our <a href="/mac-lookup">MAC address lookup</a> to see its manufacturer. The last three pairs identify the individual adapter.</p>

@@ -25,12 +25,12 @@ export const ARTICLES: ArticleMeta[] = [
   {
     slug: "what-is-an-ip-address",
     title: "What Is an IP Address? Meaning, Types and Examples",
-    description: "IP address meaning in plain English: what IP stands for, what an address looks like, public vs private, IPv4 vs IPv6, who assigns it and how to find yours.",
+    description: "An IP address is the number that tells internet data where to go. Learn what IP stands for, how to read an address, the main types and how to find yours.",
     published: "2026-10-07",
-    updated: "2026-10-26",
-    readMin: 7,
-    tools: ["ip", "lookup", "asn"],
-    related: ["public-vs-private-ip-address", "what-is-ipv6", "what-is-nat", "what-is-a-mac-address"],
+    updated: "2026-11-03",
+    readMin: 9,
+    tools: ["ip", "lookup", "subnet", "dns"],
+    related: ["public-vs-private-ip-address", "what-is-ipv6", "cidr-subnet-mask-explained", "what-is-nat", "what-is-a-mac-address"],
   },
   {
     slug: "how-to-hide-your-ip-address",
