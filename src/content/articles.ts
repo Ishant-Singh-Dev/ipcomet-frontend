@@ -330,7 +330,7 @@ export const ARTICLES: ArticleMeta[] = [
   },
   {
     slug: "get-public-ip-address-command-line",
-    title: "Get Your Public IP From the Command Line (CMD, PowerShell, Terminal)",
+    title: "How to Get Your Public IP in CMD, PowerShell and Terminal",
     description: "Get your public IP address from Windows CMD, PowerShell, or a Mac or Linux terminal with one command: curl, nslookup, Python or Node, plus a free JSON API.",
     published: "2026-10-13",
     updated: "2026-10-23",
