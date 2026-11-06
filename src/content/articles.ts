@@ -163,11 +163,12 @@ export const ARTICLES: ArticleMeta[] = [
   {
     slug: "is-my-ip-address-blacklisted",
     title: "Is Your IP Address Blacklisted? How to Check and Fix It",
-    description: "Blocklists can stop your email and trigger captchas. Learn how to check whether your IP is listed, why it happens and how to get removed.",
+    description: "Check if your IP address is blacklisted and read the result correctly. Learn why addresses get listed, what bounce errors mean and how to get removed.",
     published: "2026-10-08",
-    readMin: 6,
-    tools: ["reputation", "ip"],
-    related: ["why-does-my-ip-address-change", "how-to-change-your-ip-address", "what-is-an-ip-checker", "what-is-reverse-dns"],
+    updated: "2026-11-07",
+    readMin: 10,
+    tools: ["reputation", "ip", "email-headers", "reverse-dns"],
+    related: ["why-does-my-ip-address-change", "how-to-change-your-ip-address", "how-to-hide-your-ip-address", "what-is-cgnat", "what-is-reverse-dns"],
   },
   {
     slug: "find-router-ip-address",

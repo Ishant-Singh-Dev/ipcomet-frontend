@@ -663,38 +663,137 @@ $ dig +short example.com AAAA
 `,
 
   "is-my-ip-address-blacklisted": `
-<p>An IP blocklist (often called a blacklist) is a public list of addresses that have been linked to spam, malware or other abuse. If yours is on one, you may find that email bounces, websites show endless captchas, or a service blocks you outright. The good news is that you can check in seconds and usually fix it.</p>
-
-<h2>How to check</h2>
-<p>Run our <a href="/reputation">IP reputation check</a>. Leave the box empty to test your own address, or enter any IPv4 address. It queries five public blocklists, tells you whether the address is a Tor exit node, and shows what kind of network owns it. You can also look at the details of any address with the <a href="/lookup">IP lookup</a>.</p>
-
-<h2>Why does an IP address get blacklisted?</h2>
+<p>To check whether your IP address is blacklisted, run the <a href="/reputation">IP reputation check</a> with the box empty, then enter the same address on <a href="https://check.spamhaus.org/" rel="noopener">Spamhaus's own checker</a>, because our tool cannot query that list. A <strong>blacklist</strong> is a list of addresses that its operator links to spam or abuse, and many operators call theirs a blocklist. A listing often comes from someone else's behavior, and many listings end by themselves once the problem stops.</p>
+<p>In brief:</p>
 <ul>
-<li><strong>Someone else's behavior.</strong> Many home and mobile connections share or reuse addresses. The previous user of your address may have sent spam or had an infected device.</li>
-<li><strong>Your own device.</strong> Malware, a hacked router or an open mail server can send spam without you knowing.</li>
-<li><strong>VPN and proxy servers.</strong> Hundreds of people share each address, so a single abuser can get it listed for everyone.</li>
-<li><strong>Data center addresses.</strong> Hosting networks are watched more closely than home connections. See <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for how addresses are allocated.</li>
+<li>A listing tells you what one operator thinks. Whether it hurts you depends on who uses that list.</li>
+<li>Blacklists are mostly about email. A website that blocks you is usually following its owner's own rule, which needs a different fix.</li>
+<li>If your email bounced, the error text tells you who blocked it, so start there.</li>
+<li>Fix the cause before you ask for removal. Spamhaus says removal from its lists is always free.</li>
 </ul>
 
-<h2>What does being blacklisted do to you?</h2>
-<p>Most blocklists target email. A listing can cause mail servers to reject or junk your messages. Other services use blocklists, or their own data, to decide when to show a captcha, slow you down or block a login. Being listed does not mean your computer is hacked, but it is worth checking.</p>
-
-<h2>How to get removed</h2>
+<h2>How do I check if my IP address is blacklisted?</h2>
+<p>Use the right address, run a public check, then check the big lists our tool cannot reach.</p>
 <ol>
-<li><strong>Find out why.</strong> Scan your devices for malware and make sure no unknown service is exposed. You can see what your IP exposes with our <a href="/port">port checker</a>.</li>
-<li><strong>Fix the cause.</strong> Update your router, change its admin password and close ports you do not need.</li>
-<li><strong>Use the list's removal page.</strong> Each blocklist has a delisting form. Some are automatic and remove entries after a few days of clean behavior.</li>
-<li><strong>Ask your provider.</strong> If the address is shared or recycled, your internet provider can often give you a different one. Read <a href="/learn/how-to-change-your-ip-address">how to change your IP address</a>.</li>
+<li>Find the address that matters. At home that is your public IP, shown on the <a href="/">home page</a>. For email it is the address of the server that sent the message, which you will find in the bounce or the <a href="/email-header-analyzer">email headers</a>.</li>
+<li>Run the <a href="/reputation">IP reputation check</a>. Leave the box empty to test your own address, or enter any IPv4 address. It queries five public blocklists (SpamCop, DroneBL, the Passive Spam Block List, s5h.net and UCEPROTECT Level 1), says whether the address is a Tor exit node and shows what kind of network owns it.</li>
+<li>Enter the address on <a href="https://check.spamhaus.org/" rel="noopener">check.spamhaus.org</a> and in <a href="https://www.barracudacentral.org/lookups" rel="noopener">Barracuda's reputation lookup</a>. Neither list appears in our check.</li>
+<li>If mail is bouncing, match the error with the <a href="#what-does-my-bounce-message-mean">bounce table below</a>.</li>
 </ol>
 
+<h2>How to read the result</h2>
+<p>A result says what one list knows about one address, so read each row before you act.</p>
+<div class="tw"><table><tbody>
+<tr><th>You see</th><th>What it means</th><th>What to do</th></tr>
+<tr><td>Not listed on any list that answered</td><td>Those lists returned no entry for the address. Other lists and private systems may still hold it.</td><td>Stop here if nothing is wrong. If mail bounces, follow the bounce.</td></tr>
+<tr><td>Listed on one or more lists</td><td>That operator has flagged the address.</td><td>Read the list's reason, fix the cause, then use the removal table below.</td></tr>
+<tr><td>Spamhaus PBL only</td><td>The address sits in a mostly residential range that should not send mail directly. Spamhaus says this is not the result of anything the user did.</td><td>Nothing, unless a device of yours sends mail directly. Send through your provider on port 587 or 465 with a login.</td></tr>
+<tr><td>No answer</td><td>The list gave no usable answer.</td><td>Try again later. It is not a clean result.</td></tr>
+<tr><td>Hosting or data center network</td><td>A server network owns the address. This is not a blocklist result.</td><td>Expected on a VPN, proxy or cloud server.</td></tr>
+<tr><td>Tor exit node</td><td>The address appears on the Tor Project's list of exits.</td><td>Expected in Tor Browser. If you do not use Tor, find out who else shares the connection.</td></tr>
+</tbody></table></div>
+
+<h2>Who can remove you from each blacklist?</h2>
+<p>Each operator sets its own rules. On some lists you only have to wait, on others you ask, and on one only your network provider can ask.</p>
+<div class="tw"><table><tbody>
+<tr><th>List</th><th>What gets you listed</th><th>How you get off</th></tr>
+<tr><td>Spamhaus SBL</td><td>Ranges Spamhaus calls malicious</td><td>Only the network or hosting company can request removal, so ask your provider.</td></tr>
+<tr><td>Spamhaus CSS</td><td>Low-reputation mail detected on port 25</td><td>Normally expires three days after the last detection. If you control the IP and fixed the cause, you can also request delisting on the checker.</td></tr>
+<tr><td>Spamhaus XBL</td><td>A device on the address that looks insecure, compromised or infected</td><td>Secure the devices, then request removal on the checker. Entries also expire once the behavior stops.</td></tr>
+<tr><td>Spamhaus PBL</td><td>A range that should not send mail directly, a policy entry that accuses nobody</td><td>End users can ask for one IP to be excluded on the checker if the network's policy allows it. The exclusion lasts one year.</td></tr>
+<tr><td>SpamCop</td><td>Reports from SpamCop users and automated systems</td><td>Automatic after 24 hours with no new reports, plus up to 4 hours to reach mirrors. SpamCop asks you not to request early delisting.</td></tr>
+<tr><td>Barracuda</td><td>A poor reputation for the address, for example from an infected PC, a badly set up mail server or a spammer who used the same dynamic IP earlier</td><td>Send one removal request with a valid explanation. It is typically processed within 12 hours, and repeat requests are ignored.</td></tr>
+<tr><td>UCEPROTECT Level 1</td><td>One address that hit spam traps or sent reported spam</td><td>Expires 7 days after the last spam hit. UCEPROTECT also sells immediate removal, but waiting is free.</td></tr>
+<tr><td>UCEPROTECT Level 2</td><td>Too many Level 1 addresses in the same network allocation, so clean neighbors can be caught</td><td>Your provider has to deal with the abuse in that allocation, so ask them.</td></tr>
+<tr><td>DroneBL</td><td>Abusable addresses such as open proxies, compromised routers, DDoS drones and brute force attackers</td><td>Clean up first, then use its <a href="https://dronebl.org/lookup" rel="noopener">lookup and removal page</a>.</td></tr>
+<tr><td>Passive Spam Block List</td><td>Mail to a spam trap from an address that is not a known mail server</td><td>Anyone can remove an address on its <a href="https://psbl.org/remove" rel="noopener">removal page</a>. Removal is instant, but it can take time to spread across nameservers.</td></tr>
+<tr><td>s5h.net</td><td>Sources of spam or attacks aimed at the list's own servers</td><td>Make one web request from the listed address to its <a href="https://www.usenix.org.uk/content/rbl.html" rel="noopener">removal page</a>. If that fails, a form asks for proof that you fixed the problem.</td></tr>
+</tbody></table></div>
+<p>Be careful with anyone who offers to remove you for a fee. <a href="https://www.spamhaus.org/blocklists/spamhaus-blocklist/" rel="noopener">Spamhaus says</a> there is never a charge to remove a Spamhaus listing, that paid removal offers are scams, and that third parties cannot speed it up. UCEPROTECT's paid option comes from UCEPROTECT itself, and you can skip it by waiting.</p>
+
+<h2>What does my bounce message mean?</h2>
+<p>A <strong>bounce</strong> is the error message you get back when a mail server refuses your message, and it names the system that refused it. That decides the fix. Big mail providers such as Microsoft, Google and Yahoo weigh their own reputation data, so the codes below can appear when public blocklists show you as clean.</p>
+<div class="tw"><table><tbody>
+<tr><th>Error</th><th>From</th><th>What it means</th><th>What to do</th></tr>
+<tr><td><code>550 5.7.606-649</code> banned sending IP</td><td>Microsoft 365</td><td>The address is on Microsoft's blocked senders list</td><td>Use the <a href="https://sender.office.com/" rel="noopener">delist portal</a>. It can take 24 hours or longer.</td></tr>
+<tr><td><code>550 5.7.511</code> banned sender</td><td>Microsoft 365</td><td>The address needs a closer investigation, and the portal will not work</td><td>Send the full error and the IP to delist@microsoft.com. Microsoft says it replies within 48 hours.</td></tr>
+<tr><td><code>OU-001</code></td><td>Outlook.com</td><td>A policy rejection, and Microsoft sends you to Spamhaus</td><td>Check the address on Spamhaus.</td></tr>
+<tr><td><code>SC-004</code></td><td>Outlook.com</td><td>Complaints about mail from the address</td><td>Clean your mailing list and join Microsoft's Junk Email Reporting Program.</td></tr>
+<tr><td><code>421 4.7.0</code> or <code>550 5.7.1</code></td><td>Gmail</td><td>Read the text after the code. Gmail uses these for very low reputation of the sending address, among other blocks, and 421 4.7.0 also for a missing or mismatched PTR record.</td><td>Set up <a href="/learn/what-is-reverse-dns">reverse DNS</a>, then watch your spam rate and compliance status in Postmaster Tools.</td></tr>
+<tr><td><code>421 4.7.28</code> or <code>550 5.7.28</code></td><td>Gmail</td><td>An unusual rate of unsolicited mail from your IP</td><td>Find what is sending it and stop it first.</td></tr>
+<tr><td><code>550 5.7.26</code></td><td>Gmail</td><td>Authentication failed, which is a different problem from a blocked IP</td><td>Fix <a href="/spf-checker">SPF</a>, <a href="/dkim-checker">DKIM</a> and <a href="/dmarc-checker">DMARC</a>.</td></tr>
+<tr><td><code>553</code> or <code>554</code> with text naming Spamhaus</td><td>Yahoo</td><td>The sending address is on a Spamhaus list</td><td>Check Spamhaus and do not retry until it is fixed.</td></tr>
+<tr><td>Names a list you cannot find</td><td>Any</td><td>Possibly a private list run by the receiver</td><td>Send the full error to your mail host or the recipient's admin.</td></tr>
+</tbody></table></div>
+<p>We found no delist form for Gmail in Google's documentation. Bulk senders who meet its guidelines can ask for mitigation after their spam rate has stayed below 0.3% for 7 days in a row, according to <a href="https://support.google.com/a/answer/14229414" rel="noopener">Google's sender FAQ</a>.</p>
+
+<h2>Why is my IP blocked if it is not on a blacklist?</h2>
+<p>Websites and large services make their own decisions, so a clean blocklist result does not mean every site will accept you. On a site that uses Cloudflare, for example, these errors come from the site owner's settings:</p>
+<ul>
+<li><a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1005/" rel="noopener">Error 1005</a> means the owner banned your network's ASN, which covers a whole network.</li>
+<li><a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1006/" rel="noopener">Errors 1006, 1007, 1008 and 1106</a> mean the owner banned your IP address. Cloudflare says its support team cannot override this.</li>
+<li><a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1020/" rel="noopener">Error 1020</a> means one of the owner's security features blocked the request.</li>
+</ul>
+<p>The fix is to contact the site's owner and send a screenshot of the error. Getting off a spam blocklist will not help here. If you are <a href="/learn/what-is-cgnat">sharing an address through CGNAT</a> or a VPN, try a different connection to see whether the block follows your account or your address.</p>
+
+<h2>Why does an IP address get blacklisted?</h2>
+<p>An address gets listed when an operator sees spam, abuse or a compromised device behind it, or because of the kind of network it belongs to. The person using it today may have done nothing wrong.</p>
+<ul>
+<li>A previous user caused it. Home addresses are reused, so you can <a href="/learn/why-does-my-ip-address-change">receive a new one</a> with a history attached.</li>
+<li>You share it. Under CGNAT, or on a VPN server, one person's abuse lands on everyone using that address.</li>
+<li>A device on your network is compromised. In March 2026 <a href="https://www.ic3.gov/CSA/2026/260312.pdf" rel="noopener">the FBI said</a> one residential proxy service was believed to have compromised and sold access to about 369,000 devices since 2020, most of them home and small office routers. Traffic through such a device appears to come from the victim's own network. Spamhaus also names "Free VPN" apps that use your device as a proxy.</li>
+<li>Your neighbors caused it. UCEPROTECT Level 2 covers whole allocations.</li>
+<li>A mail server is badly set up. Gmail limits or blocks mail from addresses without a matching PTR record.</li>
+<li>The range itself is on a policy list. That is the Spamhaus PBL, which needs no action from most people.</li>
+</ul>
+
+<h2>How to get removed from a blacklist</h2>
+<p>Fix the cause first, because some lists add the address straight back if the problem continues.</p>
+<ol>
+<li>Find the reason. Read the list's page for your address, or the text in the bounce.</li>
+<li>Check your devices. Scan them for malware and remove free VPN or proxy apps you do not trust. See what your address exposes with the <a href="/port">port checker</a>.</li>
+<li>Check your router. Install firmware updates and change the admin password. Replace it if the maker no longer patches it, because the FBI warns that end-of-life devices generally get no security fixes. In the case it described, a restart cleared some infections, while others survived in custom firmware.</li>
+<li>Use the route in the table above, once.</li>
+<li>Ask your provider if the address is shared or the listing is on its network. If you have a dynamic address, you may be able to <a href="/learn/how-to-change-your-ip-address">change your IP address</a> instead. Replacing the address does nothing for an infected device, so the new one can get listed too.</li>
+<li>Check again after the list's waiting period.</li>
+</ol>
+
+<h2>How a blocklist check works</h2>
+<p>A blocklist check is an ordinary DNS query. <a href="https://www.rfc-editor.org/rfc/rfc5782" rel="noopener">RFC 5782</a> says to reverse the address and add the list's domain, so 192.0.2.99 on SpamCop becomes <code>99.2.0.192.bl.spamcop.net</code>. An answer means the address is listed, usually with the value 127.0.0.2, and a TXT record can carry the reason. No record means it is not listed. <strong>NXDOMAIN</strong> is the DNS reply for a name that does not exist, and it is what an unlisted address normally returns. Under RFC 5782 an IPv4 list must carry 127.0.0.2 as a test entry and must not carry 127.0.0.1, so you can test a list safely:</p>
+<pre><code>$ dig +short 2.0.0.127.bl.spamcop.net A
+127.0.0.2
+$ dig +short 2.0.0.127.bl.spamcop.net TXT
+"Blocked - see https://www.spamcop.net/bl.shtml?127.0.0.2"</code></pre>
+<p>The DNS server you ask can change the answer. <strong>Spamhaus ZEN</strong> is the combined list of the SBL, CSS, XBL and PBL, at <code>zen.spamhaus.org</code>. On 7 November 2026 we queried its test entry from a Mac with dig 9.10.6. The entry should always come back as listed:</p>
+<div class="tw"><table><tbody>
+<tr><th>DNS server</th><th>Answer</th><th>What it really means</th></tr>
+<tr><td>Our test network's default server</td><td class="mono">127.0.0.2, .4 and .10</td><td>Correct. These codes stand for the SBL, XBL and PBL.</td></tr>
+<tr><td>Quad9 (9.9.9.9)</td><td class="mono">127.0.0.2, .4 and .10</td><td>Correct that night, although Spamhaus names Quad9 among the public servers that cause problems.</td></tr>
+<tr><td>Cloudflare (1.1.1.1)</td><td class="mono">127.255.255.254</td><td>An error code for a blocked public server. It does not mean listed.</td></tr>
+<tr><td>Google (8.8.8.8)</td><td class="mono">NXDOMAIN</td><td>Looks clean, yet the test entry is listed.</td></tr>
+</tbody></table></div>
+<p>So a Spamhaus result from a public DNS server can mislead you, as <a href="https://www.spamhaus.org/faqs/dnsbl-usage/" rel="noopener">its usage FAQ</a> warns, which is why we leave Spamhaus out and send you to its own checker. The other five lists behaved. Their test entries came back as listed through both Cloudflare, which our tool uses, and Google. The same night, the IP reputation check returned clean from all five lists for 8.8.8.8 and for the Mac's own address, and labeled 8.8.8.8 as a hosting network.</p>
+
 <h2>If you use a VPN</h2>
-<p>Listed or flagged VPN addresses are common. Switch to a different server, or ask your VPN provider about dedicated or residential addresses. Note that a blocklist result does not show whether a VPN is detectable. Test for leaks with the <a href="/webrtc">WebRTC leak test</a> as well.</p>
+<p>Listed or flagged VPN addresses are common, because many people share each one. Switch to a different server, or ask your VPN provider about a dedicated address. A blocklist result does not show whether a VPN is working, so test for leaks with the <a href="/webrtc">WebRTC leak test</a> as well, and read <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a> if you want to compare the options.</p>
 
 <h2>What our check does not cover</h2>
-<p>We only query lists that answer public DNS resolvers. Spamhaus, a widely used list, refuses these queries, so it is not included. If your email problem continues, also check Spamhaus directly on its own website.</p>
+<p>The IP reputation check queries only lists that answer public DNS resolvers, and its blocklist checks cover IPv4 only. It does not include Spamhaus, Barracuda or the private systems run by Microsoft, Google and Yahoo. A clean result is useful, but it cannot prove that every mail server will accept you.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is there one list of all blacklisted IP addresses?</h3>
+<p>No. Each operator runs its own list with its own rules, and you usually ask about one address at a time through DNS or the operator's website. That is why checkers query several lists and can disagree.</p>
+<h3>How long does a blacklisting last?</h3>
+<p>It depends on the list. SpamCop removes an address after 24 hours with no new reports, Spamhaus CSS normally after three days, and UCEPROTECT Level 1 after 7 days. Spamhaus SBL removal has to come from the network or hosting company.</p>
+<h3>Does being blacklisted mean I was hacked?</h3>
+<p>No. The address may have been used by someone else, or it may sit in a range that a policy list covers. It is still worth checking your devices, because an XBL listing points to a compromised or insecure device, which on a shared address may be someone else's.</p>
+<h3>Will getting a new IP address fix it?</h3>
+<p>It helps when the listing came from a previous user. It will not help for long if the cause is on your own network, because the new address can get listed as well.</p>
+<h3>Can an IPv6 address be blacklisted?</h3>
+<p>Yes. RFC 5782 defines IPv6 lookups, and the Spamhaus XBL lists IPv6 addresses as well as IPv4. Our blocklist check covers IPv4 only, so use Spamhaus's checker for an IPv6 address.</p>
 
 <h2>Sources and further reading</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc5782" rel="noopener">RFC 5782: DNS Blacklists and Whitelists (IETF)</a></li><li><a href="https://www.spamhaus.org/ip-reputation/" rel="noopener">Spamhaus: IP reputation</a></li></ul>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc5782" rel="noopener">RFC 5782: DNS Blacklists and Whitelists (IETF)</a></li><li><a href="https://www.spamhaus.org/ip-reputation/" rel="noopener">Spamhaus: IP reputation</a></li><li><a href="https://www.spamhaus.org/faqs/dnsbl-usage/" rel="noopener">Spamhaus: DNSBL usage FAQ and return codes</a></li><li><a href="https://www.spamhaus.org/blocklists/zen-blocklist/" rel="noopener">Spamhaus: ZEN blocklist</a></li><li><a href="https://www.spamhaus.org/blocklists/spamhaus-blocklist/" rel="noopener">Spamhaus: SBL</a></li><li><a href="https://www.spamhaus.org/blocklists/combined-spam-sources/" rel="noopener">Spamhaus: CSS</a></li><li><a href="https://www.spamhaus.org/blocklists/exploits-blocklist/" rel="noopener">Spamhaus: XBL</a></li><li><a href="https://www.spamhaus.org/blocklists/policy-blocklist/" rel="noopener">Spamhaus: PBL</a></li><li><a href="https://www.spamcop.net/bl.shtml" rel="noopener">SpamCop: blocking list</a></li><li><a href="https://www.spamcop.net/fom-serve/cache/298.html" rel="noopener">SpamCop: how long an address stays listed</a></li><li><a href="https://www.barracudacentral.org/lookups/reason" rel="noopener">Barracuda: why an address has a poor reputation</a></li><li><a href="https://www.barracudacentral.org/rbl/removal-request" rel="noopener">Barracuda: removal request</a></li><li><a href="https://dronebl.org/docs/howtouse" rel="noopener">DroneBL: listing types</a></li><li><a href="https://psbl.org/" rel="noopener">Passive Spam Block List: how it works</a></li><li><a href="https://www.uceprotect.net/en/index.php?m=3&amp;s=3" rel="noopener">UCEPROTECT: Level 1 policy</a></li><li><a href="https://www.uceprotect.net/en/index.php?m=3&amp;s=4" rel="noopener">UCEPROTECT: Level 2 policy</a></li><li><a href="https://www.uceprotect.net/en/index.php?m=7&amp;s=6" rel="noopener">UCEPROTECT: Level 1 delisting</a></li><li><a href="https://learn.microsoft.com/en-us/defender-office-365/external-senders-use-the-delist-portal-to-unblock-yourself" rel="noopener">Microsoft Learn: delist portal and 5.7.511</a></li><li><a href="https://substrate.office.com/ip-domain-management-snds/postmaster/troubleshooting" rel="noopener">Microsoft: Outlook.com postmaster troubleshooting</a></li><li><a href="https://knowledge.workspace.google.com/admin/support/troubleshooting/gmail-smtp-errors-and-codes" rel="noopener">Google: Gmail SMTP errors and codes</a></li><li><a href="https://support.google.com/a/answer/14229414" rel="noopener">Google: sender guidelines FAQ and mitigation</a></li><li><a href="https://support.google.com/a/answer/9981691" rel="noopener">Google: Postmaster Tools</a></li><li><a href="https://senders.yahooinc.com/smtp-error-codes/" rel="noopener">Yahoo: SMTP error codes</a></li><li><a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1005/" rel="noopener">Cloudflare: error 1005</a></li><li><a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1006/" rel="noopener">Cloudflare: errors 1006, 1007, 1008 and 1106</a></li><li><a href="https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1020/" rel="noopener">Cloudflare: error 1020</a></li><li><a href="https://www.ic3.gov/CSA/2026/260312.pdf" rel="noopener">FBI FLASH 20260312-001: AVrecon routers used as residential proxies</a></li></ul>
 `,
 
   "how-to-hide-your-ip-address": `
@@ -1822,7 +1921,7 @@ console.log(ip);</code></pre>
 <p>One important asymmetry: forward and reverse records are independent. Your A record can point example.com at an address while that address answers with a completely unrelated hostname, or with nothing at all. Nothing forces them to agree, which is exactly why mail servers check whether they do.</p>
 
 <h2>Why does email depend on this?</h2>
-<p>Receiving mail servers treat a missing or mismatched PTR record as a spam signal, and some reject on it outright. The logic is crude but effective: anyone who controls a block of addresses legitimately can set reverse DNS on it, and most spam comes from hijacked machines whose operators cannot.</p>
+<p>Receiving mail servers treat a missing or mismatched PTR record as a spam signal, and some reject on it outright, so it is worth ruling out if you are checking whether <a href="/learn/is-my-ip-address-blacklisted">your IP address is blacklisted</a>. The logic is crude but effective: anyone who controls a block of addresses legitimately can set reverse DNS on it, and most spam comes from hijacked machines whose operators cannot.</p>
 <p>The usual check is a forward-confirmed lookup. The server takes your sending IP, finds the PTR hostname, then looks that hostname back up and checks it resolves to the same address. Both directions have to agree. A PTR that points at mail.yourdomain.com is worthless if mail.yourdomain.com resolves somewhere else.</p>
 
 <h2>Who controls your reverse DNS?</h2>
@@ -2367,7 +2466,7 @@ console.log(ip);</code></pre>
 <li>Peer-to-peer gaming failed in some setups, including two players behind the same CGNAT address trying to connect to each other.</li>
 <li>IP-based location and abuse tracking get harder, because many customers share one address.</li>
 </ul>
-<p>That last point affects you too. If someone else on your shared address gets it blocked by a website or listed for spam, you can see CAPTCHAs or blocks you did nothing to earn. Our <a href="/reputation">IP reputation check</a> shows whether your current address is on common blocklists.</p>
+<p>That last point affects you too. If someone else on your shared address gets it blocked by a website or <a href="/learn/is-my-ip-address-blacklisted">listed on a spam blacklist</a>, you can see CAPTCHAs or blocks you did nothing to earn. Our <a href="/reputation">IP reputation check</a> shows whether your current address is on common blocklists.</p>
 
 <h2>CGNAT vs double NAT</h2>
 <p>Double NAT is two routers in your own home, for example your provider's modem-router with your own router plugged in behind it. You can fix it yourself by putting the first device into bridge mode or forwarding the port on both. CGNAT happens inside the provider's network, so no setting on your side removes it. The <a href="/learn/what-is-port-forwarding">port forwarding guide</a> covers the double NAT fix.</p>
