@@ -28,6 +28,8 @@ export interface ToolStrings {
   lead: string;
   about: string;
   faq: Faq[];
+  /** Optional trusted HTML shown after the About paragraph, for a short section only this language needs. */
+  more?: string;
 }
 
 /** A translated standalone page (About, Privacy). `body` is trusted HTML for the .prose block. */

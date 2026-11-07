@@ -452,7 +452,7 @@ export function toolCopy(id: string, loc: Locale) {
     lead: s?.lead ?? LEADS[id] ?? tool.desc,
     about: s?.about ?? TOOL_ABOUT[id] ?? "",
     faq: (s?.faq ?? TOOL_FAQ[id] ?? []) as Faq[],
-    more: s ? "" : (TOOL_MORE[id] ?? ""),
+    more: s ? (s.more ?? "") : (TOOL_MORE[id] ?? ""),
   };
 }
 

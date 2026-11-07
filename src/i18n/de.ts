@@ -824,6 +824,8 @@ export const de: LocaleData = {
           a: "Seit Datenschutzregeln wie die DSGVO gelten, schwärzen die meisten Registrare Name, E-Mail und Adresse des Inhabers in öffentlichen Daten. Sie sehen weiterhin den Registrar, Registrierungs- und Ablaufdatum, Statuscodes und Nameserver.",
         },
       ],
+      more: `<h3>IP-Adresse einer Domain abfragen</h3>
+<p>Unter welcher IP-Adresse eine Domain erreichbar ist, steht nicht in den WHOIS-Daten. Zur technischen Einrichtung nennen sie nur die Nameserver der Domain. Die Adresse selbst steht im DNS: in den A-Einträgen (IPv4) und den AAAA-Einträgen (IPv6). Die <a href="/de/dns">DNS-Abfrage</a> zeigt alle diese Adressen. Die <a href="/de/lookup">IP-Abfrage</a> löst den Domainnamen auf und zeigt zu einer dieser Adressen Standort, Anbieter und ASN.</p>`,
     },
     headers: {
       name: "HTTP-Header",
