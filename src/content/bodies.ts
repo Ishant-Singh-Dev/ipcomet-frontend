@@ -158,36 +158,107 @@ $ dig +short example.com AAAA
 `,
 
   "public-vs-private-ip-address": `
-<p>Every home network uses two kinds of IP address. A <strong>public</strong> address identifies your whole connection to the internet, and <strong>private</strong> addresses identify each device inside your home. Understanding the split explains why you cannot simply connect to a laptop from across the world, and why port forwarding exists.</p>
+<p>A <strong>public IP address</strong> is the address the rest of the internet sees and replies to. Your internet provider gives it to your connection, and on IPv4 every device at home shares it. A <strong>private IP address</strong> is one your router hands to each phone, laptop and TV, taken from ranges that only work inside a local network. You can see your public address on our <a href="/">IP checker</a>; your device settings show the private one.</p>
+<p>In brief:</p>
+<ul>
+<li>Private IPv4 addresses start with 10., 172.16. to 172.31., or 192.168. These are the three blocks set aside in RFC 1918.</li>
+<li>Internet providers are expected to filter out private addresses, so millions of homes can reuse the same ones without clashing.</li>
+<li>Your router translates between the two (NAT), which is why websites only ever see the public address.</li>
+<li>A few other ranges, such as 100.64 to 100.127, 169.254 and 127, are not public either, even though RFC 1918 does not list them.</li>
+</ul>
 
-<h2>Public IP address</h2>
-<p>This is the address websites see when you visit them. Your internet provider assigns it to your router, and every device on your network shares it. It is unique on the internet at any moment, and it is what our <a href="/">IP checker</a> displays. For which of your addresses counts as yours, see <a href="/learn/what-is-my-ip-address">what is my IP address</a>.</p>
-
-<h2>Private IP address</h2>
-<p>Private addresses are used only inside local networks, so they can be reused by millions of homes without clashing. Your router hands them out to your phone, laptop and TV. Three IPv4 ranges are reserved for this:</p>
+<h2>What is the difference between a public and a private IP address?</h2>
+<p>The difference is where the address works. A public address is reachable across the internet and is unique there at any given moment. A private address is meaningful only inside your own network, so the same one can exist in countless other homes.</p>
 <div class="tw"><table><tbody>
-<tr><th>Range</th><th>CIDR</th><th>Typical use</th></tr>
-<tr><td><code>10.0.0.0 – 10.255.255.255</code></td><td>10.0.0.0/8</td><td>Large companies, some routers</td></tr>
-<tr><td><code>172.16.0.0 – 172.31.255.255</code></td><td>172.16.0.0/12</td><td>Medium networks, Docker</td></tr>
-<tr><td><code>192.168.0.0 – 192.168.255.255</code></td><td>192.168.0.0/16</td><td>Most home routers</td></tr>
+<tr><th>Question</th><th>Public IP address</th><th>Private IP address</th></tr>
+<tr><td>Who assigns it</td><td>Your internet provider</td><td>Your router (by DHCP), or you, by hand</td></tr>
+<tr><td>Where it works</td><td>Across the whole internet</td><td>Only on your local network</td></tr>
+<tr><td>Unique?</td><td>Yes, at any given moment</td><td>Only inside your network</td></tr>
+<tr><td>Who sees it</td><td>Every website and service you connect to</td><td>Devices on the same network</td></tr>
+<tr><td>IPv4 example</td><td><code>8.8.8.8</code> (Google Public DNS)</td><td><code>192.168.1.23</code></td></tr>
+<tr><td>Where to find it</td><td>An <a href="/">IP checker</a>, or your router's WAN status page</td><td>Your device's network settings, <code>ipconfig</code> or <code>ifconfig</code></td></tr>
 </tbody></table></div>
-<p>Other special ranges you may meet include <code>127.0.0.1</code> (your own device, called loopback), <code>169.254.x.x</code> (<a href="/learn/what-is-a-169-254-ip-address">self-assigned when DHCP fails</a>) and <code>100.64.0.0/10</code> (used by providers for <a href="/learn/what-is-cgnat">carrier-grade NAT</a>).</p>
+<p>Most homes have one public IPv4 address and several private ones. If you are not sure which of the two you are looking at, <a href="/learn/what-is-my-ip-address">what is my IP address</a> explains which one counts as yours.</p>
+
+<h2>Private IP address ranges</h2>
+<p>There are three private IPv4 ranges. They come from <a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918</a>, published in 1996 as "Address Allocation for Private Internets". It reserves them for networks that do not need to be reached directly from the internet:</p>
+<div class="tw"><table><tbody>
+<tr><th>Range</th><th>CIDR</th><th>Addresses</th><th>Old class equivalent (RFC 1918)</th></tr>
+<tr><td class="mono">10.0.0.0 to 10.255.255.255</td><td>10.0.0.0/8</td><td>16,777,216</td><td>One class A network</td></tr>
+<tr><td class="mono">172.16.0.0 to 172.31.255.255</td><td>172.16.0.0/12</td><td>1,048,576</td><td>16 class B networks</td></tr>
+<tr><td class="mono">192.168.0.0 to 192.168.255.255</td><td>192.168.0.0/16</td><td>65,536</td><td>256 class C networks</td></tr>
+</tbody></table></div>
+<p>The address counts follow from the prefix length: a /8 leaves 24 bits for devices, which is why RFC 1918 calls the first range the "24-bit block". Our <a href="/learn/cidr-subnet-mask-explained">CIDR and subnet mask guide</a> shows how to work out the size of any range, and the <a href="/subnet">subnet calculator</a> does it for you.</p>
+<p>RFC 1918 says packets with private source or destination addresses should not be forwarded between organisations, and that internet providers are expected to filter out routes to them. That is what makes reuse safe.</p>
+
+<h3>What does a private IP address look like?</h3>
+<p>It looks like any other IPv4 address: four numbers from 0 to 255 separated by dots. Only the first numbers give it away. <code>192.168.0.10</code>, <code>192.168.1.23</code>, <code>10.0.0.5</code> and <code>172.20.4.17</code> are all private. <code>172.32.0.1</code> and <code>172.15.0.1</code> are not, because the 172 range only runs from 172.16 to 172.31.</p>
+
+<h2>How to tell if an IP address is public or private</h2>
+<p>Read the first one or two numbers and compare them with the table below. Every range in it is marked "Globally Reachable: False" in the <a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml" rel="noopener">IANA IPv4 Special-Purpose Address Registry</a>, which means packets sent to it are not meant to be forwarded beyond the network or provider that uses it. An IPv4 address outside all of these ranges is normally public. For example, <code>8.8.8.8</code> and <code>1.1.1.1</code> are public, while <code>10.0.0.5</code> and <code>192.168.1.23</code> are not.</p>
+<div class="tw"><table><tbody>
+<tr><th>If the address starts with</th><th>It is</th><th>Public?</th></tr>
+<tr><td class="mono">10.</td><td>Private (RFC 1918)</td><td>No</td></tr>
+<tr><td class="mono">172.16. to 172.31.</td><td>Private (RFC 1918)</td><td>No</td></tr>
+<tr><td class="mono">192.168.</td><td>Private (RFC 1918)</td><td>No</td></tr>
+<tr><td class="mono">100.64. to 100.127.</td><td>Shared address space for <a href="/learn/what-is-cgnat">carrier-grade NAT</a> (RFC 6598)</td><td>No</td></tr>
+<tr><td class="mono">169.254.</td><td>Link-local, <a href="/learn/what-is-a-169-254-ip-address">self-assigned when DHCP fails</a> (RFC 3927)</td><td>No</td></tr>
+<tr><td class="mono">127.</td><td>Loopback, the device itself (RFC 1122)</td><td>No</td></tr>
+<tr><td class="mono">0.</td><td>"This network"</td><td>No</td></tr>
+<tr><td class="mono">192.0.0.</td><td>IETF protocol assignments</td><td>No</td></tr>
+<tr><td class="mono">192.0.2., 198.51.100., 203.0.113.</td><td>Documentation examples</td><td>No</td></tr>
+<tr><td class="mono">198.18. or 198.19.</td><td>Benchmarking</td><td>No</td></tr>
+<tr><td class="mono">224. to 239.</td><td>Multicast, for one-to-many traffic rather than a single device (RFC 5771)</td><td>No</td></tr>
+<tr><td class="mono">240. and above</td><td>Reserved, plus 255.255.255.255 for broadcast</td><td>No</td></tr>
+<tr><td>Anything else</td><td>Usually a public address</td><td>Yes</td></tr>
+</tbody></table></div>
+<p>For IPv6, the first characters do the same job. Addresses starting with <code>fe80:</code> are link-local, and those starting with <code>fc</code> or <code>fd</code> are unique local addresses, the IPv6 version of a private address. <code>::1</code> is loopback, and addresses starting with <code>ff</code> are multicast. IANA assigns global addresses, the IPv6 equivalent of public ones, from <code>2000::/3</code>, so they start with 2 or 3. The one common exception is <code>2001:db8::/32</code>, which the <a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml" rel="noopener">IANA IPv6 Special-Purpose Address Registry</a> reserves for documentation.</p>
+<p>To check an address without reading tables, paste it into our <a href="/lookup">IP lookup</a>. A public address comes back with a location and network; a private, shared or loopback address comes back with "That is a private or reserved address".</p>
+
+<h2>Which IP address is my public IP address?</h2>
+<p>Your public IP address is the one an outside website reports back to you, not the one in your device settings. Open our <a href="/">IP checker</a>: the IPv4 address it shows is the public address your connection is using, and any device on the same Wi-Fi will show the same one. The address in your phone's or computer's Wi-Fi details is the private one.</p>
+<p>Your router knows both. For example, its admin page usually shows a WAN or internet address (public side) and a LAN address (private side), such as 192.168.1.1 on the network we tested below. If the WAN address starts with 100.64 to 100.127, your provider is using <a href="/learn/what-is-cgnat">carrier-grade NAT</a>. If it is a private address such as 192.168.x.x, another router, often the provider's modem, sits in front of yours, or your provider runs carrier-grade NAT with private addresses. Either way, websites see a different address from the one on your WAN. Our guides show how to <a href="/learn/find-router-ip-address">open your router's page</a> and how to <a href="/learn/how-to-find-your-ip-address">find each address on every device</a>.</p>
+
+<h2>Example: what one home connection shows</h2>
+<p>We ran these checks on 8 November 2026 on a Mac (macOS 26.7.1) connected by Wi-Fi to a home router. Addresses are partly hidden.</p>
+<ul>
+<li><code>ifconfig en0</code> showed a private address, <code>192.168.x.x</code> with netmask <code>0xffffff00</code> (a /24), and an IPv6 address starting <code>fe80::</code>. There was no global IPv6 address, so this connection reaches the internet over IPv4 only.</li>
+<li><code>route -n get default</code> gave the router's private address, <code>192.168.1.1</code>.</li>
+<li><code>curl -4 https://ipcomet.com/api/ip</code> returned the public address, which starts with 103. That is the only address websites see.</li>
+<li><code>traceroute -n 1.1.1.1</code> showed the second hop answering from <code>100.64.x.x</code> and the fourth from a <code>192.168.x.x</code> address. Providers use shared and private addresses inside their own networks too, so seeing one on a traceroute does not mean your public address is private.</li>
+<li>Our lookup API answered 192.168.1.1, 10.0.0.1, 172.20.0.1, 100.64.0.1 and 169.254.1.1 with "That is a private or reserved address, so it has no public location", and returned a location and network for 8.8.8.8 and 1.1.1.1.</li>
+</ul>
 
 <h2>How do public and private IP addresses work together?</h2>
-<p>Your router performs <strong>network address translation</strong> (NAT). When your laptop requests a web page, the router replaces the laptop's private address with the public one, remembers who asked, and forwards the reply back to the right device. Unsolicited traffic from the internet has no matching entry, so the router drops it. That is a useful side effect: NAT acts as a basic shield.</p>
+<p><strong>Network address translation (NAT)</strong> is how your router lets many private addresses share one public address. <a href="https://www.rfc-editor.org/rfc/rfc3022" rel="noopener">RFC 3022</a> describes the common form, Network Address Port Translation, as translating many addresses and their TCP and UDP ports into a single address and its ports. When your laptop asks for a web page, the router swaps the laptop's private address for the public one, records which device asked, and sends the reply back to it.</p>
+<p>Traffic that arrives from the internet without a matching record has nowhere to go, so the router drops it. <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-119.pdf" rel="noopener">NIST's IPv6 security guidelines</a> describe the same limit: NAT does not allow sessions to be started from globally addressed hosts toward privately addressed ones. That is why you cannot reach a camera or game server at home from outside until you set up <a href="/learn/what-is-port-forwarding">port forwarding</a>, and under carrier-grade NAT even that will not work on its own. Our <a href="/learn/what-is-nat">NAT guide</a> covers the details.</p>
 
 <h2>What about IPv6?</h2>
-<p>With IPv6 most devices receive a globally routable address, and the router's firewall is what blocks unwanted inbound traffic instead of NAT. IPv6 also has private-style ranges: unique local addresses (<code>fc00::/7</code>) and link-local addresses (<code>fe80::/10</code>). See <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
+<p>IPv6 has enough addresses for each device to get its own global one. <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-119.pdf" rel="noopener">NIST Special Publication 800-119</a>, its 2010 guide to deploying IPv6 securely, says this makes NAT unnecessary, and that unique local addresses replaced the older site-local ones. On a home network, the router's firewall decides what inbound traffic gets through. IPv6 still has local-only ranges. Unique local addresses use <code>fc00::/7</code>, and <a href="https://www.rfc-editor.org/rfc/rfc4193" rel="noopener">RFC 4193</a> says they are not expected to be routable on the global internet. Because RFC 4193 sets the "L" bit to 1 for locally assigned prefixes, the ones you meet in practice start with <code>fd</code>. Link-local addresses (<code>fe80::/10</code>) work on one link only, and <a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291</a> says routers must not forward them. See <a href="/learn/what-is-ipv6">what is IPv6</a> and <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
 
 <h2>Why does the difference matter?</h2>
 <ul>
-<li><strong>Hosting from home.</strong> To reach a game server or camera from outside, you have to forward a port from the public address to a private one. Read <a href="/learn/what-is-port-forwarding">what port forwarding is</a>.</li>
-<li><strong>Privacy.</strong> Websites see only your public address, never the private ones behind it.</li>
-<li><strong>Troubleshooting.</strong> If the router's WAN address differs from the public address you see online, your provider is probably using carrier-grade NAT.</li>
+<li>To reach a device at home from outside, you have to forward a port from the public address to that device's private address.</li>
+<li>Websites see only your public address. The private addresses behind it are not directly visible to them.</li>
+<li>A private address on your device is normal. A 169.254 address means the device did not get one from the router, and a 100.64 address on your router's WAN means you share a public address with other customers.</li>
+<li>Blocklists, rate limits and location lookups work on the public address, so they affect everyone in the home at once. Our <a href="/learn/is-my-ip-address-blacklisted">blocklist guide</a> shows how to check yours.</li>
 </ul>
+<p>For how both kinds fit with the other address types, see <a href="/learn/what-is-an-ip-address">what is an IP address</a>.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Is 192.168.1.1 a public or private IP address?</h3>
+<p>Private. Everything from 192.168.0.0 to 192.168.255.255 is in the RFC 1918 private range, and 192.168.1.1 was the router's local address on the home network we tested.</p>
+<h3>Is 100.64.x.x a private IP address?</h3>
+<p>Not in the RFC 1918 sense, but it is not public either. RFC 6598 reserves 100.64.0.0/10 as shared address space for providers running carrier-grade NAT, and says packets with these addresses must not be forwarded across provider boundaries.</p>
+<h3>Can two devices have the same private IP address?</h3>
+<p>Yes, as long as they are on different networks. Your laptop and a neighbour's laptop can both be 192.168.1.23. On the same network, each device needs its own address, which is why the router hands out a different one to each.</p>
+<h3>Is it safe to share my private IP address?</h3>
+<p>Generally yes. Packets addressed to it from the internet are not meant to be forwarded, and the same address exists in many other homes, so on its own it does not identify you or let someone connect to you. Your public address says more: see <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by your IP address?</a></p>
+<h3>Do all my devices share one public IP address?</h3>
+<p>On the same home network and with IPv4, yes, because the router translates every device's private address to its one public address. Over IPv6, each device usually has its own global address. A phone on mobile data uses the carrier's address instead.</p>
 
 <h2>Sources and further reading</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li></ul>
+<ul><li><a href="https://www.rfc-editor.org/rfc/rfc1918" rel="noopener">RFC 1918: Address Allocation for Private Internets (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3927" rel="noopener">RFC 3927: Dynamic Configuration of IPv4 Link-Local Addresses (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc1122" rel="noopener">RFC 1122: Requirements for Internet Hosts, loopback addresses (IETF)</a></li><li><a href="https://www.iana.org/assignments/iana-ipv4-special-registry/iana-ipv4-special-registry.xhtml" rel="noopener">IANA IPv4 Special-Purpose Address Registry</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6890" rel="noopener">RFC 6890: Special-Purpose IP Address Registries (IETF)</a></li><li><a href="https://www.iana.org/assignments/iana-ipv6-special-registry/iana-ipv6-special-registry.xhtml" rel="noopener">IANA IPv6 Special-Purpose Address Registry</a></li><li><a href="https://www.iana.org/assignments/ipv6-unicast-address-assignments/ipv6-unicast-address-assignments.xhtml" rel="noopener">IANA IPv6 Global Unicast Address Assignments</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4193" rel="noopener">RFC 4193: Unique Local IPv6 Unicast Addresses (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc5771" rel="noopener">RFC 5771: IANA Guidelines for IPv4 Multicast Address Assignments (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3022" rel="noopener">RFC 3022: Traditional IP Network Address Translator (IETF)</a></li><li><a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-119.pdf" rel="noopener">NIST SP 800-119: Guidelines for the Secure Deployment of IPv6 (PDF)</a></li><li><a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/ipconfig" rel="noopener">Microsoft Learn: ipconfig</a></li><li><a href="https://support.apple.com/guide/mac-help/change-tcpip-settings-on-mac-mh14129/mac" rel="noopener">Apple Support: Change TCP/IP settings on Mac</a></li></ul>
 `,
 
   "how-to-change-your-ip-address": `
@@ -237,7 +308,7 @@ $ dig +short example.com AAAA
 
 <h2>Check that it worked</h2>
 <ol>
-<li>Note your address on the <a href="/">IP checker</a> before you start.</li>
+<li>Note your address on the <a href="/">IP checker</a> before you start. If you are unsure which address to note, <a href="/learn/what-is-my-ip-address">what is my IP address</a> explains which one websites see, and <a href="/learn/my-ip">what is my IP</a> goes through each line the checker shows.</li>
 <li>Make the change and reload the page. Look at both the IPv4 and IPv6 lines: a VPN that only covers IPv4 can leave your IPv6 address visible.</li>
 <li>Run the <a href="/reputation">IP reputation check</a> on the new address to make sure it is not on a blocklist.</li>
 </ol>
@@ -2441,7 +2512,7 @@ console.log(ip);</code></pre>
 <p>Outgoing connections are fine, because the provider's NAT remembers who started each one and sends the replies back. Incoming connections are the problem. When a packet arrives at the shared public address unasked, the provider has no way to know which of its customers it is for, so it is dropped.</p>
 
 <h2>What is 100.64.0.0/10?</h2>
-<p>100.64.0.0/10, the range from 100.64.0.0 to 100.127.255.255 (the /10 is <a href="/learn/cidr-subnet-mask-explained">CIDR notation</a>), is the address block set aside for CGNAT. RFC 6598 calls it Shared Address Space and reserves it for providers to number the link between their CGNAT equipment and your router. It is separate from the private ranges in RFC 1918, and packets using it must not cross from one provider's network to another. If your router's WAN address starts with 100.64 through 100.127, you are behind CGNAT.</p>
+<p>100.64.0.0/10, the range from 100.64.0.0 to 100.127.255.255 (the /10 is <a href="/learn/cidr-subnet-mask-explained">CIDR notation</a>), is the address block set aside for CGNAT. RFC 6598 calls it Shared Address Space and reserves it for providers to number the link between their CGNAT equipment and your router. It is separate from the <a href="/learn/public-vs-private-ip-address">private ranges in RFC 1918</a>, and packets using it must not cross from one provider's network to another. If your router's WAN address starts with 100.64 through 100.127, you are behind CGNAT.</p>
 
 <h2>How to tell if you are behind CGNAT</h2>
 <ol>
@@ -2728,7 +2799,7 @@ console.log(ip);</code></pre>
 <h3>Can websites see my IPv6 address?</h3>
 <p>Yes, when you connect over IPv6 that address is what the website sees, just as with IPv4. Temporary addresses limit how long one address follows you.</p>
 <h3>What is my IPv6 address?</h3>
-<p>Our <a href="/">IP checker</a> shows it under your main address. Your device may also list a link-local fe80 address, which is local only and not what websites see.</p>
+<p>Our <a href="/">IP checker</a> shows it under your main address. Your device may also list a link-local fe80 address, which is local only and not what websites see. Our guide to <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> shows how to tell local addresses from public ones.</p>
 
 <h2>Sources and further reading</h2>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc8200" rel="noopener">RFC 8200: Internet Protocol, Version 6 (IPv6) Specification (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291: IP Version 6 Addressing Architecture (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc5952" rel="noopener">RFC 5952: A Recommendation for IPv6 Address Text Representation (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8981" rel="noopener">RFC 8981: Temporary Address Extensions for IPv6 (IETF)</a></li></ul>

@@ -53,12 +53,13 @@ export const ARTICLES: ArticleMeta[] = [
   },
   {
     slug: "public-vs-private-ip-address",
-    title: "Public vs Private IP Address: What's the Difference?",
-    description: "Your router has a public IP and your devices have private ones. Learn how they differ, the private ranges, and why it matters.",
+    title: "Public vs Private IP Address: Differences and Ranges",
+    description: "A public IP address is the one websites see, and a private one works only inside your network. See the private IP ranges and how to tell which you have.",
     published: "2026-10-07",
-    readMin: 5,
-    tools: ["ip", "port"],
-    related: ["what-is-my-default-gateway", "what-is-a-mac-address", "find-router-ip-address"],
+    updated: "2026-11-08",
+    readMin: 7,
+    tools: ["ip", "lookup", "subnet"],
+    related: ["what-is-an-ip-address", "what-is-my-ip-address", "what-is-cgnat", "what-is-nat", "find-router-ip-address"],
   },
   {
     slug: "how-to-change-your-ip-address",
