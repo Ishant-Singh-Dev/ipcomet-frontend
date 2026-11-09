@@ -333,7 +333,7 @@ $ dig +short example.com AAAA
 <h2>What does your IP address reveal?</h2>
 <ul>
 <li><strong>Your internet provider</strong> and the network it belongs to.</li>
-<li><strong>Your approximate location</strong>, usually the country, and often the city or region. Accuracy varies, and it frequently points to your provider's regional hub instead of your house.</li>
+<li><strong>Your approximate location</strong>, usually the country, and often the city or region. Accuracy varies, and it frequently points to your provider's regional hub instead of your house. See <a href="/learn/why-is-my-ip-location-wrong">why an IP address shows the wrong location</a> for the causes.</li>
 <li><strong>Your connection type</strong>, such as residential, mobile or a data center.</li>
 </ul>
 <p>You can see exactly what others see by using our <a href="/lookup">IP lookup</a> on your own address.</p>
@@ -386,7 +386,7 @@ $ dig +short example.com AAAA
 </ul>
 
 <h2>Mobile networks and shared addresses</h2>
-<p>Mobile carriers and some home providers use <a href="/learn/what-is-cgnat"><strong>carrier-grade NAT</strong></a>, sharing one public address between many customers. Your visible address can change often, and may even appear to be in a different city. It also makes hosting at home hard, because inbound connections cannot reach you. Read <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for the background.</p>
+<p>Mobile carriers and some home providers use <a href="/learn/what-is-cgnat"><strong>carrier-grade NAT</strong></a>, sharing one public address between many customers. Your visible address can change often, and may even appear to be in a different city. Our guide to <a href="/learn/why-is-my-ip-location-wrong">why your IP location is wrong</a> explains how that happens. It also makes hosting at home hard, because inbound connections cannot reach you. Read <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a> for the background.</p>
 
 <h2>What about IPv6?</h2>
 <p>With IPv6, your provider typically delegates a prefix to your router, and devices create their own addresses inside it. Devices also rotate temporary addresses for privacy, so the address a website sees can change within a day even though the prefix does not. More in <a href="/learn/ipv4-vs-ipv6">IPv4 vs IPv6</a>.</p>
@@ -2103,35 +2103,117 @@ console.log(ip);</code></pre>
 <ul><li><a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF)</a></li><li><a href="https://check.torproject.org/torbulkexitlist" rel="noopener">Tor Project: bulk exit node list</a></li></ul>
 `,
   "why-is-my-ip-location-wrong": `
-<p>An IP address does not contain your location. A location lookup is an estimate that a database makes by matching the address to records and measurements. That is why a lookup can show the right country but the wrong city, or a place far from where you actually are. Here is why it happens and what you can do about it.</p>
-
-<h2>How is an IP location worked out?</h2>
-<p>Providers of IP location data combine several sources: registration records that show which company holds a block of addresses and where it says it operates, network measurements such as how long traffic takes to reach an address, routing information, and location hints gathered from other data. None of it comes from your device, and none of it uses GPS.</p>
-
-<h2>Why is my IP location wrong?</h2>
+<p>Your IP location is an estimate. <strong>IP geolocation</strong> is a database's best guess at where an address is in use, because an IP address carries no location of its own. Lookup sites match your address against databases built from registry records, network data and corrections. Those databases often place you at your provider's regional site, its head office or the middle of your country. This guide covers each cause, how to tell which one applies to you, and who can correct it.</p>
+<p>In brief:</p>
 <ul>
-<li><strong>Your provider's hub is somewhere else.</strong> Many providers send a whole region's customers out through one location, so the address appears there, possibly in another city.</li>
-<li><strong>You are on a mobile network.</strong> Mobile traffic often leaves the carrier's network far from the phone, and addresses are shared between many users.</li>
-<li><strong>You use a VPN or proxy.</strong> The address belongs to the VPN server, so the location is the server's. See <a href="/learn/is-my-vpn-working">is my VPN working</a>.</li>
-<li><strong>The address was recently reassigned.</strong> Providers move addresses between regions and customers, and databases take time to catch up.</li>
-<li><strong>The database is out of date or coarse.</strong> Different providers disagree, and some only know the country or a default point in a region.</li>
-<li><strong>The address is registered to a head office.</strong> A business may hold its addresses under its headquarters while the connection is somewhere else.</li>
+<li>A wrong city or state is common. MaxMind, a large IP location data provider, puts its own country accuracy above 99%, its state accuracy at 55% to 80% and its city accuracy at 20% to 75%, according to its <a href="https://www.maxmind.com/en/geoip/ip-geolocation-accuracy" rel="noopener">accuracy page</a>.</li>
+<li>The usual causes are a VPN or iCloud Private Relay, mobile data, an address registered to a head office, a database that only knows the country, and addresses that were recently moved.</li>
+<li>You cannot edit your IP location yourself. You can ask each database to correct it, and your internet provider can publish a geofeed that databases read.</li>
+<li>Google also uses your device location and saved addresses, so a wrong place on Google is not always caused by your IP address.</li>
 </ul>
 
+<h2>Six common causes of a wrong IP location</h2>
+<p>These are the common causes, with what each one looks like and how to check for it.</p>
+<div class="tw"><table><tbody>
+<tr><th>Cause</th><th>What you usually see</th><th>How to check</th></tr>
+<tr><td>VPN, proxy or iCloud Private Relay</td><td>The VPN server's city, or with Private Relay a nearby region</td><td>Turn it off and reload the <a href="/">IP checker</a>. Our guide to <a href="/learn/is-my-vpn-working">checking that your VPN works</a> shows what to compare.</td></tr>
+<tr><td>Mobile data</td><td>A city that can be far from you</td><td>Switch to Wi-Fi and check again</td></tr>
+<tr><td>Address registered to a head office</td><td>The city where your provider or employer is registered</td><td>Look up the address block in <a href="/whois">WHOIS</a> and compare the city</td></tr>
+<tr><td>Database only knows the country</td><td>No city, or a point near the middle of your country</td><td>The result shows a country and nothing finer</td></tr>
+<tr><td>Addresses recently moved or reassigned</td><td>A place where the block was used before</td><td>Different lookup sites disagree with each other</td></tr>
+<tr><td>A site using other signals</td><td>One site is wrong while IP checkers look right</td><td>Check that site's location or account settings</td></tr>
+</tbody></table></div>
+<p><a href="https://www.maxmind.com/en/geoip/ip-geolocation-accuracy" rel="noopener">MaxMind's accuracy page</a> names mobile networks, satellite links, VPNs and proxies, and corporate networks among the hardest to locate.</p>
+
+<h2>Why does my IP address show a different state or city?</h2>
+<p>A different state or city usually means the database has placed your provider's network rather than your home. On mobile data, <a href="https://www.maxmind.com/en/geoip/ip-geolocation-accuracy" rel="noopener">MaxMind notes</a> that one IP address can be used by people hundreds of kilometres apart. Google's help page on IP addresses says the same about its own estimates: a wrong location "usually happens when you use your account on a mobile network". Mobile carriers, and some broadband providers, can also share one public address between many customers through <a href="/learn/what-is-cgnat">carrier-grade NAT</a>, so no single home location fits the address.</p>
+<p>On home broadband, the city shown is often the place written in the registry record for your provider's address block, or the nearest city the database knows for that network. When it matches your provider's head office, the database is probably using the registration. Researchers at Tel Aviv University who compared location databases in 2010 describe the same pattern: a database giving one default location, usually the ISP's headquarters, for a large share of an ISP's addresses. Their <a href="https://arxiv.org/abs/1005.5674" rel="noopener">study of geolocation databases</a> also found a database answering with the centre of the country when it had no city. Our <a href="/learn/what-is-my-isp">guide to finding your ISP</a> explains why the company name in your result can also differ from the brand you pay.</p>
+
+<h2>How is an IP location worked out?</h2>
+<p>Location databases are built from information about networks. Regional internet registries such as ARIN, RIPE NCC and APNIC record who holds each block of addresses, with a country and a postal address. Networks can also publish a geofeed. <strong>A geofeed</strong> is a CSV file in which a network lists its address ranges, each with an optional country, region and city. <a href="https://www.rfc-editor.org/rfc/rfc8805.html" rel="noopener">RFC 8805</a> (August 2020) defines that file, and <a href="https://www.rfc-editor.org/rfc/rfc9632.html" rel="noopener">RFC 9632</a> (August 2024, replacing the earlier RFC 9092) tells databases how to find it through a <code>geofeed:</code> line in the registry record. Database companies also take corrections from users and networks. Registry records and geofeeds hold nothing about your own device. A website gets your device's location only if you allow it in the browser.</p>
+<p>Support for the geofeed line varies. The <a href="https://docs.db.ripe.net/RPSL-Object-Types/Descriptions-of-Primary-Objects/" rel="noopener">RIPE Database</a> accepts it on address records, and <a href="https://www.apnic.net/about-apnic/service-updates/service-announcement-18-august-2023-2" rel="noopener">APNIC added it in August 2023</a>. At ARIN it was still an <a href="https://www.arin.net/participate/community/acsp/suggestions/2024/2024-10/" rel="noopener">open suggestion</a> when we checked on 9 November 2026. Where a registry lacks the attribute, RFC 9632 defines a <code>remarks: Geofeed</code> line that carries the same link.</p>
+
+<h2>How to check why your IP location is wrong</h2>
+<p>Five quick checks tell you which cause applies. Work through them in order.</p>
+<ol>
+<li>Turn off any VPN, proxy or iCloud Private Relay, then open the <a href="/">IP checker</a>. If the location now looks right, that service was the cause.</li>
+<li>Note whether you are on Wi-Fi or mobile data, then check again on the other one. A different city on mobile data points to the carrier's network.</li>
+<li>Look at what the result leaves out. A country with no city, or a spot near the middle of your country, usually means the database only knows the country.</li>
+<li>Open the <a href="/whois">WHOIS lookup</a> for your address. If the registry's address for the block is in the city you were shown, the database is probably using the registration.</li>
+<li>Paste the address into the <a href="/lookup">IP lookup</a> and compare it with other sites. If they disagree, at least one of them is out of date or guessing. If they all agree on your provider's city, only your provider can fix it at the source.</li>
+</ol>
+
+<h2>What we saw when we checked real addresses</h2>
+<p>We tested this on 9 November 2026 from a Mac (macOS 26.7.1) on a home broadband connection in India. Our own address is not shown.</p>
+<ul>
+<li>Our IP checker, which uses the location data of Cloudflare, the network that serves our site, placed the connection in a town with a postal code. The lookup alone cannot tell us whether that is where our line ends or where the provider's equipment sits.</li>
+<li>The registry record for the address block, read with <code>whois -h whois.apnic.net</code>, named a company and the country, IN, with no town and no geofeed line.</li>
+<li>The three free databases our lookup can use gave three other answers for the same address. The first named a different town in the same state, 27 km from the first estimate. The second returned the country only, with coordinates near the middle of India and an accuracy value of 1000. The third returned no location at all.</li>
+<li>Our lookup placed 8.8.8.8 in Mountain View, California, and 1.1.1.1 in Brisbane, Australia. Those match the registry records: ARIN lists 8.8.8.0/24 under Google LLC in Mountain View, and APNIC lists 1.1.1.0/24 as a research prefix of APNIC Labs, routed by Cloudflare, with APNIC's South Brisbane postal address.</li>
+<li>Three pings each with <code>ping -c 3</code> averaged 6.3 ms to 8.8.8.8 and 6.4 ms to 1.1.1.1. <a href="https://developers.google.com/speed/public-dns/faq" rel="noopener">Google's Public DNS FAQ</a> says anycast routing sends each query to the closest Google Public DNS server, and Cloudflare says its <a href="https://developers.cloudflare.com/1.1.1.1/" rel="noopener">1.1.1.1 resolver</a> runs in hundreds of cities. Both registry records point to another continent, while the replies came from copies of each service much closer to us.</li>
+</ul>
+<p>So one address got two different towns, a country or nothing, depending on the database, and two famous addresses were "located" at the offices named in their registry records.</p>
+
 <h2>Does your IP address change with location?</h2>
-<p>Yes, usually. Your public IP address belongs to the network you are connected to, not to your device, so moving from home Wi-Fi to mobile data or to a café network gives you a different address and often a different estimated location. Staying on the same network while you travel, for example through a VPN, keeps the address and the location of that network.</p>
+<p>Your public IP address usually changes when you join another network, because the address belongs to the network you are using. Your provider can still give you a new address on the same connection, and the location shown for an unchanged address can move when a database updates.</p>
+<div class="tw"><table><tbody>
+<tr><th>What you do</th><th>Does your IP address change?</th><th>Does the location shown change?</th></tr>
+<tr><td>Join a café, hotel or office Wi-Fi</td><td>Yes, you get that network's public address</td><td>Usually, to wherever that network's address is placed</td></tr>
+<tr><td>Switch from Wi-Fi to mobile data</td><td>Yes, you get an address from your carrier</td><td>Often, sometimes to another city</td></tr>
+<tr><td>Turn on a VPN</td><td>Yes, sites see the VPN server's address</td><td>Yes, to the server's location</td></tr>
+<tr><td>Restart your router at home</td><td>Sometimes, if your provider gives out <a href="/learn/why-does-my-ip-address-change">dynamic addresses</a></td><td>Only if the new address is placed somewhere else</td></tr>
+</tbody></table></div>
+<p>To see which address counts as yours in the first place, see our guide to <a href="/learn/what-is-my-ip-address">which IP address is yours</a>, or start with <a href="/learn/what-is-an-ip-address">what an IP address is</a>.</p>
 
 <h2>How accurate is IP geolocation?</h2>
-<p>The country is usually right, the region is often right and the city is only sometimes right. The street or house is never something an IP address can tell. To see how much tools disagree, open the <a href="/">what is my IP address</a> page and the <a href="/lookup">IP lookup</a> and compare what they say.</p>
+<p>The country is usually right and the city often is not. <a href="https://www.maxmind.com/en/geoip/ip-geolocation-accuracy" rel="noopener">MaxMind's accuracy page</a> gives country accuracy "exceeding 99%", state or province accuracy typically 55% to 80%, and city accuracy of 20% to 75%. MaxMind also attaches an accuracy radius to each estimate. <strong>An accuracy radius</strong> is a circle around the estimated point that the address is likely to be inside. <a href="https://support.google.com/websearch/answer/1696588?hl=en" rel="noopener">Google</a> compares IP addresses to phone area codes, roughly based on geography, and says it sometimes cannot estimate a location from one at all. When Google estimates a general area from your saved activity, its <a href="https://policies.google.com/technologies/location-data?hl=en" rel="noopener">location policy</a> says it uses an area of at least 3 square kilometres, or one large enough to cover the locations of at least 1,000 people.</p>
 
-<h2>Can you fix it?</h2>
-<p>Not directly, because the location is held by each data provider, not by you. If a website relies on it wrongly, you can contact your internet provider, who controls the registration of its address blocks, or contact the website. Some location data providers accept correction requests. Switching network, for example from mobile data to Wi-Fi, or reconnecting can also give you a different address with a different estimate.</p>
+<h2>How to fix or update a wrong IP location</h2>
+<p>There is no single place to change it, because each database keeps its own copy. You can ask the databases, ask your provider, or change what one site uses.</p>
 
-<h2>Why it matters, and why it is also reassuring</h2>
-<p>A wrong location can show you the wrong language or prices, block a service limited to a region, or trigger a security warning. It also means websites cannot find your home from your IP address. Read <a href="/learn/can-someone-track-you-by-ip-address">can someone track you by IP address</a> for what an IP address does reveal.</p>
+<h3>Ask the location databases to correct it</h3>
+<p>MaxMind and DB-IP both take correction requests. <a href="https://www.maxmind.com/en/correction" rel="noopener">MaxMind</a> accepts them from individuals for their own home IP address. Its <a href="https://www.maxmind.com/en/geoip-location-correction" rel="noopener">correction form</a> asks for the IP address or network, the country, an optional region, city and postal code, and an email address. Without an account, you must confirm that email within 24 hours or the request is not reviewed. MaxMind says one-off corrections are typically reviewed within 1 to 2 business days and accepted ones go into its next database release. It <a href="https://support.maxmind.com/knowledge-base/articles/download-and-update-maxmind-databases" rel="noopener">updates its GeoIP City and Country databases</a> every weekday, and its free GeoLite versions every Tuesday and Friday. It may refuse a correction for an address that is often reassigned or shared over a wide area.</p>
+<p><a href="https://db-ip.com/faq.php" rel="noopener">DB-IP</a> takes reports through a link on its search results and says its downloadable databases are usually updated on the 1st of each month. Websites that use a downloaded copy only see a fix after they install a newer one, so a correction can take weeks to reach every site.</p>
+
+<h3>Ask your internet provider to publish a geofeed</h3>
+<p>The fix that lasts sits with whoever holds the address block, usually your provider. It can publish a geofeed in the RFC 8805 format and point to it from its registry record. <a href="https://www.maxmind.com/en/correction" rel="noopener">MaxMind</a> directs network operators to geofeeds. DB-IP says providers can publish one, and that updating the registry record usually triggers a refresh of the block. If a whole town or region shows up in the wrong place, ask your provider whether they publish a geofeed. The technical contact in the <a href="/whois">WHOIS record</a> for your address block is often a better route than front-line support.</p>
+
+<h3>Fix the location a single site uses</h3>
+<p>If only Google is wrong, check its other signals before blaming your IP address. <a href="https://support.google.com/websearch/answer/179386?hl=en" rel="noopener">Google's location help page</a> lists your device's precise location (when you allow it), your IP address, the home and work addresses saved in your Google Account, and your past activity. It may also reuse your device's location from the last time you used Google, stored in a cookie that expires after 6 hours. Allow location for Google in your browser, or update your saved home address. If Google keeps showing results for the wrong country because of your IP address, use its <a href="https://support.google.com/websearch/contact/ip" rel="noopener">Report IP problems form</a>. Google says changes may take more than a month, and it does not reply to each report.</p>
+<p>For other sites, check the site's own region, store or account settings first. A quicker workaround is to switch network, for example from mobile data to Wi-Fi, which gives you a different address and often a different estimate.</p>
+
+<h2>Why a wrong location matters, and why it is also reassuring</h2>
+<p>A wrong location can show you the wrong language or prices, block a service limited to one region, or trigger a sign-in warning. It also shows the limits of a public IP lookup: a database may name a town or a postal area, and none of the sources above claims more than that. Your provider can link the address to your account, and a site can combine it with a location you choose to share. Our guide on <a href="/learn/can-someone-track-you-by-ip-address">whether someone can track you by IP address</a> covers what an address does reveal.</p>
+
+<h2>Frequently asked questions</h2>
+<h3>Can my IP address show my exact home address?</h3>
+<p>No. Location databases estimate an area, often with a radius measured in kilometres, and Google describes IP addresses as roughly geographic, like area codes. Your provider knows which customer used an address, but that record is not part of any public lookup.</p>
+<h3>Why does iCloud Private Relay show a different city?</h3>
+<p>Private Relay gives websites a different IP address from your own. <a href="https://www.apple.com/legal/privacy/data/en/icloud-relay/" rel="noopener">Apple's privacy page</a> says sites see an address that matches an approximate regional area. On a Mac you can choose "Maintain general location" or the vaguer "Use country and time zone" in <a href="https://support.apple.com/guide/mac-help/mchlecadabe0/mac" rel="noopener">Private Relay settings</a>. Apple's <a href="https://developer.apple.com/icloud/prepare-your-network-for-icloud-private-relay/" rel="noopener">developer page</a> links to a geofeed that lists the relay addresses with the locations they stand for.</p>
+<h3>How long does a correction take?</h3>
+<p>It depends on the database. MaxMind typically reviews one-off corrections in 1 to 2 business days and adds accepted ones in its next release. Google says IP problem reports may take more than a month. A website using a downloaded database only changes when it updates its copy.</p>
+<h3>Will a VPN fix a wrong IP location?</h3>
+<p>A VPN replaces your location with the VPN server's, which helps when you need a particular country. The entry for your own address stays wrong. See <a href="/learn/how-to-hide-your-ip-address">how to hide your IP address</a> for what a VPN does and does not change.</p>
 
 <h2>Sources and further reading</h2>
-<ul><li><a href="https://www.rfc-editor.org/rfc/rfc8805" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF)</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6598" rel="noopener">RFC 6598: IANA-Reserved IPv4 Prefix for Shared Address Space (IETF)</a></li></ul>
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc8805.html" rel="noopener">RFC 8805: A Format for Self-Published IP Geolocation Feeds (IETF, August 2020)</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9632.html" rel="noopener">RFC 9632: Finding and Using Geofeed Data (IETF, August 2024)</a></li>
+<li><a href="https://docs.db.ripe.net/RPSL-Object-Types/Descriptions-of-Primary-Objects/" rel="noopener">RIPE Database documentation: the geofeed attribute</a></li>
+<li><a href="https://www.apnic.net/about-apnic/service-updates/service-announcement-18-august-2023-2" rel="noopener">APNIC service announcement, 18 August 2023: geofeed support in whois</a></li>
+<li><a href="https://www.arin.net/participate/community/acsp/suggestions/2024/2024-10/" rel="noopener">ARIN ACSP suggestion 2024.10: geofeed support</a></li>
+<li><a href="https://www.maxmind.com/en/geoip/ip-geolocation-accuracy" rel="noopener">MaxMind: IP geolocation accuracy</a></li>
+<li><a href="https://www.maxmind.com/en/correction" rel="noopener">MaxMind: data corrections</a> and <a href="https://support.maxmind.com/knowledge-base/articles/download-and-update-maxmind-databases" rel="noopener">database update schedule</a></li>
+<li><a href="https://db-ip.com/faq.php" rel="noopener">DB-IP: frequently asked questions</a></li>
+<li><a href="https://support.google.com/websearch/answer/1696588?hl=en" rel="noopener">Google Search Help: how IP addresses work on Google</a></li>
+<li><a href="https://support.google.com/websearch/answer/179386?hl=en" rel="noopener">Google Search Help: understand and manage your location</a></li>
+<li><a href="https://policies.google.com/technologies/location-data?hl=en" rel="noopener">Google: how Google uses location information</a></li>
+<li><a href="https://developers.google.com/speed/public-dns/faq" rel="noopener">Google Public DNS FAQ (anycast)</a></li>
+<li><a href="https://developers.cloudflare.com/1.1.1.1/" rel="noopener">Cloudflare: 1.1.1.1 DNS resolver</a></li>
+<li><a href="https://arxiv.org/abs/1005.5674" rel="noopener">Shavitt and Zilberman: A Study of Geolocation Databases (Tel Aviv University, arXiv, 2010)</a></li>
+<li><a href="https://www.apple.com/legal/privacy/data/en/icloud-relay/" rel="noopener">Apple: iCloud Private Relay and privacy</a></li>
+<li><a href="https://developer.apple.com/icloud/prepare-your-network-for-icloud-private-relay/" rel="noopener">Apple Developer: prepare your network for iCloud Private Relay</a></li>
+</ul>
 `,
   "what-is-bufferbloat": `
 <p><strong>Bufferbloat</strong> is the extra delay that builds up when your router or modem holds too much data in a queue while the line is busy. Your speed can look fine and your idle ping can be low, yet a video call freezes the moment someone in the house starts a big download. The quickest way to see it is a <a href="/speed-test">speed test that measures latency under load</a>, which times round trips while the line is full and grades the rise.</p>
