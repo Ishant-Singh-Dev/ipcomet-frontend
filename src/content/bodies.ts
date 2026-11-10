@@ -1830,7 +1830,7 @@ curl -6 https://ipcomet.com/api/ip</code></pre>
 
 <h2>The one-line answer</h2>
 <pre><code>curl https://ipcomet.com</code></pre>
-<p>The output is a single line such as <code>203.0.113.7</code>. The home page recognises command-line clients (curl, wget, PowerShell and similar) by their User-Agent and returns just the address instead of the web page. In scripts, use the explicit endpoint <code>https://ipcomet.com/api/ip</code>, which always returns plain text.</p>
+<p>The output is a single line such as <code>203.0.113.7</code>. The home page recognises command-line clients (curl, wget, PowerShell and similar) by their User-Agent and returns just the address instead of the web page. In scripts, use the explicit endpoint <code>https://ipcomet.com/api/ip</code>, which always returns plain text. For what the rest of a full IP result means (location, ISP and ASN), see <a href="/learn/my-ip">what your IP result shows</a>.</p>
 
 <h2>macOS and Linux</h2>
 <pre><code>curl https://ipcomet.com/api/ip
@@ -1887,7 +1887,7 @@ console.log(ip);</code></pre>
 <p>They all report the address the internet sees, so they should agree.</p>
 
 <h2>Why do two services show different IP addresses?</h2>
-<p>If they differ, your router may be sharing traffic across two internet connections, or a VPN may be carrying only some of your traffic. The <a href="/reputation">reputation tool</a> shows what kind of network each address belongs to, and the <a href="/webrtc">WebRTC leak test</a> helps when a VPN is involved.</p>
+<p>If they differ, your router may be sharing traffic across two internet connections, or a VPN may be carrying only some of your traffic. The <a href="/reputation">reputation tool</a> shows what kind of network each address belongs to, and the <a href="/webrtc">WebRTC leak test</a> helps when a VPN is involved. A connection with both IPv4 and IPv6 also has two public addresses, and a service may show either one; <a href="/learn/what-is-my-ip-address">which IP address is yours</a> explains how to read both.</p>
 <p>These commands return your <em>public</em> address, the one websites see. For the private address on your own network, such as 192.168.1.20, see <a href="/learn/how-to-find-your-ip-address">how to find your IP address</a> and <a href="/learn/public-vs-private-ip-address">public vs private IP addresses</a>.</p>
 
 <h2>Limits and privacy</h2>

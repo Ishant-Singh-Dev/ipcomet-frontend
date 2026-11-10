@@ -896,6 +896,18 @@ export const es: LocaleData = {
           a: "Abrir un puerto expone a todo internet lo que escucha detrás. Redirige solo puertos de software que mantengas actualizado, usa una autenticación robusta y cierra los puertos que ya no necesites. Para acceder de forma remota a servicios privados, prefiere una VPN o un túnel.",
         },
       ],
+      more: `<h3>¿Cómo saber el puerto de una IP?</h3>
+<p>Una dirección IP no tiene un único puerto. El puerto es un número de 16 bits, del 0 al 65535, que indica a qué programa va cada conexión, así que una misma IP puede tener muchos puertos abiertos a la vez o ninguno. Según la <a href="https://www.rfc-editor.org/rfc/rfc6335.html#section-6" rel="noopener">RFC 6335</a>, del 0 al 1023 son los puertos de sistema (también llamados puertos bien conocidos), del 1024 al 49151 los puertos registrados y del 49152 al 65535 los dinámicos, también llamados efímeros.</p>
+<p>Para saber qué puerto usa un programa, mira en qué puertos escucha tu propio equipo:</p>
+<ul>
+<li>Windows, en CMD: <code>netstat -ano</code> muestra las conexiones y los puertos en escucha con el número de proceso (PID), según la <a href="https://learn.microsoft.com/es-es/windows-server/administration/windows-commands/netstat" rel="noopener">documentación de netstat de Microsoft</a>.</li>
+<li>Windows, en PowerShell: <code>Get-NetTCPConnection -State Listen</code> lista solo los puertos TCP en escucha (<a href="https://learn.microsoft.com/es-es/powershell/module/nettcpip/get-nettcpconnection" rel="noopener">Get-NetTCPConnection</a>).</li>
+<li>macOS: <code>lsof -nP -iTCP -sTCP:LISTEN</code> muestra los programas que escuchan y en qué puerto. Sin <code>sudo</code> delante solo aparecen los de tu usuario: en nuestra prueba listó 9 puertos, todos del usuario, mientras <code>netstat -an -p tcp</code> mostraba 14.</li>
+</ul>
+<h3>Revisar puertos abiertos en tu IP pública</h3>
+<p>Que un programa escuche en tu equipo no significa que el puerto esté abierto en internet. El router tiene que redirigir ese puerto a tu dispositivo, y ni un cortafuegos ni la NAT de tu proveedor (CGNAT) deben bloquearlo. Por eso conviene revisar en dos pasos: primero en el equipo, con los comandos de arriba, y después desde fuera, con el comprobador de esta página.</p>
+<p>El comprobador prueba un puerto TCP cada vez, desde la red de Cloudflare y contra la IP desde la que abres la página. Si responde &ldquo;abierto&rdquo;, algo aceptó la conexión. &ldquo;Cerrado&rdquo; significa que el intento falló enseguida, normalmente porque el equipo o el router lo rechazó. &ldquo;Sin respuesta&rdquo; aparece cuando nada contesta en 4 segundos, lo habitual cuando el router no redirige el puerto o un cortafuegos descarta el intento. No sirve para la IP de otra persona, y el puerto 25 no se puede probar.</p>
+<p>Lo comprobamos el 10 de noviembre de 2026 en un Mac con macOS 26.7.1. <code>lsof</code> mostró el proceso ControlCenter de macOS escuchando en los puertos 5000 y 7000, y aun así el comprobador devolvió &ldquo;sin respuesta&rdquo; para esos dos y para 443, 3389 y 8080. El Mac escuchaba en la red local, pero desde internet esos puertos no eran accesibles.</p>`,
     },
     speed: {
       name: "Test de velocidad",
