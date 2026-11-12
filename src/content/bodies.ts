@@ -336,7 +336,7 @@ $ dig +short example.com AAAA
 <li><strong>Your approximate location</strong>, usually the country, and often the city or region. Accuracy varies, and it frequently points to your provider's regional hub instead of your house. See <a href="/learn/why-is-my-ip-location-wrong">why an IP address shows the wrong location</a> for the causes.</li>
 <li><strong>Your connection type</strong>, such as residential, mobile or a data center.</li>
 </ul>
-<p>You can see exactly what others see by using our <a href="/lookup">IP lookup</a> on your own address.</p>
+<p>You can see exactly what others see by using our <a href="/lookup">IP lookup</a> on your own address. Our guide to <a href="/learn/my-ip">what a "my IP" result shows</a> explains each field, from location and ISP to ASN, and how far to trust it.</p>
 
 <h2>What does your IP address not reveal?</h2>
 <ul>
@@ -371,7 +371,7 @@ $ dig +short example.com AAAA
 `,
 
   "why-does-my-ip-address-change": `
-<p>If you check your IP address a few weeks apart and it looks different, nothing is wrong. Most internet providers assign addresses dynamically, which means they can change.</p>
+<p>If you <a href="/learn/how-to-find-your-ip-address">check your IP address</a> a few weeks apart and it looks different, nothing is wrong. Most internet providers assign addresses dynamically, which means they can change.</p>
 
 <h2>Dynamic vs static IP addresses</h2>
 <p>A <strong>dynamic</strong> address is borrowed from a pool and can change. A <strong>static</strong> address is permanently assigned to you. Home plans are almost always dynamic. Static addresses are mostly sold to businesses, usually for an extra fee, because they are useful for hosting and remote access.</p>
@@ -1500,7 +1500,7 @@ curl -6 https://ipcomet.com/api/ip</code></pre>
 
 <h2>The cheaper alternative: dynamic DNS</h2>
 <p>Dynamic DNS gives you a fixed name, such as myhome.example.net, that updates automatically whenever your address changes. A small client on your router or computer reports the new address to the provider. For most home hosting and remote access, this does the job at no cost, with a short gap whenever the address changes. Combine it with <a href="/learn/what-is-port-forwarding">port forwarding</a> and check the result with our <a href="/port">port checker</a>.</p>
-<p>One thing dynamic DNS cannot fix is carrier-grade NAT, where your provider shares one public address between many customers. If your router's address differs from the one on our <a href="/">IP checker</a>, inbound connections cannot reach you at all, and you need a real public address or a tunnel service.</p>
+<p>One thing dynamic DNS cannot fix is carrier-grade NAT, where your provider shares one public address between many customers. If your router's address differs from the one on our <a href="/">IP checker</a>, inbound connections cannot reach you at all, and you need a real public address or a tunnel service. The guide to <a href="/learn/what-is-my-ip-address">which IP address is yours</a> explains why the router and a website can show two different numbers.</p>
 
 <h2>How to set a static local IP</h2>
 <p>The cleanest method is a DHCP reservation. Log in to your router, find the DHCP or LAN settings, locate the device in the client list and reserve its current address against its MAC address. The device keeps using automatic settings and always receives the same address. You will need its MAC address, which is covered in <a href="/learn/what-is-a-mac-address">what is a MAC address</a>. To set it on the device instead, follow <a href="/learn/change-ip-address-windows-11">how to change your IP address on Windows 11</a>.</p>
