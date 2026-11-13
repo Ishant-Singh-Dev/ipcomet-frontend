@@ -178,7 +178,7 @@ export const TOOLS: Tool[] = [
     name: "Download Time",
     desc: "How long a file takes at your internet speed",
     title: "Download Time Calculator: File Size and Speed",
-    description: "Free download time calculator: see how long any file takes at your internet speed, find the speed you need to finish by a deadline, and plug in your speed test.",
+    description: "Free download time calculator: see how long any file takes at your internet speed, find the speed you need to meet a deadline, or use your speed test result.",
   },
   {
     id: "asn",

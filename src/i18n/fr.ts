@@ -1001,7 +1001,7 @@ export const fr: LocaleData = {
       name: "Recherche MAC",
       desc: "Trouvez le fabricant d’une adresse MAC",
       title: "Recherche d’adresse MAC : trouver le fabricant",
-      description: "Recherche MAC gratuite : trouvez le fabricant d’une adresse MAC ou d’un OUI dans le registre IEEE, vérifiez-en des centaines et repérez les adresses aléatoires.",
+      description: "Recherche MAC gratuite : trouvez le fabricant d’une adresse MAC ou d’un OUI (registre IEEE), vérifiez-en des centaines et repérez les adresses aléatoires.",
       h1: "Recherche d’adresse MAC",
       lead: "Trouvez le fabricant derrière une adresse MAC ou un OUI, vérifiez une liste entière d’un coup et voyez si une adresse est une adresse privée aléatoire.",
       about:
@@ -1073,7 +1073,7 @@ export const fr: LocaleData = {
       name: "Vérificateur DKIM",
       desc: "Trouvez et testez les clés DKIM",
       title: "Vérificateur DKIM : trouvez et testez vos clés",
-      description: "Vérificateur DKIM gratuit : analysez plus de 30 sélecteurs courants ou testez le vôtre, et voyez le type, la taille et l’état de chaque clé, avec SPF et DMARC.",
+      description: "Vérificateur DKIM gratuit : analysez plus de 30 sélecteurs courants ou le vôtre, et voyez le type, la taille et l’état de chaque clé, plus SPF et DMARC.",
       h1: "Vérificateur d’enregistrement DKIM",
       lead: "Trouvez les clés DKIM d’un domaine en analysant les sélecteurs courants, ou testez votre propre sélecteur, et voyez si chaque clé est active.",
       about:

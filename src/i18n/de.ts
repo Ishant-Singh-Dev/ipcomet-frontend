@@ -1075,7 +1075,7 @@ export const de: LocaleData = {
       name: "DKIM-Check",
       desc: "DKIM-Schlüssel finden und prüfen",
       title: "DKIM-Check: DKIM-Schlüssel finden und prüfen",
-      description: "Kostenloser DKIM-Check: über 30 gängige Selektoren durchsuchen oder Ihren eigenen testen und Typ, Größe und Status jedes Schlüssels sehen, neben SPF und DMARC.",
+      description: "Kostenloser DKIM-Check: über 30 gängige Selektoren durchsuchen oder Ihren eigenen testen und Typ, Größe und Status jedes Schlüssels sehen, plus SPF, DMARC.",
       h1: "DKIM-Eintrag prüfen",
       lead: "Finden Sie die DKIM-Schlüssel einer Domain über gängige Selektoren oder testen Sie Ihren eigenen Selektor, und sehen Sie, ob jeder Schlüssel aktiv ist.",
       about:

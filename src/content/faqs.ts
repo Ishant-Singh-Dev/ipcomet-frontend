@@ -538,7 +538,7 @@ export const TOOL_MORE: Record<string, string> = {
 <li>iPhone and Android: open the details of the Wi-Fi network you are on. With a private address turned on, that is the address the network sees, not the hardware one.</li>
 </ul>
 <p>Our guide to <a href="/learn/what-is-a-mac-address">what a MAC address is</a> explains how it differs from an IP address and why websites never see it.</p>
-<p class="note">Vendor data: IEEE <a href="https://standards-oui.ieee.org/oui/oui.csv" rel="noopener">MA-L</a>, <a href="https://standards-oui.ieee.org/oui28/mam.csv" rel="noopener">MA-M</a> and <a href="https://standards-oui.ieee.org/oui36/oui36.csv" rel="noopener">MA-S</a> registries, downloaded ${ouiMeta.updated} (${(ouiMeta.L + ouiMeta.M + ouiMeta.S).toLocaleString("en-US")} assignments). Sources: <a href="https://standards.ieee.org/wp-content/uploads/import/documents/tutorials/eui.pdf" rel="noopener">IEEE guidelines for EUI, OUI and CID</a>, <a href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior" rel="noopener">Android MAC randomization behavior</a>, <a href="https://support.apple.com/en-us/102509" rel="noopener">Apple: private Wi-Fi addresses</a>, <a href="https://www.rfc-editor.org/rfc/rfc4291" rel="noopener">RFC 4291 (modified EUI-64)</a>.</p>`,
+<p class="note">Vendor data: IEEE <a href="https://standards-oui.ieee.org/oui/oui.csv" rel="noopener">MA-L</a>, <a href="https://standards-oui.ieee.org/oui28/mam.csv" rel="noopener">MA-M</a> and <a href="https://standards-oui.ieee.org/oui36/oui36.csv" rel="noopener">MA-S</a> registries, downloaded ${ouiMeta.updated} (${(ouiMeta.L + ouiMeta.M + ouiMeta.S).toLocaleString("en-US")} assignments). Sources: <a href="https://standards.ieee.org/wp-content/uploads/import/documents/tutorials/eui.pdf" rel="noopener">IEEE guidelines for EUI, OUI and CID</a>, <a href="https://source.android.com/docs/core/connect/wifi-mac-randomization-behavior" rel="noopener">Android MAC randomization behavior</a>, <a href="https://support.apple.com/en-us/102509" rel="noopener">Apple: private Wi-Fi addresses</a>, <a href="https://www.rfc-editor.org/rfc/rfc4291.html" rel="noopener">RFC 4291 (modified EUI-64)</a>.</p>`,
   dmarc: `<h3>What this DMARC checker looks at</h3>
 <ul>
 <li>The DMARC record itself, its syntax, and every tag: p, sp, np, t, adkim, aspf, rua, ruf and fo.</li>
@@ -564,7 +564,7 @@ export const TOOL_MORE: Record<string, string> = {
 <li>Find every service that sends as your domain in the reports, and make sure each one passes SPF or DKIM with your domain.</li>
 <li>Move to p=quarantine, watch the reports again, then move to p=reject.</li>
 </ol>
-<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/a/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989.html" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208.html" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376.html" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461.html" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/mail/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
   spf: `<h3>What this SPF checker tests</h3>
 <ul>
 <li>That exactly one record starting with v=spf1 exists. Two records are a permanent error.</li>
@@ -583,7 +583,7 @@ export const TOOL_MORE: Record<string, string> = {
 </tbody></table></div>
 <h3>How to fix too many SPF lookups</h3>
 <p>Remove includes for services you no longer use first. Replace an include with the ip4 and ip6 ranges it stands for only when the service publishes fixed ranges, because ip4 and ip6 do not count towards the limit. Sending marketing mail from a subdomain with its own SPF record also keeps the main record short.</p>
-<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/a/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989.html" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208.html" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376.html" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461.html" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/mail/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
   dkim: `<h3>How DKIM records work</h3>
 <p>A mail server signs each message with a private key and adds a DKIM-Signature header naming the domain (d=) and the selector (s=). The receiver fetches the public key from the TXT record at <code>selector._domainkey.domain</code> and checks the signature. Using selectors lets a domain run several keys at once, one for each service, and rotate them without downtime.</p>
 <h3>Selectors this checker tries</h3>
@@ -596,7 +596,7 @@ export const TOOL_MORE: Record<string, string> = {
 <tr><td>p=</td><td>The public key. Empty means the key is revoked</td></tr>
 <tr><td>t=y</td><td>Testing: receivers treat signed mail like unsigned mail</td></tr>
 </tbody></table></div>
-<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/a/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989.html" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208.html" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376.html" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461.html" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/mail/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
   mx: `<h3>What an MX lookup shows</h3>
 <p>Every domain that receives email publishes MX records naming its mail servers, each with a priority number. Senders try the lowest number first. This lookup lists the servers, recognizes common providers from their hostnames (Google Workspace, Microsoft 365, Zoho, Proton, Fastmail, iCloud, Cloudflare Email Routing and others), and detects a null MX that says the domain takes no mail.</p>
 <h3>Checking a migration to a new email provider</h3>
@@ -606,7 +606,7 @@ export const TOOL_MORE: Record<string, string> = {
 <li>Update SPF to include the new provider and set up its DKIM key, then check both in the same report.</li>
 </ol>
 <p>DNS changes can take a while to reach every resolver. Our <a href="/dns">DNS lookup</a> lets you query Cloudflare and Google directly.</p>
-<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/a/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9989.html" rel="noopener">RFC 9989 (DMARC)</a>, <a href="https://www.rfc-editor.org/rfc/rfc7208.html" rel="noopener">RFC 7208 (SPF)</a>, <a href="https://www.rfc-editor.org/rfc/rfc6376.html" rel="noopener">RFC 6376 (DKIM)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8461.html" rel="noopener">RFC 8461 (MTA-STS)</a>, <a href="https://support.google.com/mail/answer/81126" rel="noopener">Google email sender guidelines</a>.</p>`,
   propagation: `<h3>How this checker differs from map-based tools</h3>
 <p>Most propagation checkers send a query from servers in different countries and show a tick or a cross on a map. That tells you what one server saw at one moment. This tool asks each resolver directly, reads the TTL in its answer, and subtracts any time the answer spent in an HTTP cache, as RFC 8484 requires. The remaining TTL is how long that resolver will keep its current answer, which is the real countdown to your change appearing there.</p>
 <p>Large resolvers run many sites around the world. Queries from this tool reach the site of each provider nearest to the Cloudflare data center that handles your request, so caches in other regions can hold a different copy for a while.</p>
@@ -620,7 +620,7 @@ export const TOOL_MORE: Record<string, string> = {
 <li>No answer: the resolver did not reply in time. Try again.</li>
 </ul>
 <p>To see every record type for a domain from Cloudflare or Google, use the <a href="/dns">DNS lookup</a>. The guide to <a href="/learn/how-to-flush-dns-cache">flushing your DNS cache</a> clears the copy on your own device.</p>
-<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc1035" rel="noopener">RFC 1035 (DNS and TTL)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8484" rel="noopener">RFC 8484 (DNS over HTTPS)</a>. The 48-hour .com delegation TTL was read from a.gtld-servers.net.</p>`,
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc1035.html" rel="noopener">RFC 1035 (DNS and TTL)</a>, <a href="https://www.rfc-editor.org/rfc/rfc8484.html" rel="noopener">RFC 8484 (DNS over HTTPS)</a>. The 48-hour .com delegation TTL was read from a.gtld-servers.net.</p>`,
   download: `<h3>How download time is calculated</h3>
 <p>Time in seconds equals the file size in bits divided by the speed in bits per second. A byte is 8 bits, so a 10 GB file is 80,000 megabits, and at 100 Mbps it takes 800 seconds, a little over 13 minutes.</p>
 <h3>MB or MiB, GB or GiB?</h3>
@@ -650,7 +650,7 @@ export const TOOL_MORE: Record<string, string> = {
 <tr><td>64496 to 64511, 65536 to 65551</td><td>Documentation (RFC 5398)</td></tr>
 </tbody></table></div>
 <p>To see where an address is and which provider uses it, try the <a href="/lookup">IP lookup</a>. The <a href="/whois">WHOIS lookup</a> shows the registration record for an IP range.</p>
-<p class="note">Sources: <a href="https://stat.ripe.net/docs/data-api/api-endpoints/as-overview" rel="noopener">RIPEstat data API</a>, <a href="https://www.iana.org/numbers" rel="noopener">IANA number resources</a>, <a href="https://www.rfc-editor.org/rfc/rfc6996" rel="noopener">RFC 6996</a>, <a href="https://www.rfc-editor.org/rfc/rfc5398" rel="noopener">RFC 5398</a>.</p>`,
+<p class="note">Sources: <a href="https://stat.ripe.net/docs/data-api/api-endpoints/as-overview" rel="noopener">RIPEstat data API</a>, <a href="https://www.iana.org/numbers" rel="noopener">IANA number resources</a>, <a href="https://www.rfc-editor.org/rfc/rfc6996.html" rel="noopener">RFC 6996</a>, <a href="https://www.rfc-editor.org/rfc/rfc5398.html" rel="noopener">RFC 5398</a>.</p>`,
   redirects: `<h3>Redirect status codes</h3>
 <div class="tw"><table><tbody>
 <tr><th>Code</th><th>Meaning (RFC 9110)</th><th>How Google treats it</th></tr>
@@ -667,7 +667,7 @@ export const TOOL_MORE: Record<string, string> = {
 <li>Set an HSTS header on HTTPS so returning browsers skip the HTTP hop entirely.</li>
 </ol>
 <p>The checker identifies itself as ipcomet-redirect-checker, so some sites that treat bots differently may redirect it to a different place than a browser. Our <a href="/dns-propagation">DNS propagation checker</a> helps when a redirect depends on a recent DNS change.</p>
-<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9110" rel="noopener">RFC 9110 (HTTP Semantics), section 15.4</a>, <a href="https://developers.google.com/search/docs/crawling-indexing/301-redirects" rel="noopener">Google Search Central: redirects and Google Search</a>.</p>`,
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc9110.html" rel="noopener">RFC 9110 (HTTP Semantics), section 15.4</a>, <a href="https://developers.google.com/search/docs/crawling-indexing/301-redirects" rel="noopener">Google Search Central: redirects and Google Search</a>.</p>`,
   "email-headers": `<h3>How to read email headers</h3>
 <p>Each mail server that handles a message adds a Received line at the top, so the newest hop is first and the original sender is at the bottom. The analyzer reverses them into travel order and works out the delay between hops from their timestamps. A long delay usually means a server queued the message, often because of spam filtering or a busy relay.</p>
 <h3>Signs of a spoofed or phishing email</h3>
@@ -678,5 +678,5 @@ export const TOOL_MORE: Record<string, string> = {
 <li>An originating IP on a residential or hosting network for mail that claims to come from a large company. Check it with our <a href="/reputation">IP reputation check</a>.</li>
 </ul>
 <p>To check the sending domain's own setup, run the <a href="/dmarc-checker">DMARC checker</a>.</p>
-<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc8601" rel="noopener">RFC 8601 (Authentication-Results)</a>, <a href="https://www.rfc-editor.org/rfc/rfc5322" rel="noopener">RFC 5322 (Internet Message Format, trace fields)</a>.</p>`,
+<p class="note">Sources: <a href="https://www.rfc-editor.org/rfc/rfc8601.html" rel="noopener">RFC 8601 (Authentication-Results)</a>, <a href="https://www.rfc-editor.org/rfc/rfc5322.html" rel="noopener">RFC 5322 (Internet Message Format, trace fields)</a>.</p>`,
 };
