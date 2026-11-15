@@ -204,6 +204,8 @@ export const pt: LocaleData = {
     None: "Nenhum",
     "None (hidden by browser)": "Nenhum (oculto pelo navegador)",
     "None of the checks got an answer, so your connection may be offline.": "Nenhuma verificação recebeu resposta, então sua conexão pode estar offline.",
+    "This connection uses more than one public IPv4 address, so other sites may show a different one. That is normal on routers that share traffic over several internet lines and on some mobile networks.":
+      "Esta conexão usa mais de um endereço IPv4 público, então outros sites podem mostrar um diferente. Isso é normal em roteadores que dividem o tráfego entre várias linhas de internet e em algumas redes móveis.",
     "Not detected": "Não detectado",
     "Not enough data came back to measure speed.": "Não chegaram dados suficientes para medir a velocidade.",
     "Not found": "Não encontrada",

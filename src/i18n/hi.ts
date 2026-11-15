@@ -205,6 +205,8 @@ export const hi: LocaleData = {
     None: "कोई नहीं",
     "None (hidden by browser)": "कोई नहीं (ब्राउज़र ने छिपाया)",
     "None of the checks got an answer, so your connection may be offline.": "किसी भी जाँच को जवाब नहीं मिला, इसलिए हो सकता है आपका कनेक्शन ऑफ़लाइन हो।",
+    "This connection uses more than one public IPv4 address, so other sites may show a different one. That is normal on routers that share traffic over several internet lines and on some mobile networks.":
+      "यह कनेक्शन एक से ज़्यादा सार्वजनिक IPv4 पते इस्तेमाल करता है, इसलिए दूसरी साइटें अलग पता दिखा सकती हैं। यह उन राउटरों पर सामान्य है जो ट्रैफ़िक को कई इंटरनेट लाइनों में बाँटते हैं, और कुछ मोबाइल नेटवर्क पर भी।",
     "Not detected": "पता नहीं चला",
     "Not enough data came back to measure speed.": "स्पीड मापने के लिए पर्याप्त डेटा वापस नहीं आया।",
     "Not found": "नहीं मिला",

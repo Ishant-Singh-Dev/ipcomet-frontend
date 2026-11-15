@@ -130,6 +130,7 @@ ${line ? `<p class="where">${esc(line)}</p>` : ""}
 <button class="btn" type="button" id="hide" aria-pressed="false">${esc(lt("Hide"))}</button>
 </div>
 <div class="alt" id="alt" aria-live="polite"><span>IPv4 <b id="v4">${c.ip.includes(":") ? "…" : esc(c.ip)}</b></span><span>IPv6 <b id="v6">${c.ip.includes(":") ? esc(c.ip) : "…"}</b></span></div>
+<p class="multi" id="multi" hidden>${esc(lt("This connection uses more than one public IPv4 address, so other sites may show a different one. That is normal on routers that share traffic over several internet lines and on some mobile networks."))}</p>
 </section>
 <section class="sec" style="border-top:0;padding-top:40px">
 <div class="grid3">

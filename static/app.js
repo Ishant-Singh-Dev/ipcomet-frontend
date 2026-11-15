@@ -187,6 +187,9 @@
       // Lead with IPv4 when the browser connected over IPv6, since that is the address people expect to see;
       // the IPv6 address stays on the line below. On a local network or dev server, show the address websites see.
       const lead = ip && (isLocal || own.includes(":"));
+      // Routers that balance traffic over several internet lines, and some mobile carriers, send each connection out
+      // from a different public IPv4 address. This page then sees one address and ipify another; say so plainly.
+      if (ip && !lead && ip !== own) $("#multi").hidden = false;
       if (lead) {
         ipEl.textContent = ip;
         document.querySelector("[data-copy]").dataset.copy = ip;

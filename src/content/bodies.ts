@@ -2938,6 +2938,7 @@ console.log(ip);</code></pre>
 <tr><td>A VPN's address on one site, your real one on another</td><td>The VPN is off in one browser, or a browser extension proxies only some tabs</td><td>Run a <a href="/webrtc">WebRTC leak test</a> and see <a href="/learn/is-my-vpn-working">is my VPN working</a></td></tr>
 <tr><td>Phone and laptop show different addresses</td><td>One is on mobile data and the other on Wi-Fi</td><td>Switch both to the same network and check again</td></tr>
 <tr><td>Your router's WAN address differs from the website's answer</td><td>Your provider uses carrier-grade NAT</td><td>Read <a href="/learn/what-is-cgnat">what CGNAT is</a></td></tr>
+<tr><td>Every checker, or every refresh, shows a different IPv4 address</td><td>Your router shares traffic over more than one internet line (load balancing or failover), or your mobile carrier sends each connection out from a different shared address</td><td>Nothing to fix: each one is a real public address of your connection. The <a href="/">home page</a> notes it when it sees two</td></tr>
 </tbody></table></div>
 <p>The location next to your address can also look wrong, because it comes from a database of address blocks rather than GPS. Our guide to <a href="/learn/why-is-my-ip-location-wrong">why your IP location is wrong</a> explains why it often points to your provider's nearest hub.</p>
 
