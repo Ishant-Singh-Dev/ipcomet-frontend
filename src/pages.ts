@@ -122,6 +122,7 @@ export function homeBody(c: ClientInfo, loc: Locale = "en"): string {
 
   return `<section class="panel hero" data-ip="${esc(c.ip)}">
 <div class="map" aria-hidden="true" data-nosnippet><pre class="ascii" id="ascii" data-map="${esc(ascii)}"></pre>${pin}</div>
+<button class="refresh" type="button" id="refresh" aria-label="${esc(lt("Check again"))}" title="${esc(lt("Check again"))}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></button>
 <h1 class="pill">${esc(lt("What is my IP address?"))}</h1>
 <p class="ip" id="ip">${esc(c.ip)}</p>
 ${line ? `<p class="where">${esc(line)}</p>` : ""}

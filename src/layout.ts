@@ -133,6 +133,12 @@ h3{font-size:1.15rem;letter-spacing:-.02em;margin:0 0 6px}
 .actions{display:flex;gap:10px;justify-content:center;margin:28px 0 0;flex-wrap:wrap}
 .alt{display:flex;gap:6px 22px;justify-content:center;flex-wrap:wrap;font-size:14px;margin-top:26px;min-height:22px;color:var(--mut)}
 .alt b{color:var(--ink);font:600 13px ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+.refresh{position:absolute;z-index:2;top:16px;left:16px;width:40px;height:40px;display:grid;place-items:center;padding:0;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);cursor:pointer;transition:background .15s}
+.refresh:hover{background:var(--soft)}
+.refresh svg{width:18px;height:18px}
+.refresh.busy svg{animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.refresh.busy svg{animation:none}}
 .multi{max-width:520px;margin:12px auto 0;font-size:13px;line-height:1.5;color:var(--mut)}
 
 .grid3{display:grid;gap:18px;grid-template-columns:repeat(3,1fr)}

@@ -179,6 +179,10 @@
       hide.setAttribute("aria-pressed", String(on));
     });
 
+    // Check again without the browser's refresh button, for example after switching a VPN or network on.
+    const again = $("#refresh");
+    if (again) again.addEventListener("click", () => { again.classList.add("busy"); again.disabled = true; location.reload(); });
+
     const own = $(".hero").dataset.ip;
     const show = (id, ip) => { $(id).textContent = ip || tr("Not detected"); };
     const isLocal = /^(::1$|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|fe80:|fc|fd)/i.test(own);
