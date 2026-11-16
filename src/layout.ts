@@ -509,15 +509,15 @@ export const toolCards = (ids?: string[], loc: Locale = "en") => {
   return `<div class="tools">${list.map((x) => `<a class="tool" href="${toolHref(x, loc)}"><b>${esc(x.name)}</b><span>${esc(x.desc)}</span></a>`).join("")}</div>`;
 };
 
-export const appJsonLd = (origin: string, name: string, description: string, path: string, loc: Locale = "en") => ({
+/** WebPage markup for the home page and tool pages. Not WebApplication: Google only accepts that type (a kind of
+ *  SoftwareApplication) with ratings or reviews, and ipcomet has none to show, so it was reported as invalid. */
+export const pageJsonLd = (origin: string, name: string, description: string, path: string, loc: Locale = "en") => ({
   "@context": "https://schema.org",
-  "@type": "WebApplication",
+  "@type": "WebPage",
   name,
   description,
-  applicationCategory: "UtilitiesApplication",
-  operatingSystem: "Any",
-  browserRequirements: "Requires a modern web browser",
   inLanguage: LOCALE_META[loc].htmlLang,
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  ...(origin ? { url: origin + localizedPath(loc, path) } : {}),
+  ...(origin
+    ? { url: origin + localizedPath(loc, path), isPartOf: { "@id": origin + localizedPath(loc, "/") + "#website" } }
+    : {}),
 });

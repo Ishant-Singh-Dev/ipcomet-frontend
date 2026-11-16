@@ -3,7 +3,7 @@ import { HOME_FAQ, TOOL_ABOUT, TOOL_FAQ, TOOL_MORE } from "./content/faqs";
 import { MAP_BOTTOM, MAP_COLS, MAP_ROWS_TEXT, MAP_TOP } from "./content/worldmap";
 import { LOCALE_DATA, LOCALE_META, localizedPath, t, type Locale } from "./i18n";
 import {
-  appJsonLd,
+  pageJsonLd,
   articleCards,
   breadcrumbJsonLd,
   faqJsonLd,
@@ -162,7 +162,7 @@ export function homeJsonLd(origin: string, loc: Locale = "en"): unknown[] {
       inLanguage: LOCALE_META[loc].htmlLang,
     },
     organizationJsonLd(origin),
-    appJsonLd(origin, home.title, home.description, "/", loc),
+    pageJsonLd(origin, home.title, home.description, "/", loc),
     faqJsonLd(faq),
   ];
 }
@@ -508,7 +508,7 @@ ${guides.length ? `<section class="sec"><h2>${esc(lt("Related guides"))}</h2>${a
   return {
     body,
     jsonLd: [
-      appJsonLd(origin, copy.h1, copy.meta.description, tool.path, loc),
+      pageJsonLd(origin, copy.h1, copy.meta.description, tool.path, loc),
       faqJsonLd(copy.faq),
       breadcrumbJsonLd(origin, [[lt("Home"), lp("/")], [copy.meta.name, lp(tool.path)]]),
     ],
